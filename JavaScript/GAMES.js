@@ -4290,11 +4290,7 @@ function startGdDeadlockedEngine() {
             } else {
                 st.rot = Math.round(st.rot / 90) * 90;
             }
-        } addOrb(1500, gY - 85, 'blue');
-        addSpike(1540, cY + 28, false);
-        addSpike(1580, gY, true);
-        addSpike(1720, cY + 28, false);
-        
+        }
         if (st.justPressed) {
             for (const orb of st.orbs) {
                 if (!orb.hit && Math.abs((st.x + 160) - orb.x) < 42 && Math.abs((st.y + size / 2) - orb.y) < 42) {
