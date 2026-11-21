@@ -1,6 +1,6 @@
 function startFormalPortal() {
     if (!DOM.searchInput) return;
-
+    
     STATE.onSearchInput.push((val) => {
         if (val === 'formal' || val === 'main') {
             DOM.searchInput.value = '';
@@ -8,10 +8,10 @@ function startFormalPortal() {
             toast.style.cssText = 'position:fixed;top:28px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:999px;background:rgba(5,10,35,0.96);border:2px solid #facc15;color:#fef08a;font-weight:800;font-size:13px;letter-spacing:0.6px;z-index:999999;box-shadow:0 12px 32px rgba(0,0,0,0.85),0 0 24px rgba(250,204,21,0.6);';
             toast.textContent = '🏛️ Returning to Beyond The Manger: Official Showcase...';
             document.body.appendChild(toast);
-
+            
             playBeep(587.33, 0.08, 'sine', 0.04);
             setTimeout(() => playBeep(783.99, 0.14, 'sine', 0.045), 75);
-
+            
             setTimeout(() => {
                 window.location.href = 'https://voxxiethelamb.github.io/beyondthemanger/';
             }, 650);
@@ -21,7 +21,7 @@ function startFormalPortal() {
     });
 }
 document.addEventListener('DOMContentLoaded', () => {
-   //#region START Everything
+    //#region START Everything
     function startAll() {
         createPeople();
         startFormalPortal();
@@ -108,6 +108,35 @@ document.addEventListener('DOMContentLoaded', () => {
         startPartyHackerContextMenu();
         startGuidingLightCursor();
         startGuidingLightContextMenu();
+        startDoorsGameData();
+        startDoorsCore();
+        startDoorsCorridor();
+        startDoorsEntities();
+        startDoorsLibrary();
+        startDoorsKeyRoom();
+        startDoorsFinaleAndRun();
+        startBurjElevatorData();
+        startBurjElevatorPuzzlesA();
+        startBurjElevatorPuzzlesB();
+        startBurjElevatorModal();
+        startBurjElevatorController();
+        startGdDeadlockedData();
+        startGdDeadlockedLevel();
+        startGdDeadlockedEngine();
+        startGdDeadlockedUI();
+        startBuckshotData();
+        startBuckshotAI();
+        startBuckshotModal();
+        startBuckshotController();
+        startArcadeHubData();
+        startArcadeHubUI();
+        startArcadeHubHook();
+        startArcadeCompareEntry();
+        startWordleData();
+        startWordleUI();
+        startHangmanData();
+        startHangmanUI();
+
     }
     startAll();
     //#endregion
