@@ -4045,8 +4045,72 @@ function startGdDeadlockedLevel() {
         const addSpike = (x, y, up, w, h) => {
             st.obstacles.push({ type: 'spike', x: x, y: y, w: w || 26, h: h || 28, up: up !== false });
         };
+        const addSpikeRow = (startX, y, count, up = true, step = 28) => {
+            for (let i = 0; i < count; i++) {
+                addSpike(startX + i * step, y, up);
+            }
+        };
         const addBlock = (x, y, w, h) => {
             st.obstacles.push({ type: 'block', x: x, y: y, w: w, h: h });
+        };
+        const addBlockRow = (startX, y, count, w = 28, h = 28, step = 28) => {
+            for (let i = 0; i < count; i++) {
+                addBlock(startX + i * step, y, w, h);
+            }
+        };
+
+        const addBlockBlock = (startX, startY, cols, rows, w = 28, h = 28) => {
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    addBlock(startX + c * w, startY + r * h, w, h);
+                }
+            }
+        };
+        const addSlope = (x, y, w, h, dir) => {
+            st.obstacles.push({ type: 'slope', x: x, y: y, w: w || 28, h: h || 28, dir: dir || 'tl' });
+        };
+
+        const addSlopeRow = (startX, startY, count, dir, w = 28, h = 28) => {
+            const dy = (dir === 'tr' || dir === 'br') ? h : -h;
+            for (let i = 0; i < count; i++) {
+                addSlope(startX + i * w, startY + i * dy, w, h, dir);
+            }
+        };
+
+        const addTopPyramid = (startX, steps, flatCols = 2, extraH = 0) => {
+            for (let i = 0; i < steps; i++) {
+                if (i > 0) addBlockBlock(startX + i * 28, cY, 1, i, 28, 28);
+                if (extraH > 0) addBlock(startX + i * 28, cY + i * 28, 28, extraH);
+                addSlope(startX + i * 28, cY + i * 28 + extraH, 28, 28, 'tr');
+            }
+            const peakX = startX + steps * 28;
+            addBlockBlock(peakX, cY, flatCols, steps, 28, 28);
+            if (extraH > 0) addBlockRow(peakX, cY + steps * 28, flatCols, 28, extraH, 28);
+            const rightStart = peakX + flatCols * 28;
+            for (let i = 0; i < steps; i++) {
+                const rowCount = steps - 1 - i;
+                if (rowCount > 0) addBlockBlock(rightStart + i * 28, cY, 1, rowCount, 28, 28);
+                if (extraH > 0) addBlock(rightStart + i * 28, cY + rowCount * 28, 28, extraH);
+                addSlope(rightStart + i * 28, cY + rowCount * 28 + extraH, 28, 28, 'tl');
+            }
+        };
+
+        const addBottomPyramid = (startX, steps, flatCols = 2, extraH = 0) => {
+            for (let i = 0; i < steps; i++) {
+                if (i > 0) addBlockBlock(startX + i * 28, gY - i * 28, 1, i, 28, 28);
+                if (extraH > 0) addBlock(startX + i * 28, gY - i * 28 - extraH, 28, extraH);
+                addSlope(startX + i * 28, gY - (i + 1) * 28 - extraH, 28, 28, 'bl');
+            }
+            const peakX = startX + steps * 28;
+            addBlockBlock(peakX, gY - steps * 28, flatCols, steps, 28, 28);
+            if (extraH > 0) addBlockRow(peakX, gY - steps * 28 - extraH, flatCols, 28, extraH, 28);
+            const rightStart = peakX + flatCols * 28;
+            for (let i = 0; i < steps; i++) {
+                const rowCount = steps - 1 - i;
+                if (rowCount > 0) addBlockBlock(rightStart + i * 28, gY - rowCount * 28, 1, rowCount, 28, 28);
+                if (extraH > 0) addBlock(rightStart + i * 28, gY - rowCount * 28 - extraH, 28, extraH);
+                addSlope(rightStart + i * 28, gY - (rowCount + 1) * 28 - extraH, 28, 28, 'br');
+            }
         };
         const addSaw = (x, y, r) => {
             st.obstacles.push({ type: 'saw', x: x, y: y, r: r || 24 });
@@ -4067,56 +4131,86 @@ function startGdDeadlockedLevel() {
         addOrb(1080, gY - 75, 'yellow');
         addBlock(1180, gY - 70, 130, 70);
         addSpike(1360, gY, true);
-        addOrb(1500, gY - 85, 'blue');
-        addSpike(1540, cY + 28, false);
-        addSpike(1720, cY + 28, false);
+        addOrb(1400, gY - 85, 'blue');
+        addSpike(1440, cY + 28, false);
+        addSpike(1620, cY + 28, false);
+        addSpikeRow(1388, gY, 12, true);
         addOrb(1860, cY + 95, 'blue');
-        addSpike(2020, gY, true);
-        addSpike(2048, gY, true);
+        addSpikeRow(2020, gY, 3, true);
+        addSpikeRow(2020, cY + 28, 5, false);
         
         addPortal(2200, 'mode', 'wave', '#38bdf8', 'WAVE');
-        addPortal(2260, 'speed', 1.38, '#f43f5e', '3X SPEED');
-        
-        for (let wx = 2480; wx <= 4200; wx += 260) {
-            const highGap = ((wx / 260) % 2 === 0);
-            if (highGap) {
-                addBlock(wx, gY - 145, 110, 145);
-                addSaw(wx + 55, cY + 42, 24);
-            } else {
-                addBlock(wx, cY, 110, 145);
-                addSaw(wx + 55, gY - 42, 24);
-            }
+        addPortal(2260, 'speed', 1.28, '#f43f5e', '2.5X NC WAVE');
+
+        for (let wx = 2440; wx <= 3940; wx += 520) {
+            addTopPyramid(wx, 4, 2, 14);
+            addBottomPyramid(wx + 140, 3, 2, 14);
+
+            addSaw(wx + 355, cY + 145, 20);
+
+            addSlope(wx + 395, cY + 66, 28, 28, 'bl');
+            addSlope(wx + 423, cY + 66, 28, 28, 'br');
+            addSlope(wx + 395, cY + 94, 28, 28, 'tl');
+            addSlope(wx + 423, cY + 94, 28, 28, 'tr');
+
+            addSlope(wx + 395, gY - 122, 28, 28, 'bl');
+            addSlope(wx + 423, gY - 122, 28, 28, 'br');
+            addSlope(wx + 395, gY - 94, 28, 28, 'tl');
+            addSlope(wx + 423, gY - 94, 28, 28, 'tr');
+
+            addSaw(wx + 485, cY + 145, 20);
         }
-        
+
         addPortal(4380, 'mini', true, '#a855f7', 'MINI WAVE');
-        for (let mx = 4560; mx <= 5400; mx += 210) {
-            addSaw(mx, cY + 55, 22);
-            addSaw(mx + 105, gY - 55, 22);
+        for (let mx = 4560; mx <= 5440; mx += 220) {
+            addBlock(mx, gY - 125, 28, 125);
+            addSpike(mx + 1, gY - 125, true, 26, 26);
+
+            addBlock(mx + 110, cY, 28, 125);
+            addSpike(mx + 111, cY + 151, false, 26, 26);
         }
         
         addPortal(5600, 'mini', false, '#22c55e', 'NORMAL');
         addPortal(5660, 'mode', 'ship', '#ec4899', 'SHIP');
         addPortal(5720, 'speed', 1.15, '#fbbf24', '2X SPEED');
-        
-        for (let sx = 5950; sx <= 8100; sx += 340) {
-            const gapTop = 95 + ((sx * 7) % 110);
-            const gapH = 112;
-            addBlock(sx, cY, 54, gapTop - cY);
-            addBlock(sx, gapTop + gapH, 54, gY - (gapTop + gapH));
-            if ((sx / 340) % 2 === 0) {
-                addPortal(sx + 170, 'gravity', -1, '#3b82f6', 'GRAVITY FLIP');
+
+        addBlockBlock(5940, cY, 78, 4, 28, 28);
+        addBlockBlock(5940, gY - 112, 78, 4, 28, 28);
+
+        for (let sx = 6100; sx <= 7950; sx += 310) {
+            if ((sx / 310) % 2 === 0) {
+                addPortal(sx, 'gravity', -1, '#3b82f6', 'GRAVITY FLIP');
             } else {
-                addPortal(sx + 170, 'gravity', 1, '#eab308', 'GRAVITY NORMAL');
+                addPortal(sx, 'gravity', 1, '#eab308', 'GRAVITY NORMAL');
             }
         }
         
         addPortal(8350, 'gravity', 1, '#eab308', 'NORMAL GRAV');
         addPortal(8410, 'mode', 'ufo', '#f97316', 'UFO');
-        for (let ux = 8640; ux <= 10400; ux += 320) {
-            addSpike(ux, gY, true);
-            addSpike(ux + 28, gY, true);
-            addSaw(ux + 150, cY + 70, 26);
-            addBlock(ux + 150, gY - 65, 60, 65);
+        addPortal(8470, 'speed', 1.2, '#fbbf24', '2X UFO');
+
+        for (let ux = 8650; ux <= 10150; ux += 380) {
+            addBlockBlock(ux, cY, 2, 3, 28, 28);
+            addSpike(ux + 1, cY + 112, false, 26, 28);
+            addSpike(ux + 29, cY + 112, false, 26, 28);
+
+            addBlockBlock(ux, gY - 84, 2, 3, 28, 28);
+            addSpike(ux + 1, gY - 84, true, 26, 28);
+            addSpike(ux + 29, gY - 84, true, 26, 28);
+
+            addOrb(ux + 115, cY + 145, 'yellow');
+
+            addBlockBlock(ux + 190, cY, 2, 5, 28, 28);
+            addSpike(ux + 191, cY + 168, false, 26, 28);
+            addSpike(ux + 219, cY + 168, false, 26, 28);
+
+            addBlockBlock(ux + 190, gY - 28, 2, 1, 28, 28);
+            addSpike(ux + 191, gY - 28, true, 26, 28);
+            addSpike(ux + 219, gY - 28, true, 26, 28);
+
+            addSaw(ux + 305, cY + 85, 20);
+            addOrb(ux + 305, gY - 85, 'blue');
+            addPortal(ux + 355, 'gravity', 1, '#eab308', 'NORM');
         }
         
         addPortal(10620, 'mode', 'robot', '#ef4444', 'ROBOT');
@@ -4127,14 +4221,37 @@ function startGdDeadlockedLevel() {
             addSpike(rx + 196, gY, true);
         }
         
-        addPortal(12450, 'mode', 'wave', '#38bdf8', 'FINAL WAVE');
-        addPortal(12510, 'speed', 1.42, '#f43f5e', '3X BOSS WAVE');
-        for (let bx = 12740; bx <= 14800; bx += 235) {
-            const waveOffset = Math.sin(bx * 0.01) * 58;
-            addBlock(bx, cY, 80, 92 + waveOffset);
-            addBlock(bx, gY - (92 - waveOffset), 80, 92 - waveOffset);
-            addSaw(bx + 118, (cY + gY) / 2 + waveOffset * 0.6, 20);
+        addPortal(12450, 'mode', 'wave', '#38bdf8', 'FINAL NC WAVE');
+        addPortal(12510, 'speed', 1.34, '#f43f5e', '3X BOSS NC');
+
+        for (let bx = 12720; bx <= 14520; bx += 600) {
+            addBottomPyramid(bx, 4, 1, 14);
+            addTopPyramid(bx + 130, 4, 1, 14);
+
+            addSaw(bx + 295, cY + 145, 22);
+
+            addSlope(bx + 340, cY + 52, 28, 28, 'bl');
+            addSlope(bx + 368, cY + 52, 28, 28, 'br');
+            addSlope(bx + 340, cY + 80, 28, 28, 'tl');
+            addSlope(bx + 368, cY + 80, 28, 28, 'tr');
+
+            addSlope(bx + 340, cY + 118, 28, 28, 'bl');
+            addSlope(bx + 368, cY + 118, 28, 28, 'br');
+            addSlope(bx + 340, cY + 146, 28, 28, 'tl');
+            addSlope(bx + 368, cY + 146, 28, 28, 'tr');
+
+            addSlope(bx + 340, gY - 108, 28, 28, 'bl');
+            addSlope(bx + 368, gY - 108, 28, 28, 'br');
+            addSlope(bx + 340, gY - 80, 28, 28, 'tl');
+            addSlope(bx + 368, gY - 80, 28, 28, 'tr');
+
+            addPortal(bx + 440, 'gravity', ((bx / 600) % 2 === 0) ? -1 : 1, '#3b82f6', 'GRAV WAVE');
+
+            addTopPyramid(bx + 475, 3, 1, 20);
+            addBottomPyramid(bx + 475, 3, 1, 20);
         }
+
+        addPortal(14940, 'gravity', 1, '#eab308', 'NORMAL GRAV');
         
         addPortal(15020, 'mode', 'ship', '#ec4899', 'FINAL SHIP');
         for (let fx = 15240; fx <= 16150; fx += 290) {
@@ -4245,12 +4362,20 @@ function startGdDeadlockedEngine() {
         const floorLimit = cfg.groundY - size;
         const ceilLimit = cfg.ceilingY;
         
-        if (st.mode === 'wave') {
-            const slope = (st.mini ? 1.55 : 1.05) * baseSpeed;
+         if (st.mode === 'wave') {
+            const slope = (st.mini ? 1.15 : 0.82) * baseSpeed;
             const dir = st.holding ? -1 : 1;
             st.vy = dir * slope * st.gravity;
             st.y += st.vy * dt;
-            st.rot = st.vy < 0 ? -38 : 38;
+            st.rot = st.vy < 0 ? -34 : 34;
+
+            if (st.y <= ceilLimit) {
+                st.y = ceilLimit;
+                st.rot = 0;
+            } else if (st.y >= floorLimit) {
+                st.y = floorLimit;
+                st.rot = 0;
+            }
         } else if (st.mode === 'ship') {
             const thrust = st.holding ? -1250 : 980;
             st.vy += thrust * st.gravity * dt;
@@ -4384,6 +4509,22 @@ function startGdDeadlockedEngine() {
                     window.gdCrashPlayer();
                     return;
                 }
+            } else if (ob.type === 'slope') {
+                if (pRight > ob.x && pLeft < ob.x + ob.w && pBot > ob.y && pTop < ob.y + ob.h) {
+                    const cx = (pLeft + pRight) / 2;
+                    const cy = (pTop + pBot) / 2;
+                    const nx = Math.max(0, Math.min(1, (cx - ob.x) / ob.w));
+                    const ny = Math.max(0, Math.min(1, (cy - ob.y) / ob.h));
+                    let hitSlope = false;
+                    if (ob.dir === 'tl') hitSlope = (nx + ny <= 1.05);
+                    else if (ob.dir === 'tr') hitSlope = ((1 - nx) + ny <= 1.05);
+                    else if (ob.dir === 'bl') hitSlope = ((1 - nx) + (1 - ny) <= 1.05);
+                    else if (ob.dir === 'br') hitSlope = (nx + (1 - ny) <= 1.05);
+                    if (hitSlope) {
+                        window.gdCrashPlayer();
+                        return;
+                    }
+                }
             }
         }
         
@@ -4510,6 +4651,32 @@ function startGdDeadlockedEngine() {
                 ctx.fill();
                 ctx.stroke();
                 ctx.restore();
+            } else if (ob.type === 'slope') {
+                const ncPulse = st.mode === 'wave' && Math.floor(performance.now() / 85) % 2 === 0;
+                ctx.fillStyle = ncPulse ? '#450a0a' : '#18181b';
+                ctx.strokeStyle = ncPulse ? '#fde047' : '#f43f5e';
+                ctx.lineWidth = 2;
+                ctx.beginPath();
+                if (ob.dir === 'tl') {
+                    ctx.moveTo(sx, ob.y);
+                    ctx.lineTo(sx + ob.w, ob.y);
+                    ctx.lineTo(sx, ob.y + ob.h);
+                } else if (ob.dir === 'tr') {
+                    ctx.moveTo(sx, ob.y);
+                    ctx.lineTo(sx + ob.w, ob.y);
+                    ctx.lineTo(sx + ob.w, ob.y + ob.h);
+                } else if (ob.dir === 'bl') {
+                    ctx.moveTo(sx + ob.w, ob.y);
+                    ctx.lineTo(sx + ob.w, ob.y + ob.h);
+                    ctx.lineTo(sx, ob.y + ob.h);
+                } else {
+                    ctx.moveTo(sx, ob.y);
+                    ctx.lineTo(sx + ob.w, ob.y + ob.h);
+                    ctx.lineTo(sx, ob.y + ob.h);
+                }
+                ctx.closePath();
+                ctx.fill();
+                ctx.stroke();
             }
         }
         for (const cp of st.checkpoints) {
@@ -4559,7 +4726,7 @@ function startGdDeadlockedEngine() {
             ctx.fillRect(pt.x, pt.y, 5, 5);
         }
     };
-}
+};
 function startGdDeadlockedUI() {
     window.gdBuildModal = function () {
         const old = document.getElementById('gd-deadlocked-modal');
