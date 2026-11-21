@@ -24,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     //#region START Everything
     function startAll() {
         createPeople();
+        startAfcsCoinGuard();
         startFormalPortal();
         startAudioControls();
         startPraiseBGM();

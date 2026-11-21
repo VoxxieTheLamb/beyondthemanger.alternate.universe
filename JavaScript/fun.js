@@ -1382,3 +1382,98 @@ function startConsoleSignature() {
         }
     };
 }
+function startAfcsCoinGuard() {
+    const COIN_KEY = 'afcs_coins';
+    const SIG_KEY = 'afcs_coins_sig';
+    const SALT = 'AFCS_PSALMS_2026_CORNERSTONE_118_22';
+    let allowAuthorizedWrite = false;
+
+    function computeSig(val) {
+        const str = SALT + ':' + String(val);
+        let h1 = 0xdeadbeef;
+        let h2 = 0x41c6ce57;
+        for (let i = 0; i < str.length; i++) {
+            const ch = str.charCodeAt(i);
+            h1 = Math.imul(h1 ^ ch, 2654435761);
+            h2 = Math.imul(h2 ^ ch, 1597334677);
+        }
+        h1 = Math.imul(h1 ^ (h1 >>> 16), 2246822507) ^ Math.imul(h2 ^ (h2 >>> 13), 3266489909);
+        h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
+        return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
+    }
+
+    const origSetItem = Storage.prototype.setItem;
+    const origGetItem = Storage.prototype.getItem;
+
+    function getVerifiedCoins() {
+        const raw = origGetItem.call(localStorage, COIN_KEY);
+        const sig = origGetItem.call(localStorage, SIG_KEY);
+        if (raw === null) return 150;
+        const parsed = parseInt(raw, 10);
+        if (isNaN(parsed) || parsed < 0) return 150;
+        if (!sig) {
+            origSetItem.call(localStorage, SIG_KEY, computeSig(parsed));
+            return parsed;
+        }
+        if (sig !== computeSig(parsed)) {
+            return 150;
+        }
+        return parsed;
+    }
+
+    let lastVerified = getVerifiedCoins();
+    origSetItem.call(localStorage, COIN_KEY, String(lastVerified));
+    origSetItem.call(localStorage, SIG_KEY, computeSig(lastVerified));
+
+    function triggerCheatAlert() {
+        if (typeof triggerScreenGlitch === 'function') triggerScreenGlitch(220);
+        if (typeof playBeep === 'function') playBeep(140, 0.22, 'sawtooth', 0.06);
+        const existing = document.getElementById('afcs-anticheat-toast');
+        if (existing) existing.remove();
+        const toast = document.createElement('div');
+        toast.id = 'afcs-anticheat-toast';
+        toast.style.cssText = 'position:fixed;top:24px;left:50%;transform:translateX(-50%);background:rgba(127,29,29,0.96);border:2px solid #facc15;color:#fef08a;padding:10px 20px;border-radius:999px;font-family:monospace;font-weight:900;font-size:12.5px;z-index:100001;box-shadow:0 0 25px rgba(239,68,68,0.85);text-align:center;';
+        toast.textContent = '⬡ [SOLVER_GUARD] NICE TRY! Direct localStorage coin injection blocked.';
+        document.body.appendChild(toast);
+        setTimeout(() => toast.remove(), 2800);
+    }
+
+    Storage.prototype.setItem = function (key, value) {
+        if (this === localStorage && (key === COIN_KEY || key === SIG_KEY) && !allowAuthorizedWrite) {
+            const numVal = parseInt(String(value), 10);
+            const delta = numVal - lastVerified;
+            if (isNaN(numVal) || numVal < 0 || delta > 1000) {
+                triggerCheatAlert();
+                origSetItem.call(localStorage, COIN_KEY, String(lastVerified));
+                origSetItem.call(localStorage, SIG_KEY, computeSig(lastVerified));
+                return;
+            }
+            lastVerified = numVal;
+            origSetItem.call(localStorage, COIN_KEY, String(lastVerified));
+            origSetItem.call(localStorage, SIG_KEY, computeSig(lastVerified));
+            return;
+        }
+        return origSetItem.apply(this, arguments);
+    };
+
+    window.afcsSyncCoins = function (nextAmount) {
+        const clean = Math.max(0, Math.floor(Number(nextAmount) || 0));
+        lastVerified = clean;
+        allowAuthorizedWrite = true;
+        origSetItem.call(localStorage, COIN_KEY, String(clean));
+        origSetItem.call(localStorage, SIG_KEY, computeSig(clean));
+        allowAuthorizedWrite = false;
+        const badge = document.getElementById('afcs-coin-display');
+        if (badge) badge.textContent = clean + ' 🪙';
+        return clean;
+    };
+
+    window.addEventListener('storage', (e) => {
+        if (e.key === COIN_KEY || e.key === SIG_KEY) {
+            const checked = getVerifiedCoins();
+            if (checked !== lastVerified) {
+                window.afcsSyncCoins(lastVerified);
+            }
+        }
+    });
+}
