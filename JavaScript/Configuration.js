@@ -455,7 +455,7 @@ let lockdownTimer = null;
         }
     }
     function startPraiseBGM() {
-    const praiseAudio = new Audio('Praise.mp3');
+    const praiseAudio = new Audio('music/Praise.mp3');
     praiseAudio.loop = true;
 
     function syncMusicVolume() {

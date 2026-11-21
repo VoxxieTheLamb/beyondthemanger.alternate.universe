@@ -5305,7 +5305,7 @@ function startBuckshotController() {
 }
 function startArcadeHubData() {
     window.ARCADE_STORAGE_KEY = 'afcs_unlocked_games';
-
+    
     window.ARCADE_REGISTRY = Array.of(
         {
             id: 'cards',
@@ -5412,7 +5412,7 @@ function startArcadeHubData() {
             }
         }
     );
-
+    
     window.arcadeGetUnlocked = function () {
         try {
             const raw = JSON.parse(localStorage.getItem(window.ARCADE_STORAGE_KEY) || '[]');
@@ -5421,7 +5421,7 @@ function startArcadeHubData() {
             return Array.of();
         }
     };
-
+    
     window.arcadeUnlockGame = function (gameId) {
         const unlocked = window.arcadeGetUnlocked();
         if (!unlocked.includes(gameId)) {
@@ -5430,7 +5430,7 @@ function startArcadeHubData() {
             window.arcadeUpdateBadge();
         }
     };
-
+    
     window.arcadeRegisterGame = function (entry) {
         if (!entry || !entry.id) return;
         const idx = window.ARCADE_REGISTRY.findIndex(g => g.id === entry.id);
@@ -5443,16 +5443,16 @@ function startArcadeHubUI() {
     window.openArcadeHub = function () {
         const old = document.getElementById('afcs-arcade-modal');
         if (old) old.remove();
-
+        
         const unlocked = window.arcadeGetUnlocked();
         const totalCount = window.ARCADE_REGISTRY.length;
         const foundCount = window.ARCADE_REGISTRY.filter(g => unlocked.includes(g.id)).length;
         const coins = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
-
+        
         const modal = document.createElement('div');
         modal.id = 'afcs-arcade-modal';
         modal.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(2,6,23,0.92);backdrop-filter:blur(8px);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:18px;user-select:none;';
-
+        
         modal.innerHTML = `
             <div style="width:100%;max-width:860px;max-height:88vh;background:#0f172a;border:2px solid #334155;border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.85);">
                 <div style="padding:16px 20px;background:#090d16;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
@@ -5469,12 +5469,12 @@ function startArcadeHubUI() {
                         <button id="arcade-close-btn" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:bold;">✕ CLOSE</button>
                     </div>
                 </div>
-
+        
                 <div style="padding:18px 20px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;">
                     ${window.ARCADE_REGISTRY.map(game => {
-                        const isUnlocked = unlocked.includes(game.id);
-                        if (!isUnlocked) {
-                            return `
+        const isUnlocked = unlocked.includes(game.id);
+        if (!isUnlocked) {
+            return `
                                 <div style="background:#090d16;border:1px dashed #334155;border-radius:12px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;opacity:0.78;">
                                     <div>
                                         <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -5491,8 +5491,8 @@ function startArcadeHubUI() {
                                     </div>
                                 </div>
                             `;
-                        }
-                        return `
+        }
+        return `
                             <div style="background:linear-gradient(180deg,#1e293b 0%,#0f172a 100%);border:1px solid #38bdf8;border-radius:12px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:0 8px 20px rgba(2,132,199,0.18);">
                                 <div>
                                     <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
@@ -5507,43 +5507,43 @@ function startArcadeHubUI() {
                                 </button>
                             </div>
                         `;
-                    }).join('')}
+    }).join('')}
                 </div>
-
+    
                 <div style="padding:10px 20px;background:#090d16;border-top:1px solid #1e293b;font-size:0.78rem;color:#94a3b8;display:flex;justify-content:space-between;">
                     <span>Discover hidden mini-games via the search bar to permanently add them to your Arcade Codex.</span>
                     <span>Shortcut: type <b style="color:#38bdf8;">arcade</b></span>
                 </div>
             </div>
         `;
-
-        document.body.appendChild(modal);
-
-        const closeModal = () => {
-            modal.remove();
-            window.removeEventListener('keydown', escHandler);
-        };
-        const escHandler = e => {
-            if (e.code === 'Escape') closeModal();
-        };
-
-        document.getElementById('arcade-close-btn').onclick = closeModal;
-        modal.onclick = e => {
-            if (e.target === modal) closeModal();
-        };
-        window.addEventListener('keydown', escHandler);
-
-        modal.querySelectorAll('.arcade-play-btn').forEach(btn => {
-            btn.onclick = () => {
-                const id = btn.getAttribute('data-id');
-                const target = window.ARCADE_REGISTRY.find(g => g.id === id);
-                closeModal();
-                if (target && typeof target.launch === 'function') {
-                    target.launch();
-                }
-            };
-        });
+    
+    document.body.appendChild(modal);
+    
+    const closeModal = () => {
+        modal.remove();
+        window.removeEventListener('keydown', escHandler);
     };
+    const escHandler = e => {
+        if (e.code === 'Escape') closeModal();
+    };
+    
+    document.getElementById('arcade-close-btn').onclick = closeModal;
+    modal.onclick = e => {
+        if (e.target === modal) closeModal();
+    };
+    window.addEventListener('keydown', escHandler);
+    
+    modal.querySelectorAll('.arcade-play-btn').forEach(btn => {
+        btn.onclick = () => {
+            const id = btn.getAttribute('data-id');
+            const target = window.ARCADE_REGISTRY.find(g => g.id === id);
+            closeModal();
+            if (target && typeof target.launch === 'function') {
+                target.launch();
+            }
+        };
+    });
+};
 }
 function startArcadeHubHook() {
     window.arcadeUpdateBadge = function () {
@@ -5554,7 +5554,23 @@ function startArcadeHubHook() {
         btn.innerHTML = '🕹️ Arcade <span style="background:#083344;color:#67e8f9;padding:1px 6px;border-radius:999px;font-size:0.72rem;margin-left:4px;">' + count + '/' + window.ARCADE_REGISTRY.length + '</span>';
     };
 
+    window.arcadeGetOrCreateDock = function () {
+        let dock = document.getElementById('afcs-quick-dock');
+        if (dock) return dock;
+
+        dock = document.createElement('div');
+        dock.id = 'afcs-quick-dock';
+        dock.style.cssText = 'position:fixed;left:24px;top:176px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;z-index:90;max-width:calc(100vw - 48px);';
+        if (window.innerWidth <= 768) {
+            dock.style.left = '12px';
+            dock.style.top = '152px';
+        }
+        document.body.appendChild(dock);
+        return dock;
+    };
+
     window.arcadeMountButton = function () {
+        const dock = window.arcadeGetOrCreateDock();
         if (document.getElementById('afcs-arcade-dock-btn')) {
             window.arcadeUpdateBadge();
             return;
@@ -5563,30 +5579,12 @@ function startArcadeHubHook() {
         const btn = document.createElement('button');
         btn.id = 'afcs-arcade-dock-btn';
         btn.title = 'Open AFCS Arcade Codex (Unlocked Mini-Games)';
-        btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;gap:4px;background:rgba(15,23,42,0.92);color:#e2e8f0;border:1px solid #38bdf8;border-radius:10px;padding:7px 12px;font-size:0.84rem;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.45);z-index:9990;transition:transform 0.15s,background 0.15s;';
+        btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;gap:4px;background:rgba(15,23,42,0.92);color:#e2e8f0;border:1px solid #38bdf8;border-radius:10px;padding:7px 12px;font-size:0.84rem;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.45);transition:transform 0.15s,background 0.15s;';
         btn.onmouseenter = () => { btn.style.background = '#083344'; };
         btn.onmouseleave = () => { btn.style.background = 'rgba(15,23,42,0.92)'; };
         btn.onclick = window.openArcadeHub;
 
-        const settingsEl = Array.from(document.querySelectorAll('button, div, a')).find(el => {
-            const txt = (el.textContent || '').trim();
-            const id = (el.id || '').toLowerCase();
-            return (txt.startsWith('⚙️') || id.includes('setting')) && el.offsetParent !== null && el.getBoundingClientRect().top < 140;
-        });
-
-        if (settingsEl && settingsEl.parentElement) {
-            const rect = settingsEl.getBoundingClientRect();
-            btn.style.position = 'fixed';
-            btn.style.left = Math.max(10, Math.round(rect.left)) + 'px';
-            btn.style.top = Math.round(rect.bottom + 8) + 'px';
-            document.body.appendChild(btn);
-        } else {
-            btn.style.position = 'fixed';
-            btn.style.left = '14px';
-            btn.style.top = '58px';
-            document.body.appendChild(btn);
-        }
-
+        dock.prepend(btn);
         window.arcadeUpdateBadge();
     };
 
@@ -5622,7 +5620,7 @@ function startArcadeCompareEntry() {
         triggers: Array.of('compare', 'battle', '1v1', 'pvp', 'fight'),
         launch: () => window.openQuickComparePicker()
     });
-
+    
     window.arcadeGetRoster = function () {
         if (typeof PEOPLE !== 'undefined' && Array.isArray(PEOPLE) && PEOPLE.length > 0) return PEOPLE;
         if (typeof window.PEOPLE !== 'undefined' && Array.isArray(window.PEOPLE) && window.PEOPLE.length > 0) return window.PEOPLE;
@@ -5632,7 +5630,7 @@ function startArcadeCompareEntry() {
             role: 'Grade 7 – Psalms'
         }));
     };
-
+    
     window.arcadeLaunchBattlePair = function (fighterA, fighterB, isOnline) {
         window.arcadeUnlockGame('compare');
         if (isOnline) {
@@ -5662,35 +5660,35 @@ function startArcadeCompareEntry() {
         );
         if (compareBtns.length > 0) compareBtns.at(0).click();
     };
-
+    
     window.openQuickComparePicker = function () {
         const old = document.getElementById('arcade-compare-picker');
         if (old) old.remove();
-
+        
         const roster = window.arcadeGetRoster();
         let idxA = 0;
         let idxB = roster.length > 1 ? 1 : 0;
-
+        
         const modal = document.createElement('div');
         modal.id = 'arcade-compare-picker';
         modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(2,6,23,0.92);backdrop-filter:blur(8px);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:18px;user-select:none;';
-
+        
         const optionsHtml = roster.map((p, i) => {
             const label = typeof p === 'string' ? p : (p.name || p.fullName || ('Fighter #' + (i + 1)));
             return `<option value="${i}">${label}</option>`;
         }).join('');
-
+        
         modal.innerHTML = `
             <div style="width:100%;max-width:520px;background:#0f172a;border:2px solid #38bdf8;border-radius:16px;padding:22px;box-shadow:0 24px 60px rgba(0,0,0,0.85);">
                 <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e293b;padding-bottom:12px;margin-bottom:16px;">
                     <span style="font-size:1.2rem;font-weight:900;color:#38bdf8;">⚔️ QUICK 1V1 RPG MATCHUP</span>
                     <button id="cmp-pick-close" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:bold;">✕</button>
                 </div>
-
+        
                 <p style="font-size:0.85rem;color:#94a3b8;margin-bottom:16px;">
                     Pick any two fighters directly without leaving the Arcade Hub (+40 🪙 Local / +75 🪙 Online).
                 </p>
-
+        
                 <div style="display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:16px;">
                     <div>
                         <label style="display:block;font-size:0.75rem;color:#38bdf8;font-weight:bold;margin-bottom:4px;">PLAYER 1 (YOU)</label>
@@ -5706,13 +5704,13 @@ function startArcadeCompareEntry() {
                         </select>
                     </div>
                 </div>
-
+        
                 <div style="display:flex;gap:8px;margin-bottom:14px;">
                     <button id="cmp-rand-btn" style="flex:1;background:#1e293b;color:#fde047;border:1px solid #eab308;padding:8px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:0.82rem;">
                         🎲 RANDOMIZE FIGHTERS
                     </button>
                 </div>
-
+        
                 <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                     <button id="cmp-start-local" style="background:#0284c7;color:#fff;border:1px solid #38bdf8;padding:11px;border-radius:8px;font-weight:900;cursor:pointer;">
                         🤖 LOCAL 1V1 (+40 🪙)
@@ -5723,20 +5721,20 @@ function startArcadeCompareEntry() {
                 </div>
             </div>
         `;
-
+        
         document.body.appendChild(modal);
-
+        
         const selA = document.getElementById('cmp-select-a');
         const selB = document.getElementById('cmp-select-b');
         selA.value = String(idxA);
         selB.value = String(idxB);
-
+        
         const closePicker = () => modal.remove();
         document.getElementById('cmp-pick-close').onclick = closePicker;
         modal.onclick = e => {
             if (e.target === modal) closePicker();
         };
-
+        
         document.getElementById('cmp-rand-btn').onclick = () => {
             if (roster.length < 2) return;
             const a = Math.floor(Math.random() * roster.length);
@@ -5745,14 +5743,14 @@ function startArcadeCompareEntry() {
             selA.value = String(a);
             selB.value = String(b);
         };
-
+        
         document.getElementById('cmp-start-local').onclick = () => {
             const pA = roster.at(parseInt(selA.value, 10));
             const pB = roster.at(parseInt(selB.value, 10));
             closePicker();
             window.arcadeLaunchBattlePair(pA, pB, false);
         };
-
+        
         document.getElementById('cmp-start-online').onclick = () => {
             const pA = roster.at(parseInt(selA.value, 10));
             const pB = roster.at(parseInt(selB.value, 10));
@@ -5760,7 +5758,7 @@ function startArcadeCompareEntry() {
             window.arcadeLaunchBattlePair(pA, pB, true);
         };
     };
-
+    
     document.addEventListener('click', function (e) {
         const btn = e.target.closest('button, a');
         if (!btn) return;
@@ -5769,7 +5767,7 @@ function startArcadeCompareEntry() {
             window.arcadeUnlockGame('compare');
         }
     });
-
+    
     if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
         STATE.onSearchInput.push(function (query) {
             const clean = String(query || '').trim().toLowerCase();
@@ -5782,8 +5780,8 @@ function startArcadeCompareEntry() {
 }
 function startWordleData() {
     const rawWords = 'PSALM DUBAI RISEN STONE LIGHT STAGE CROWN FAITH GRACE ANGEL STARS PEACE TOWER CHESS DOORS SOLVE SPARK HEART GLORY CHOIR ABOUT APPLE BEACH BLOCK CLOUD DANCE DREAM EARTH FLAME GHOST GLASS GREEN HAPPY HOUSE JUICE LEMON MAGIC MONEY MUSIC NIGHT OCEAN PARTY PHONE PLANT QUICK RIVER SHAPE SMILE SPACE STORM TABLE TIGER TRAIN WATER WORLD ALIVE ANGRY AWARD BADGE BASIC BRAIN BREAD BRICK BROWN BRUSH CHAIR CHALK CHASE CHILD CLOCK CLOWN COACH COAST CORAL COUNT CRAFT CRANE DAILY DOUBT DRAFT DRINK DRIVE EAGLE EARLY EMPTY ENEMY ENJOY ENTER EQUAL EVENT EXACT EXTRA FALSE FANCY FIELD FINAL FLOOR FOCUS FORCE FRAME FRESH FRONT FRUIT GIANT GLOBE GRADE GRAND GRAPE GRASS GREAT GROUP GUARD GUESS GUIDE HABIT HEAVY HONEY HORSE HOTEL HUMAN IDEAL IMAGE INDEX INNER ISSUE JOINT JUDGE KNIFE KNOCK LABEL LARGE LASER LAUGH LAYER LEARN LEVEL LIMIT LOCAL LOGIC LOOSE LUCKY LUNCH MAJOR MARCH MATCH METAL MODEL MONTH MOTOR MOUSE MOUTH MOVIE NEVER NOISE NORTH NOVEL NURSE OFFER OLIVE ORDER OTHER OUTER PAINT PANEL PAPER PHASE PIANO PIECE PILOT PITCH PLACE PLAIN PLANE PLATE POINT POUND POWER PRESS PRICE PRIDE PRIME PRINT PRIZE PROOF PROUD QUEEN RADIO RAISE RANGE REACH READY RIGHT ROBOT ROUGH ROUND ROUTE ROYAL RULER SCALE SCENE SCOPE SCORE SENSE SERVE SHADE SHAKE SHALL SHARE SHARP SHEET SHELF SHELL SHIFT SHINE SHIRT SHOCK SHOOT SHORT SIGHT SINCE SKILL SLEEP SLIDE SMALL SMART SMOKE SOLID SOUND SOUTH SPEAK SPEED SPEND SPLIT SPORT STAND START STATE STEAM STEEL STICK STILL STOCK STORE STORY STUDY STYLE SUGAR SUPER SWEET SWING TASTE TEACH THANK THEME THERE THICK THING THINK THIRD THROW TIGHT TITLE TODAY TOPIC TOTAL TOUCH TOUGH TRACK TRADE TRAIL TREAT TRUCK TRUST TRUTH UNDER UNION UNITY UNTIL UPPER URBAN USUAL VALID VALUE VIDEO VISIT VOICE WASTE WATCH WHEEL WHITE WHOLE WOMAN YOUTH ZEBRA';
-
-
+    
+    
     window.WORDLE_CFG = {
         triggers: Array.of('wordle', 'word', '5 letters', 'afcs wordle'),
         rewardCoins: 60,
@@ -5791,7 +5789,7 @@ function startWordleData() {
         wordLen: 5,
         words: rawWords.trim().toUpperCase().split(/\s+/).filter(w => w.length === 5)
     };
-
+    
     window.addWordleWords = function (...newWords) {
         newWords.forEach(item => {
             String(item || '').trim().toUpperCase().split(/\s+/).forEach(w => {
@@ -5801,7 +5799,7 @@ function startWordleData() {
             });
         });
     };
-
+    
     window.WORDLE_STATE = {
         active: false,
         secret: 'PSALM',
@@ -5812,7 +5810,7 @@ function startWordleData() {
         over: false,
         listeners: Array.of()
     };
-
+    
     window.wordleAwardCoins = function (amount) {
         const cur = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
         const next = cur + amount;
@@ -5821,7 +5819,7 @@ function startWordleData() {
         if (badge) badge.textContent = next + ' 🪙';
         return next;
     };
-
+    
     if (typeof window.arcadeRegisterGame === 'function') {
         window.arcadeRegisterGame({
             id: 'wordle',
@@ -5838,33 +5836,33 @@ function startWordleUI() {
     window.wordleBuildModal = function () {
         const old = document.getElementById('afcs-wordle-modal');
         if (old) old.remove();
-
+        
         const modal = document.createElement('div');
         modal.id = 'afcs-wordle-modal';
         modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at top,#0f172a 0%,#020617 100%);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px;user-select:none;';
-
+        
         modal.innerHTML = `
             <div style="width:100%;max-width:540px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e293b;padding-bottom:10px;">
                 <span style="font-size:1.2rem;font-weight:900;color:#4ade80;letter-spacing:1px;">🟩 AFCS WORDLE</span>
                 <button id="wordle-exit-btn" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:bold;">✕ EXIT</button>
             </div>
-
+        
             <div id="wordle-banner" style="min-height:24px;font-size:0.95rem;font-weight:bold;color:#fde047;text-align:center;">
                 Guess the 5-letter Beyond The Manger / AFCS word in 6 tries!
             </div>
-
+        
             <div id="wordle-board" style="display:grid;grid-template-rows:repeat(6,50px);gap:6px;"></div>
-
+        
             <div id="wordle-kb" style="display:flex;flex-direction:column;gap:6px;width:100%;max-width:500px;"></div>
-
+        
             <div id="wordle-footer" style="min-height:36px;display:flex;align-items:center;justify-content:center;gap:10px;font-size:0.82rem;color:#94a3b8;">
                 <span>Type on your keyboard or tap keys below (+60 🪙 on solve)</span>
             </div>
         `;
-
+        
         document.body.appendChild(modal);
         document.getElementById('wordle-exit-btn').onclick = window.wordleCloseGame;
-
+        
         const keyHandler = function (e) {
             const st = window.WORDLE_STATE;
             if (!st.active) return;
@@ -5883,18 +5881,18 @@ function startWordleUI() {
                 window.wordleTypeLetter(e.key.toUpperCase());
             }
         };
-
+        
         window.addEventListener('keydown', keyHandler);
         window.WORDLE_STATE.listeners.push(Array.of(window, 'keydown', keyHandler));
     };
-
+    
     window.wordleSetBanner = function (txt, color) {
         const el = document.getElementById('wordle-banner');
         if (!el) return;
         el.textContent = txt;
         el.style.color = color || '#fde047';
     };
-
+    
     window.wordleTypeLetter = function (ch) {
         const st = window.WORDLE_STATE;
         if (st.over || st.col >= 5) return;
@@ -5902,7 +5900,7 @@ function startWordleUI() {
         st.col++;
         window.wordleRender();
     };
-
+    
     window.wordleBackspace = function () {
         const st = window.WORDLE_STATE;
         if (st.over || st.col <= 0) return;
@@ -5910,7 +5908,7 @@ function startWordleUI() {
         st.grid.at(st.row)[st.col] = { ch: '', state: 'empty' };
         window.wordleRender();
     };
-
+    
     window.wordleSubmitRow = function () {
         const st = window.WORDLE_STATE;
         if (st.over) return;
@@ -5918,12 +5916,12 @@ function startWordleUI() {
             window.wordleSetBanner('Not enough letters — enter 5 letters!', '#f87171');
             return;
         }
-
+        
         const rowCells = st.grid.at(st.row);
         const guess = rowCells.map(c => c.ch).join('');
         const secretArr = st.secret.split('');
         const states = Array.from({ length: 5 }, () => 'absent');
-
+        
         for (let i = 0; i < 5; i++) {
             if (guess.charAt(i) === secretArr.at(i)) {
                 states[i] = 'correct';
@@ -5938,7 +5936,7 @@ function startWordleUI() {
                 secretArr[foundIdx] = null;
             }
         }
-
+        
         const rank = { correct: 3, present: 2, absent: 1 };
         for (let i = 0; i < 5; i++) {
             const ch = guess.charAt(i);
@@ -5949,7 +5947,7 @@ function startWordleUI() {
                 st.keyColors[ch] = nextState;
             }
         }
-
+        
         if (guess === st.secret) {
             st.over = true;
             const bal = window.wordleAwardCoins(window.WORDLE_CFG.rewardCoins);
@@ -5958,10 +5956,10 @@ function startWordleUI() {
             window.wordleShowReplay();
             return;
         }
-
+        
         st.row++;
         st.col = 0;
-
+        
         if (st.row >= 6) {
             st.over = true;
             window.wordleSetBanner('💀 Out of tries! The secret word was "' + st.secret + '".', '#f87171');
@@ -5969,11 +5967,11 @@ function startWordleUI() {
             window.wordleShowReplay();
             return;
         }
-
+        
         window.wordleSetBanner('Try ' + (st.row + 1) + ' of 6...', '#94a3b8');
         window.wordleRender();
     };
-
+    
     window.wordleShowReplay = function () {
         const footer = document.getElementById('wordle-footer');
         if (!footer) return;
@@ -5982,13 +5980,13 @@ function startWordleUI() {
         `;
         document.getElementById('wordle-again-btn').onclick = window.launchWordleGame;
     };
-
+    
     window.wordleRender = function () {
         const st = window.WORDLE_STATE;
         const board = document.getElementById('wordle-board');
         const kb = document.getElementById('wordle-kb');
         if (!board || !kb) return;
-
+        
         const colorMap = {
             empty: { bg: '#090d16', border: '#334155' },
             filled: { bg: '#1e293b', border: '#64748b' },
@@ -5996,37 +5994,37 @@ function startWordleUI() {
             present: { bg: '#a16207', border: '#facc15' },
             absent: { bg: '#1e293b', border: '#1e293b' }
         };
-
+        
         board.innerHTML = st.grid.map(row => `
             <div style="display:grid;grid-template-columns:repeat(5,50px);gap:6px;">
                 ${row.map(cell => {
-                    const style = colorMap[cell.state] || colorMap.empty;
-                    return `<div style="width:50px;height:50px;background:${style.bg};border:2px solid ${style.border};border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.45rem;font-weight:900;color:${cell.state === 'absent' ? '#64748b' : '#f8fafc'};">
+            const style = colorMap[cell.state] || colorMap.empty;
+            return `<div style="width:50px;height:50px;background:${style.bg};border:2px solid ${style.border};border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.45rem;font-weight:900;color:${cell.state === 'absent' ? '#64748b' : '#f8fafc'};">
                         ${cell.ch}
                     </div>`;
-                }).join('')}
+        }).join('')}
             </div>
         `).join('');
-
+        
         const rows = Array.of(
             Array.of('Q', 'W', 'E', 'R', 'T', 'Y', 'U', 'I', 'O', 'P'),
             Array.of('A', 'S', 'D', 'F', 'G', 'H', 'J', 'K', 'L'),
             Array.of('ENTER', 'Z', 'X', 'C', 'V', 'B', 'N', 'M', '⌫')
         );
-
+        
         kb.innerHTML = rows.map(keys => `
             <div style="display:flex;justify-content:center;gap:5px;">
                 ${keys.map(k => {
-                    const ks = st.keyColors[k];
-                    const bg = ks === 'correct' ? '#15803d' : (ks === 'present' ? '#a16207' : (ks === 'absent' ? '#0f172a' : '#334155'));
-                    const wide = k.length > 1;
-                    return `<button class="wordle-key-btn" data-key="${k}" style="min-width:${wide ? '62px' : '38px'};height:42px;background:${bg};color:${ks === 'absent' ? '#475569' : '#f8fafc'};border:1px solid #475569;border-radius:6px;font-weight:bold;font-size:${wide ? '0.75rem' : '0.9rem'};cursor:pointer;">
+            const ks = st.keyColors[k];
+            const bg = ks === 'correct' ? '#15803d' : (ks === 'present' ? '#a16207' : (ks === 'absent' ? '#0f172a' : '#334155'));
+            const wide = k.length > 1;
+            return `<button class="wordle-key-btn" data-key="${k}" style="min-width:${wide ? '62px' : '38px'};height:42px;background:${bg};color:${ks === 'absent' ? '#475569' : '#f8fafc'};border:1px solid #475569;border-radius:6px;font-weight:bold;font-size:${wide ? '0.75rem' : '0.9rem'};cursor:pointer;">
                         ${k}
                     </button>`;
-                }).join('')}
+        }).join('')}
             </div>
         `).join('');
-
+        
         kb.querySelectorAll('.wordle-key-btn').forEach(btn => {
             btn.onclick = () => {
                 const k = btn.getAttribute('data-key');
@@ -6036,7 +6034,7 @@ function startWordleUI() {
             };
         });
     };
-
+    
     window.wordleCloseGame = function () {
         const st = window.WORDLE_STATE;
         st.active = false;
@@ -6045,12 +6043,12 @@ function startWordleUI() {
         const modal = document.getElementById('afcs-wordle-modal');
         if (modal) modal.remove();
     };
-
+    
     window.launchWordleGame = function () {
         if (!window.WORDLE_CFG) startWordleData();
         window.wordleCloseGame();
         if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('wordle');
-
+        
         const st = window.WORDLE_STATE;
         const pool = window.WORDLE_CFG.words;
         st.active = true;
@@ -6060,19 +6058,19 @@ function startWordleUI() {
         st.col = 0;
         st.keyColors = {};
         st.over = false;
-
+        
         window.wordleBuildModal();
         window.wordleRender();
     };
-
+    
     if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
         STATE.onSearchInput.push(function (query) {
-const clean = String(query || '').trim().toLowerCase();
-if (window.WORDLE_CFG.triggers.includes(clean)) {
-window.launchWordleGame();
-}
-});
-}
+            const clean = String(query || '').trim().toLowerCase();
+            if (window.WORDLE_CFG.triggers.includes(clean)) {
+                window.launchWordleGame();
+            }
+        });
+    }
 }
 function startHangmanData() {
     const rawPuzzles = Array.of(
@@ -6123,7 +6121,7 @@ function startHangmanData() {
         'Three Architects',
         'Tower Of Babel'
     );
-
+    
     const parsePuzzle = entry => {
         const text = String(entry || '').trim().toUpperCase();
         const splitIdx = text.indexOf(':');
@@ -6133,14 +6131,14 @@ function startHangmanData() {
             phrase: text.slice(splitIdx + 1).trim()
         };
     };
-
+    
     window.HANG_CFG = {
         triggers: Array.of('hangman', 'hang', 'guess word', 'phrase'),
         rewardCoins: 70,
         maxWrong: 6,
         puzzles: rawPuzzles.map(parsePuzzle).filter(p => p.phrase.length > 0)
     };
-
+    
     window.addHangmanPuzzles = function (...newEntries) {
         newEntries.forEach(entry => {
             const parsed = parsePuzzle(entry);
@@ -6149,7 +6147,7 @@ function startHangmanData() {
             }
         });
     };
-
+    
     window.HANG_STATE = {
         active: false,
         category: '',
@@ -6159,7 +6157,7 @@ function startHangmanData() {
         over: false,
         listeners: Array.of()
     };
-
+    
     window.hangAwardCoins = function (amount) {
         const cur = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
         const next = cur + amount;
@@ -6168,7 +6166,7 @@ function startHangmanData() {
         if (badge) badge.textContent = next + ' 🪙';
         return next;
     };
-
+    
     if (typeof window.arcadeRegisterGame === 'function') {
         window.arcadeRegisterGame({
             id: 'hangman',
@@ -6185,11 +6183,11 @@ function startHangmanUI() {
     window.hangBuildModal = function () {
         const old = document.getElementById('afcs-hangman-modal');
         if (old) old.remove();
-
+        
         const modal = document.createElement('div');
         modal.id = 'afcs-hangman-modal';
         modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at top,#1c1917 0%,#09090b 100%);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:18px;user-select:none;';
-
+        
         modal.innerHTML = `
             <div style="width:100%;max-width:760px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #292524;padding-bottom:10px;">
                 <div style="display:flex;gap:12px;align-items:center;">
@@ -6198,26 +6196,26 @@ function startHangmanUI() {
                 </div>
                 <button id="hang-exit-btn" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:bold;">✕ EXIT</button>
             </div>
-
+        
             <div id="hang-banner" style="min-height:24px;font-size:0.98rem;font-weight:bold;color:#e2e8f0;text-align:center;">
                 Guess letters using your keyboard or click below!
             </div>
-
+        
             <div style="width:100%;max-width:760px;display:flex;flex-direction:column;align-items:center;gap:18px;background:#141210;border:2px solid #292524;border-radius:14px;padding:20px;">
                 <div id="hang-svg-wrap"></div>
                 <div id="hang-phrase-wrap" style="display:flex;flex-wrap:wrap;justify-content:center;gap:18px;padding:8px;"></div>
             </div>
-
+        
             <div id="hang-kb" style="display:flex;flex-wrap:wrap;justify-content:center;gap:6px;max-width:660px;width:100%;"></div>
-
+        
             <div id="hang-footer" style="min-height:36px;display:flex;align-items:center;justify-content:center;font-size:0.82rem;color:#a8a29e;">
                 <span>6 Mistakes Allowed • Solve Phrase Reward: <b style="color:#4ade80;">+70 🪙</b></span>
             </div>
         `;
-
+        
         document.body.appendChild(modal);
         document.getElementById('hang-exit-btn').onclick = window.hangCloseGame;
-
+        
         const keyHandler = function (e) {
             const st = window.HANG_STATE;
             if (!st.active) return;
@@ -6229,11 +6227,11 @@ function startHangmanUI() {
                 window.hangGuessLetter(e.key.toUpperCase());
             }
         };
-
+        
         window.addEventListener('keydown', keyHandler);
         window.HANG_STATE.listeners.push(Array.of(window, 'keydown', keyHandler));
     };
-
+    
     window.hangRenderSvg = function (wrong) {
         return `
             <svg width="160" height="145" viewBox="0 0 160 145" style="stroke:#fde047;stroke-width:3.5;fill:none;stroke-linecap:round;">
@@ -6250,19 +6248,19 @@ function startHangmanUI() {
             </svg>
         `;
     };
-
+    
     window.hangGuessLetter = function (ch) {
         const st = window.HANG_STATE;
         if (st.over || st.guessed.includes(ch)) return;
-
+        
         st.guessed.push(ch);
         if (!st.phrase.includes(ch)) {
             st.wrong++;
         }
-
+        
         const allSolved = st.phrase.split('').every(c => c === ' ' || st.guessed.includes(c));
         const banner = document.getElementById('hang-banner');
-
+        
         if (allSolved) {
             st.over = true;
             const bal = window.hangAwardCoins(window.HANG_CFG.rewardCoins);
@@ -6283,10 +6281,10 @@ function startHangmanUI() {
             banner.textContent = 'Lives Remaining: ' + left + ' / ' + window.HANG_CFG.maxWrong;
             banner.style.color = left <= 2 ? '#fbbf24' : '#e2e8f0';
         }
-
+        
         window.hangRender();
     };
-
+    
     window.hangShowReplay = function () {
         const footer = document.getElementById('hang-footer');
         if (!footer) return;
@@ -6295,7 +6293,7 @@ function startHangmanUI() {
         `;
         document.getElementById('hang-again-btn').onclick = window.launchHangmanGame;
     };
-
+    
     window.hangRender = function () {
         const st = window.HANG_STATE;
         const catEl = document.getElementById('hang-cat-badge');
@@ -6303,23 +6301,23 @@ function startHangmanUI() {
         const phraseWrap = document.getElementById('hang-phrase-wrap');
         const kb = document.getElementById('hang-kb');
         if (!svgWrap || !phraseWrap || !kb) return;
-
+        
         if (catEl) catEl.textContent = 'CATEGORY: ' + st.category;
         svgWrap.innerHTML = window.hangRenderSvg(st.wrong);
-
+        
         const words = st.phrase.split(' ');
         phraseWrap.innerHTML = words.map(word => `
             <div style="display:flex;gap:6px;">
                 ${word.split('').map(ch => {
-                    const revealed = st.guessed.includes(ch) || st.over;
-                    const missed = st.over && !st.guessed.includes(ch);
-                    return `<span style="width:32px;height:40px;border-bottom:3px solid ${missed ? '#ef4444' : '#eab308'};display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:900;color:${missed ? '#fca5a5' : '#f8fafc'};">
+            const revealed = st.guessed.includes(ch) || st.over;
+            const missed = st.over && !st.guessed.includes(ch);
+            return `<span style="width:32px;height:40px;border-bottom:3px solid ${missed ? '#ef4444' : '#eab308'};display:flex;align-items:center;justify-content:center;font-size:1.35rem;font-weight:900;color:${missed ? '#fca5a5' : '#f8fafc'};">
                         ${revealed ? ch : ''}
                     </span>`;
-                }).join('')}
+        }).join('')}
             </div>
         `).join('');
-
+        
         const alphabet = Array.from({ length: 26 }, (_, i) => String.fromCharCode(65 + i));
         kb.innerHTML = alphabet.map(ch => {
             const used = st.guessed.includes(ch);
@@ -6330,12 +6328,12 @@ function startHangmanUI() {
                 ${ch}
             </button>`;
         }).join('');
-
+        
         kb.querySelectorAll('.hang-key-btn').forEach(btn => {
             btn.onclick = () => window.hangGuessLetter(btn.getAttribute('data-ch'));
         });
     };
-
+    
     window.hangCloseGame = function () {
         const st = window.HANG_STATE;
         st.active = false;
@@ -6344,12 +6342,12 @@ function startHangmanUI() {
         const modal = document.getElementById('afcs-hangman-modal');
         if (modal) modal.remove();
     };
-
+    
     window.launchHangmanGame = function () {
         if (!window.HANG_CFG) startHangmanData();
         window.hangCloseGame();
         if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('hangman');
-
+        
         const st = window.HANG_STATE;
         const pick = window.HANG_CFG.puzzles.at(Math.floor(Math.random() * window.HANG_CFG.puzzles.length));
         st.active = true;
@@ -6358,11 +6356,11 @@ function startHangmanUI() {
         st.guessed = Array.of();
         st.wrong = 0;
         st.over = false;
-
+        
         window.hangBuildModal();
         window.hangRender();
     };
-
+    
     if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
         STATE.onSearchInput.push(function (query) {
             const clean = String(query || '').trim().toLowerCase();
@@ -6371,4 +6369,1495 @@ function startHangmanUI() {
             }
         });
     }
+}
+function startMinesweeperData() {
+    window.MINE_CFG = {
+        triggers: Array.of('minesweeper', 'mines', 'sweeper', 'solver grid'),
+        levels: {
+            easy: { label: 'EASY (9×9)', rows: 9, cols: 9, mines: 10, reward: 50 },
+            medium: { label: 'MEDIUM (12×12)', rows: 12, cols: 12, mines: 22, reward: 100 },
+            hard: { label: 'HARD (16×16)', rows: 16, cols: 16, mines: 40, reward: 180 }
+        },
+        numColors: Array.of('', '#38bdf8', '#4ade80', '#f43f5e', '#a855f7', '#fb923c', '#22d3ee', '#e2e8f0', '#94a3b8')
+    };
+    
+    window.MINE_STATE = {
+        active: false,
+        diffKey: 'easy',
+        rows: 9,
+        cols: 9,
+        mineCount: 10,
+        board: Array.of(),
+        firstClick: true,
+        flagMode: false,
+        flagsPlaced: 0,
+        seconds: 0,
+        over: false,
+        timerId: null,
+        listeners: Array.of()
+    };
+    
+    window.mineAwardCoins = function (amount) {
+        const cur = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
+        const next = cur + amount;
+        localStorage.setItem('afcs_coins', String(next));
+        const badge = document.getElementById('afcs-coin-display');
+        if (badge) badge.textContent = next + ' 🪙';
+        return next;
+    };
+    
+    if (typeof window.arcadeRegisterGame === 'function') {
+        window.arcadeRegisterGame({
+            id: 'minesweeper',
+            title: 'Minesweeper: Solver Grid',
+            icon: '💣',
+            reward: '+50–180 🪙',
+            hint: 'Sweep hidden Solver Cores on a classic logic grid...',
+            triggers: window.MINE_CFG.triggers,
+            launch: () => window.launchMinesweeper()
+        });
+    }
+}
+function startMinesweeperEngine() {
+    window.mineInitBoard = function () {
+        const st = window.MINE_STATE;
+        st.board = Array.from({ length: st.rows }, (_, r) =>
+            Array.from({ length: st.cols }, (_, c) => ({
+            r: r,
+            c: c,
+            mine: false,
+            revealed: false,
+            flagged: false,
+            adj: 0,
+            tripped: false
+        }))
+    );
+    st.firstClick = true;
+    st.flagsPlaced = 0;
+    st.seconds = 0;
+    st.over = false;
+};
+
+window.mineGetNeighbors = function (r, c) {
+    const st = window.MINE_STATE;
+    const list = Array.of();
+    for (let dr = -1; dr <= 1; dr++) {
+        for (let dc = -1; dc <= 1; dc++) {
+            if (dr === 0 && dc === 0) continue;
+            const nr = r + dr;
+            const nc = c + dc;
+            if (nr >= 0 && nr < st.rows && nc >= 0 && nc < st.cols) {
+                list.push(st.board.at(nr).at(nc));
+            }
+        }
+    }
+    return list;
+};
+
+window.minePopulateMines = function (safeR, safeC) {
+    const st = window.MINE_STATE;
+    let placed = 0;
+    while (placed < st.mineCount) {
+        const rr = Math.floor(Math.random() * st.rows);
+        const cc = Math.floor(Math.random() * st.cols);
+        if (Math.abs(rr - safeR) <= 1 && Math.abs(cc - safeC) <= 1) continue;
+        const cell = st.board.at(rr).at(cc);
+        if (!cell.mine) {
+            cell.mine = true;
+            placed++;
+        }
+    }
+    
+    for (let r = 0; r < st.rows; r++) {
+        for (let c = 0; c < st.cols; c++) {
+            const cell = st.board.at(r).at(c);
+            if (cell.mine) continue;
+            cell.adj = window.mineGetNeighbors(r, c).filter(n => n.mine).length;
+        }
+    }
+};
+
+window.mineToggleFlag = function (r, c) {
+    const st = window.MINE_STATE;
+    if (st.over) return;
+    const cell = st.board.at(r)?.at(c);
+    if (!cell || cell.revealed) return;
+    cell.flagged = !cell.flagged;
+    st.flagsPlaced += cell.flagged ? 1 : -1;
+    window.mineRender();
+};
+
+window.mineRevealCell = function (r, c) {
+    const st = window.MINE_STATE;
+    if (st.over) return;
+    const cell = st.board.at(r)?.at(c);
+    if (!cell || cell.flagged) return;
+    
+    if (st.firstClick) {
+        st.firstClick = false;
+        window.minePopulateMines(r, c);
+        window.mineStartTimer();
+    }
+    
+    if (cell.revealed) {
+        if (cell.adj > 0) {
+            const neighbors = window.mineGetNeighbors(r, c);
+            const flaggedCount = neighbors.filter(n => n.flagged).length;
+            if (flaggedCount === cell.adj) {
+                neighbors.forEach(n => {
+                    if (!n.revealed && !n.flagged) window.mineRevealCell(n.r, n.c);
+                });
+            }
+        }
+        return;
+    }
+    
+    if (cell.mine) {
+        cell.revealed = true;
+        cell.tripped = true;
+        st.over = true;
+        window.mineStopTimer();
+        for (let rr = 0; rr < st.rows; rr++) {
+            for (let cc = 0; cc < st.cols; cc++) {
+                const item = st.board.at(rr).at(cc);
+                if (item.mine) item.revealed = true;
+            }
+        }
+        window.mineSetBanner('💥 DETONATED A SOLVER CORE! Click Restart to try again.', '#f87171');
+        window.mineRender();
+        return;
+    }
+    
+    const queue = Array.of(cell);
+    while (queue.length > 0) {
+        const cur = queue.shift();
+        if (cur.revealed || cur.flagged) continue;
+        cur.revealed = true;
+        if (cur.adj === 0) {
+            window.mineGetNeighbors(cur.r, cur.c).forEach(n => {
+                if (!n.revealed && !n.flagged && !n.mine) queue.push(n);
+            });
+        }
+    }
+    
+    window.mineCheckVictory();
+    window.mineRender();
+};
+
+window.mineCheckVictory = function () {
+    const st = window.MINE_STATE;
+    let unrevealedSafe = 0;
+    for (let r = 0; r < st.rows; r++) {
+        for (let c = 0; c < st.cols; c++) {
+            const cell = st.board.at(r).at(c);
+            if (!cell.mine && !cell.revealed) unrevealedSafe++;
+        }
+    }
+    
+    if (unrevealedSafe === 0) {
+        st.over = true;
+        window.mineStopTimer();
+        const lvl = window.MINE_CFG.levels[st.diffKey];
+        const reward = lvl ? lvl.reward : 50;
+        const bal = window.mineAwardCoins(reward);
+        window.mineSetBanner('🏆 GRID CLEARED IN ' + st.seconds + 's! +' + reward + ' 🪙 (Balance: ' + bal + ' 🪙)', '#4ade80');
+    }
+};
+}
+function startMinesweeperUI() {
+    window.mineStartTimer = function () {
+        const st = window.MINE_STATE;
+        window.mineStopTimer();
+        st.timerId = setInterval(() => {
+            if (!st.active || st.over) return;
+            st.seconds++;
+            const el = document.getElementById('mine-time-txt');
+            if (el) el.textContent = '⏱️ ' + st.seconds + 's';
+        }, 1000);
+    };
+    
+    window.mineStopTimer = function () {
+        const st = window.MINE_STATE;
+        if (st.timerId) clearInterval(st.timerId);
+        st.timerId = null;
+    };
+    
+    window.mineSetBanner = function (txt, color) {
+        const el = document.getElementById('mine-banner');
+        if (!el) return;
+        el.textContent = txt;
+        el.style.color = color || '#fde047';
+    };
+    
+    window.mineBuildModal = function () {
+        const old = document.getElementById('afcs-minesweeper-modal');
+        if (old) old.remove();
+        
+        const modal = document.createElement('div');
+        modal.id = 'afcs-minesweeper-modal';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at top,#0f172a 0%,#020617 100%);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px;user-select:none;';
+        
+        modal.innerHTML = `
+            <div style="width:100%;max-width:760px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e293b;padding-bottom:10px;flex-wrap:wrap;gap:8px;">
+                <span style="font-size:1.2rem;font-weight:900;color:#38bdf8;letter-spacing:1px;">💣 MINESWEEPER: SOLVER GRID</span>
+                <div style="display:flex;gap:6px;align-items:center;">
+                    <button class="mine-diff-btn" data-diff="easy" style="background:#1e293b;color:#7dd3fc;border:1px solid #38bdf8;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.78rem;font-weight:bold;">EASY (+50 🪙)</button>
+                    <button class="mine-diff-btn" data-diff="medium" style="background:#1e293b;color:#7dd3fc;border:1px solid #38bdf8;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.78rem;font-weight:bold;">MED (+100 🪙)</button>
+                    <button class="mine-diff-btn" data-diff="hard" style="background:#1e293b;color:#7dd3fc;border:1px solid #38bdf8;padding:5px 10px;border-radius:6px;cursor:pointer;font-size:0.78rem;font-weight:bold;">HARD (+180 🪙)</button>
+                    <button id="mine-exit-btn" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:5px 11px;border-radius:6px;cursor:pointer;font-weight:bold;">✕ EXIT</button>
+                </div>
+            </div>
+        
+            <div style="width:100%;max-width:760px;display:flex;justify-content:space-between;align-items:center;background:#090d16;border:1px solid #1e293b;padding:8px 14px;border-radius:10px;">
+                <span id="mine-left-txt" style="font-weight:bold;color:#f43f5e;">⬡ Cores Left: 10</span>
+                <div style="display:flex;gap:8px;">
+                    <button id="mine-flag-toggle" style="background:#1e293b;color:#fde047;border:1px solid #eab308;padding:5px 12px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:0.82rem;">🚩 FLAG MODE: OFF [F]</button>
+                    <button id="mine-restart-btn" style="background:#0284c7;color:#fff;border:1px solid #38bdf8;padding:5px 12px;border-radius:6px;cursor:pointer;font-weight:bold;font-size:0.82rem;">↻ RESTART</button>
+                </div>
+                <span id="mine-time-txt" style="font-weight:bold;color:#38bdf8;">⏱️ 0s</span>
+            </div>
+        
+            <div id="mine-banner" style="min-height:22px;font-size:0.92rem;font-weight:bold;color:#fde047;text-align:center;">
+                First click is always safe! Right-click or press [F] to place flags.
+            </div>
+        
+            <div style="flex:1;display:flex;align-items:center;justify-content:center;overflow:auto;max-width:100%;">
+                <div id="mine-grid-wrap" style="background:#090d16;border:2px solid #334155;border-radius:10px;padding:8px;box-shadow:0 16px 40px rgba(0,0,0,0.8);"></div>
+            </div>
+        
+            <div style="width:100%;max-width:760px;display:flex;justify-content:space-between;font-size:0.8rem;color:#94a3b8;">
+                <span>Controls: Left-Click Reveal • Right-Click / [F] Flag • Click Number to Chord</span>
+                <span>Zero idle background timers when closed</span>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        
+        document.getElementById('mine-exit-btn').onclick = window.mineCloseGame;
+        document.getElementById('mine-restart-btn').onclick = () => window.mineSelectDifficulty(window.MINE_STATE.diffKey);
+        document.getElementById('mine-flag-toggle').onclick = window.mineToggleFlagMode;
+        
+        modal.querySelectorAll('.mine-diff-btn').forEach(btn => {
+            btn.onclick = () => window.mineSelectDifficulty(btn.getAttribute('data-diff'));
+        });
+        
+        const keyHandler = function (e) {
+            if (!window.MINE_STATE.active) return;
+            if (e.code === 'Escape') window.mineCloseGame();
+            if (e.code === 'KeyF') window.mineToggleFlagMode();
+        };
+        window.addEventListener('keydown', keyHandler);
+        window.MINE_STATE.listeners.push(Array.of(window, 'keydown', keyHandler));
+    };
+    
+    window.mineToggleFlagMode = function () {
+        const st = window.MINE_STATE;
+        st.flagMode = !st.flagMode;
+        const btn = document.getElementById('mine-flag-toggle');
+        if (btn) {
+            btn.textContent = st.flagMode ? '🚩 FLAG MODE: ON [F]' : '🚩 FLAG MODE: OFF [F]';
+            btn.style.background = st.flagMode ? '#854d0e' : '#1e293b';
+        }
+    };
+    
+    window.mineSelectDifficulty = function (diffKey) {
+        const st = window.MINE_STATE;
+        const cfg = window.MINE_CFG.levels[diffKey] || window.MINE_CFG.levels.easy;
+        window.mineStopTimer();
+        st.diffKey = diffKey;
+        st.rows = cfg.rows;
+        st.cols = cfg.cols;
+        st.mineCount = cfg.mines;
+        window.mineInitBoard();
+        window.mineSetBanner(cfg.label + ' — Clear all safe tiles for +' + cfg.reward + ' 🪙!', '#fde047');
+        const timeEl = document.getElementById('mine-time-txt');
+        if (timeEl) timeEl.textContent = '⏱️ 0s';
+        window.mineRender();
+    };
+    
+    window.mineRender = function () {
+        const st = window.MINE_STATE;
+        const wrap = document.getElementById('mine-grid-wrap');
+        const leftEl = document.getElementById('mine-left-txt');
+        if (!wrap) return;
+        
+        if (leftEl) leftEl.textContent = '⬡ Cores Left: ' + Math.max(0, st.mineCount - st.flagsPlaced);
+        
+        const cellPx = st.cols >= 16 ? 25 : (st.cols >= 12 ? 30 : 35);
+        
+        wrap.innerHTML = `
+            <div style="display:grid;grid-template-columns:repeat(${st.cols},${cellPx}px);gap:2px;">
+                ${st.board.map(row =>
+        row.map(cell => {
+            let bg = '#1e293b';
+            let border = '#334155';
+            let content = '';
+            let color = '#f8fafc';
+            
+            if (cell.revealed) {
+                if (cell.mine) {
+                    bg = cell.tripped ? '#991b1b' : '#3f1515';
+                    border = '#ef4444';
+                    content = '⬡';
+                    color = '#fca5a5';
+                } else {
+                    bg = '#0f172a';
+                    border = '#1e293b';
+                    if (cell.adj > 0) {
+                        content = String(cell.adj);
+                        color = window.MINE_CFG.numColors.at(cell.adj) || '#38bdf8';
+                    }
+                }
+            } else if (cell.flagged) {
+                bg = '#172554';
+                border = '#eab308';
+                content = '🚩';
+            }
+            
+            return `<button class="mine-cell-btn" data-r="${cell.r}" data-c="${cell.c}" style="width:${cellPx}px;height:${cellPx}px;background:${bg};border:1px solid ${border};border-radius:4px;color:${color};font-weight:900;font-size:${cellPx >= 32 ? '0.95rem' : '0.8rem'};cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0;">
+                            ${content}
+                        </button>`;
+        }).join('')
+    ).join('')}
+            </div>
+        `;
+    
+    wrap.querySelectorAll('.mine-cell-btn').forEach(btn => {
+        const r = parseInt(btn.getAttribute('data-r'), 10);
+        const c = parseInt(btn.getAttribute('data-c'), 10);
+        btn.onclick = () => {
+            if (st.flagMode) window.mineToggleFlag(r, c);
+            else window.mineRevealCell(r, c);
+        };
+        btn.oncontextmenu = e => {
+            e.preventDefault();
+            window.mineToggleFlag(r, c);
+        };
+    });
+};
+
+window.mineCloseGame = function () {
+    const st = window.MINE_STATE;
+    st.active = false;
+    window.mineStopTimer();
+    st.listeners.forEach(([el, ev, fn]) => el.removeEventListener(ev, fn));
+    st.listeners = Array.of();
+    const modal = document.getElementById('afcs-minesweeper-modal');
+    if (modal) modal.remove();
+};
+
+window.launchMinesweeper = function () {
+    if (!window.MINE_CFG) startMinesweeperData();
+    if (!window.mineInitBoard) startMinesweeperEngine();
+    window.mineCloseGame();
+    if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('minesweeper');
+    const st = window.MINE_STATE;
+    st.active = true;
+    st.flagMode = false;
+    window.mineBuildModal();
+    window.mineSelectDifficulty('easy');
+};
+if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
+    STATE.onSearchInput.push(function (query) {
+        const clean = String(query || '').trim().toLowerCase();
+        if (window.MINE_CFG.triggers.includes(clean)) {
+            window.launchMinesweeper();
+        }
+    });
+}
+}
+function startAfcsShopData() { 
+    window.SHOP_STORAGE_OWNED = 'afcs_shop_owned';
+    window.SHOP_STORAGE_EQUIPPED = 'afcs_shop_equipped';
+    
+    window.SHOP_CATALOG = Array.of(
+        {
+            id: 'music_default',
+            category: 'music',
+            icon: '🎶',
+            name: 'Song - Default Audio',
+            price: 0,
+            desc: 'Original site audio configuration.',
+            synthNotes: null
+        },
+        {
+            id: 'music_lofi',
+            category: 'music',
+            icon: '🎹',
+            name: 'Song - Lofi Browsing',
+            price: 80,
+            desc: 'A chill ambient track, for when you don\'t want anything harsh in your music, but prefer some ambience to your browsing experience.',
+            src: "music/lofi.mp3"
+        },
+        {
+            id: 'music_dubai',
+            category: 'music',
+            icon: '🌃',
+            name: 'Song - Dubai Midnight',
+            price: 140,
+            desc: 'Sleek futuristic arpeggio inspired by Dubai at night.',
+            src: "music/dubaiLofi.mp3"
+        },
+        {
+            id: 'music_undertale',
+            category: 'music',
+            icon: '🦴',
+            name: 'Song - Save the World (Undertale)',
+            price: 180,
+            desc: 'The theme that plays when the God of Hyperdeath is at their final form. A song of hope and determination.',
+            src: "music/StW.mp3"
+        },
+        {
+            id: 'music_grief',
+            category: 'music',
+            icon: '👑',
+            name: 'Song - Grief\'s Return',
+            price: 140,
+            desc: 'Listen to the song that once plagued a streamer for over 2 years. A song that caused grief, but now returns to bring peace.',
+            src: "music/grief.mp3"
+        },
+        {
+            id: 'music_CMMM',
+            category: 'music',
+            icon: '👑',
+            name: 'Song - Cutie Mew Mew Magic',
+            price: 190,
+            desc: 'Mew! This the song that Mad Mew Mew listens to whenever she\'s happy or joyful. It\'s also Japanese, Mew!',
+            src: "music/CMMM.mp3"
+        },
+        {
+            id: 'music_Nullscapes',
+            category: 'music',
+            icon: '👑',
+            name: 'Song - Flow by Creo',
+            price: 190,
+            desc: 'Listen to the song that accompanies the unholy Robot timings of the level Nullscapes. A song that brings chill vibes, even if it\'s accompanied by unholy timings.',
+            src: "music/Nullscapes.mp3"
+        },
+        {
+            id: 'music_solver',
+            category: 'music',
+            icon: '⬡',
+            name: 'Song - Absolute Solver',
+            price: 200,
+            desc: 'The Music that the Absolute Solver uses to bring power and [NULL] to the world. A song that brings power and peace to [NULL].',
+            src: "music/solver.mp3"
+        },
+
+
+        {
+            id: 'theme_default',
+            category: 'theme',
+            icon: '🖥️',
+            name: 'Default Theme',
+            price: 0,
+            desc: 'Standard Beyond The Manger styling.',
+            cssVars: ''
+        },
+        {
+            id: 'theme_gold',
+            category: 'theme',
+            icon: '👑',
+            name: 'Theme - Royal Gold',
+            price: 120,
+            desc: 'Luxurious obsidian & gold accent glow across modals and borders.',
+            cssVars: 'body { background-color: #090704 !important; color: #fef3c7 !important; } button, input { border-color: #eab308 !important; }'
+        },
+        {
+            id: 'theme_cyan',
+            category: 'theme',
+            icon: '✨',
+            name: 'Guiding Light Aura',
+            price: 150,
+            desc: 'Ethereal midnight-cyan theme inspired by Guiding Light.',
+            cssVars: 'body { background-color: #030b14 !important; color: #cffafe !important; } button, input { border-color: #22d3ee !important; }'
+        },
+        {
+            id: 'theme_crimson',
+            category: 'theme',
+            icon: '🩸',
+            name: 'Solver Crimson Override',
+            price: 220,
+            desc: 'High-contrast crimson & void black Solver aesthetic.',
+            cssVars: 'body { background-color: #0c0306 !important; color: #ffe4e6 !important; } button, input { border-color: #f43f5e !important; }'
+        },
+        {
+            id: 'theme_griefer',
+            category: 'theme',
+            icon: '👑',
+            name: 'Grief\'s Return',
+            price: 250,
+            desc: 'A red, black, and white theme to showcase GRIEF\'s aesthetic, without the frame perfect clicks..',
+            cssVars: ''
+        },
+
+
+        {
+            id: 'trail_none',
+            category: 'trail',
+            icon: '🚫',
+            name: 'No Cursor Trail',
+            price: 0,
+            desc: 'Clean standard pointer with zero particles.',
+            trailColor: null
+        },
+        {
+            id: 'trail_cyan',
+            category: 'trail',
+            icon: '💠',
+            name: 'Guiding Light Sparkles',
+            price: 100,
+            desc: 'Leaves glowing cyan dust wherever your mouse moves.',
+            trailColor: '#22d3ee'
+        },
+        {
+            id: 'trail_gold',
+            category: 'trail',
+            icon: '⭐',
+            name: 'Cornerstone Gold Stars',
+            price: 160,
+            desc: 'Leaves golden starlight particles behind your cursor.',
+            trailColor: '#fde047'
+        },
+        {
+            id: 'trail_Red',
+            category: 'trail',
+            icon: '🩸',
+            name: 'Crimson Trail',
+            price: 200,
+            desc: 'Leaves glowing crimson dust wherever your mouse moves.',
+            trailColor: '#f43f5e'
+        },
+        {
+            id: 'trail_Cyn',
+            category: 'trail',
+            icon: '⬡',
+            name: 'Cyn\'s Trail',
+            price: 250,
+            desc: 'Leaves the blood of innocent Worker Drones wherever your mouse moves..',
+            trailColor: '#000000'
+        },
+
+
+
+        {
+            id: 'badge_none',
+            category: 'badge',
+            icon: '🏷️',
+            name: 'No Equipped Title',
+            price: 0,
+            desc: 'Hide equipped title tag.',
+            badgeText: ''
+        },
+        {
+            id: 'badge_cornerstone',
+            category: 'badge',
+            icon: '⛪',
+            name: 'Psalms 118:22 Cornerstone',
+            price: 90,
+            desc: 'Displays [⛪ Cornerstone] beside your HUD.',
+            badgeText: '⛪ Cornerstone'
+        },
+        {
+            id: 'badge_king',
+            category: 'badge',
+            icon: '🏆',
+            name: 'Undisputed GD King',
+            price: 350,
+            desc: 'Prestigious badge for leaderboard champions.',
+            badgeText: '🏆 Undisputed King'
+        }
+    );
+    
+    window.shopGetOwned = function () {
+        try {
+            const raw = JSON.parse(localStorage.getItem(window.SHOP_STORAGE_OWNED) || '[]');
+            const defaults = Array.of('music_default', 'theme_default', 'trail_none', 'badge_none');
+            const merged = Array.isArray(raw) ? raw.slice() : Array.of();
+            defaults.forEach(d => {
+                if (!merged.includes(d)) merged.push(d);
+            });
+            return merged;
+        } catch (e) {
+            return Array.of('music_default', 'theme_default', 'trail_none', 'badge_none');
+        }
+    };
+    
+    window.shopGetEquipped = function () {
+        try {
+            const raw = JSON.parse(localStorage.getItem(window.SHOP_STORAGE_EQUIPPED) || '{}');
+            return {
+                music: raw.music || 'music_default',
+                theme: raw.theme || 'theme_default',
+                trail: raw.trail || 'trail_none',
+                badge: raw.badge || 'badge_none'
+            };
+        } catch (e) {
+            return { music: 'music_default', theme: 'theme_default', trail: 'trail_none', badge: 'badge_none' };
+        }
+    };
+    
+    window.registerShopItem = function (item) {
+        if (!item || !item.id || !item.category) return;
+        const idx = window.SHOP_CATALOG.findIndex(x => x.id === item.id);
+        if (idx >= 0) window.SHOP_CATALOG[idx] = item;
+        else window.SHOP_CATALOG.push(item);
+    };
+}
+function startAfcsShopEffects() {
+    window.SHOP_RUNTIME = {
+        musicTimer: null,
+        audioCtx: null,
+        htmlAudio: null,
+        defaultBgmRef: null,
+        playHooked: false,
+        noteIdx: 0,
+        trailBound: false,
+        trailColor: null,
+        lastSpark: 0
+    };
+
+    window.shopHookAudioPlay = function () {
+        const rt = window.SHOP_RUNTIME;
+        if (rt.playHooked) return;
+        rt.playHooked = true;
+
+        const origPlay = HTMLAudioElement.prototype.play;
+        HTMLAudioElement.prototype.play = function (...args) {
+            const src = String(this.currentSrc || this.src || '').toLowerCase();
+            const isShopTrack = (this === window.SHOP_RUNTIME.htmlAudio);
+            if (!isShopTrack && src.includes('praise')) {
+                window.SHOP_RUNTIME.defaultBgmRef = this;
+                const eq = window.shopGetEquipped();
+                if (eq.music !== 'music_default') {
+                    this.pause();
+                    this.muted = true;
+                    return Promise.resolve();
+                }
+            }
+            return origPlay.apply(this, args);
+        };
+    };
+
+    window.shopGetMusicVolume = function () {
+        if (typeof STATE !== 'undefined') {
+            const master = typeof STATE.masterVol === 'number' ? STATE.masterVol : (typeof STATE.masterVolume === 'number' ? STATE.masterVolume : 1);
+            const music = typeof STATE.musicVol === 'number' ? STATE.musicVol : (typeof STATE.musicVolume === 'number' ? STATE.musicVolume : 0.5);
+            return Math.max(0, Math.min(1, master * music));
+        }
+        const mSlider = document.querySelector('input[id*="master" i][type="range"]');
+        const bSlider = document.querySelector('input[id*="music" i][type="range"]');
+        const mVal = mSlider ? parseFloat(mSlider.value) / (parseFloat(mSlider.max) || 1) : 1;
+        const bVal = bSlider ? parseFloat(bSlider.value) / (parseFloat(bSlider.max) || 1) : 0.5;
+        return Math.max(0, Math.min(1, mVal * bVal));
+    };
+
+    window.shopRefreshMusicVolume = function () {
+        const rt = window.SHOP_RUNTIME;
+        if (rt.htmlAudio) {
+            rt.htmlAudio.volume = window.shopGetMusicVolume();
+        }
+    };
+
+    window.shopToggleDefaultBgm = function (shouldPlay) {
+        const candidates = Array.from(document.querySelectorAll('audio'));
+        if (window.SHOP_RUNTIME.defaultBgmRef && !candidates.includes(window.SHOP_RUNTIME.defaultBgmRef)) {
+            candidates.push(window.SHOP_RUNTIME.defaultBgmRef);
+        }
+        if (typeof STATE !== 'undefined') {
+            const stateAudio = STATE.bgm || STATE.musicAudio || STATE.audio;
+            if (stateAudio && !candidates.includes(stateAudio)) candidates.push(stateAudio);
+        }
+
+        candidates.forEach(a => {
+            if (!a || a === window.SHOP_RUNTIME.htmlAudio) return;
+            if (shouldPlay) {
+                a.muted = false;
+                a.volume = window.shopGetMusicVolume();
+                a.play().catch(() => {});
+            } else {
+                a.pause();
+                a.muted = true;
+            }
+        });
+    };
+
+    window.shopStopMusic = function () {
+        const rt = window.SHOP_RUNTIME;
+        if (rt.musicTimer) clearInterval(rt.musicTimer);
+        rt.musicTimer = null;
+        if (rt.htmlAudio) {
+            rt.htmlAudio.pause();
+            rt.htmlAudio.src = '';
+            rt.htmlAudio = null;
+        }
+    };
+    window.shopSyncThemePill = function () {
+        const pill = document.querySelector('.theme-mode-pill');
+        if (!pill) return;
+
+        const isGriefActive = document.body.classList.contains('theme-griefer');
+        if (isGriefActive) {
+            pill.classList.remove('is-blue', 'is-red', 'is-neon', 'is-doomsday', 'is-faithian', 'is-hamilton', 'is-epic', 'is-murderdrones');
+            pill.classList.add('is-griefer', 'is-unlocked');
+            pill.style.display = 'inline-flex';
+            pill.textContent = '👑 Theme: Grief\'s Return ⇄';
+        } else {
+            pill.classList.remove('is-griefer');
+        }
+    };
+    window.shopApplyMusic = function (item) {
+        window.shopHookAudioPlay();
+        window.shopStopMusic();
+        if (!item || item.id === 'music_default') {
+            window.shopToggleDefaultBgm(true);
+            return;
+        }
+
+        window.shopToggleDefaultBgm(false);
+
+        if (item.src) {
+            const audio = new Audio(item.src);
+            audio.loop = true;
+            audio.volume = window.shopGetMusicVolume();
+            window.SHOP_RUNTIME.htmlAudio = audio;
+            const tryPlay = () => {
+                if (window.SHOP_RUNTIME.htmlAudio === audio) {
+                    window.shopToggleDefaultBgm(false);
+                    audio.play().catch(() => {});
+                }
+            };
+            tryPlay();
+            window.addEventListener('pointerdown', tryPlay, { once: true });
+            return;
+        }
+
+        if (!Array.isArray(item.synthNotes) || item.synthNotes.length === 0) return;
+
+        const rt = window.SHOP_RUNTIME;
+        rt.noteIdx = 0;
+        rt.musicTimer = setInterval(() => {
+            if (document.hidden) return;
+            window.shopToggleDefaultBgm(false);
+            const vol = window.shopGetMusicVolume() * 0.06;
+            if (vol <= 0.0002) return;
+            try {
+                if (!rt.audioCtx) {
+                    const Ctx = window.AudioContext || window.webkitAudioContext;
+                    if (Ctx) rt.audioCtx = new Ctx();
+                }
+                if (!rt.audioCtx) return;
+                if (rt.audioCtx.state === 'suspended') rt.audioCtx.resume();
+                const freq = item.synthNotes.at(rt.noteIdx % item.synthNotes.length);
+                rt.noteIdx++;
+                const osc = rt.audioCtx.createOscillator();
+                const gain = rt.audioCtx.createGain();
+                osc.type = item.wave || 'sine';
+                osc.frequency.setValueAtTime(freq, rt.audioCtx.currentTime);
+                gain.gain.setValueAtTime(vol, rt.audioCtx.currentTime);
+                gain.gain.exponentialRampToValueAtTime(0.0001, rt.audioCtx.currentTime + (item.tempoMs || 400) / 1000);
+                osc.connect(gain);
+                gain.connect(rt.audioCtx.destination);
+                osc.start();
+                osc.stop(rt.audioCtx.currentTime + (item.tempoMs || 400) / 1000);
+            } catch (e) {}
+        }, item.tempoMs || 420);
+    };
+
+        window.shopSyncGriefClasses = function () {
+        const eq = window.shopGetEquipped();
+        const isGriefEquipped = eq.theme === 'theme_griefer';
+
+        document.body.classList.toggle('grief-highlights-active', isGriefEquipped);
+
+        if (!isGriefEquipped && document.body.classList.contains('theme-griefer')) {
+            document.body.classList.remove('theme-griefer');
+            if (typeof window.applyTheme === 'function') {
+                window.applyTheme('blue', true);
+            }
+        }
+        if (typeof window.syncThemePill === 'function') window.syncThemePill();
+    };
+
+    window.shopApplyTheme = function (item) {
+        if (item && item.id === 'theme_griefer') {
+            if (typeof window.applyTheme === 'function') {
+                window.applyTheme('griefer');
+            }
+        } else if (item && item.id !== 'theme_griefer') {
+            if (document.body.classList.contains('theme-griefer') && typeof window.applyTheme === 'function') {
+                window.applyTheme('blue');
+            }
+        }
+        window.shopSyncGriefClasses();
+
+        let styleEl = document.getElementById('afcs-shop-theme-style');
+        if (!styleEl) {
+            styleEl = document.createElement('style');
+            styleEl.id = 'afcs-shop-theme-style';
+            document.head.appendChild(styleEl);
+        }
+        styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
+
+        if (!window.SHOP_RUNTIME.themeObserver) {
+            const obs = new MutationObserver(() => {
+                const eq = window.shopGetEquipped();
+                document.body.classList.toggle('grief-highlights-active', eq.theme === 'theme_griefer');
+            });
+            obs.observe(document.body, { attributes: true, attributeFilter: Array.of('class') });
+            window.SHOP_RUNTIME.themeObserver = obs;
+        }
+    };
+
+
+    window.shopApplyTheme = function (item) {
+        if (item && item.id === 'theme_griefer' && typeof window.applyTheme === 'function') {
+            window.applyTheme('griefer');
+        }
+        window.shopSyncGriefClasses();
+
+        let styleEl = document.getElementById('afcs-shop-theme-style');
+        if (!styleEl) {
+            styleEl = document.createElement('style');
+            styleEl.id = 'afcs-shop-theme-style';
+            document.head.appendChild(styleEl);
+        }
+        styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
+
+        if (!window.SHOP_RUNTIME.themeObserver) {
+            const obs = new MutationObserver(() => window.shopSyncGriefClasses());
+            obs.observe(document.body, { attributes: true, attributeFilter: Array.of('class') });
+            window.SHOP_RUNTIME.themeObserver = obs;
+        }
+    };
+
+    window.shopApplyTheme = function (item) {
+        if (item && item.id === 'theme_griefer') {
+            const otherThemes = Array.of(
+                'theme-hamilton', 'theme-epic', 'theme-doomsday',
+                'theme-faithian', 'theme-murderdrones', 'theme-red',
+                'party-mode', 'search-fx-cornerstone'
+            );
+            otherThemes.forEach(cls => document.body.classList.remove(cls));
+        }
+        window.shopSyncGriefClasses();
+
+        let styleEl = document.getElementById('afcs-shop-theme-style');
+        if (!styleEl) {
+            styleEl = document.createElement('style');
+            styleEl.id = 'afcs-shop-theme-style';
+            document.head.appendChild(styleEl);
+        }
+        styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
+
+        if (!window.SHOP_RUNTIME.themeObserver) {
+            const obs = new MutationObserver(() => window.shopSyncGriefClasses());
+            obs.observe(document.body, { attributes: true, attributeFilter: Array.of('class') });
+            window.SHOP_RUNTIME.themeObserver = obs;
+        }
+    };
+
+    window.shopApplyTrail = function (item) {
+        const rt = window.SHOP_RUNTIME;
+        rt.trailColor = item ? item.trailColor : null;
+        if (rt.trailBound) return;
+        rt.trailBound = true;
+
+        window.addEventListener('mousemove', e => {
+            if (!rt.trailColor) return;
+            const now = performance.now();
+            if (now - rt.lastSpark < 45) return;
+            rt.lastSpark = now;
+
+            const dot = document.createElement('div');
+            dot.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;width:7px;height:7px;border-radius:50%;background:' + rt.trailColor + ';box-shadow:0 0 8px ' + rt.trailColor + ';pointer-events:none;z-index:99997;transform:translate(-50%,-50%);transition:opacity 0.45s,transform 0.45s;';
+            document.body.appendChild(dot);
+            requestAnimationFrame(() => {
+                dot.style.opacity = '0';
+                dot.style.transform = 'translate(-50%,-18px) scale(0.3)';
+            });
+            setTimeout(() => dot.remove(), 460);
+        });
+    };
+
+    window.shopApplyBadge = function (item) {
+        let badgeEl = document.getElementById('afcs-equipped-title-pill');
+        if (!item || !item.badgeText) {
+            if (badgeEl) badgeEl.remove();
+            return;
+        }
+        if (!badgeEl) {
+            badgeEl = document.createElement('div');
+            badgeEl.id = 'afcs-equipped-title-pill';
+            badgeEl.style.cssText = 'position:fixed;left:14px;top:218px;background:rgba(15,23,42,0.92);color:#fde047;border:1px solid #eab308;border-radius:999px;padding:4px 10px;font-size:0.75rem;font-weight:800;z-index:1;pointer-events:none;box-shadow:0 4px 12px rgba(0,0,0,0.4);';
+            document.body.appendChild(badgeEl);
+        }
+        badgeEl.textContent = item.badgeText;
+    };
+
+    window.shopSyncAllEquipped = function () {
+        window.shopHookAudioPlay();
+        const eq = window.shopGetEquipped();
+        const findItem = id => window.SHOP_CATALOG.find(x => x.id === id);
+        window.shopApplyMusic(findItem(eq.music));
+        window.shopApplyTheme(findItem(eq.theme));
+        window.shopApplyTrail(findItem(eq.trail));
+        window.shopApplyBadge(findItem(eq.badge));
+    };
+
+    document.addEventListener('input', e => {
+        if (e.target && e.target.type === 'range') {
+            const eq = window.shopGetEquipped();
+            if (eq.music !== 'music_default') {
+                window.shopToggleDefaultBgm(false);
+                window.shopRefreshMusicVolume();
+            }
+        }
+    });
+}
+function startAfcsShopUI() {
+    window.SHOP_ACTIVE_TAB = 'all';
+    
+    window.shopBuyOrEquip = function (itemId) {
+        const item = window.SHOP_CATALOG.find(x => x.id === itemId);
+        if (!item) return;
+        
+        const owned = window.shopGetOwned();
+        const equipped = window.shopGetEquipped();
+        
+        if (!owned.includes(item.id)) {
+            const coins = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
+            if (coins < item.price) {
+                const msg = document.getElementById('shop-status-msg');
+                if (msg) {
+                    msg.textContent = '❌ Not enough AFCS Coins! Play Arcade mini-games to earn more.';
+                    msg.style.color = '#f87171';
+                }
+                return;
+            }
+            const nextBal = coins - item.price;
+            localStorage.setItem('afcs_coins', String(nextBal));
+            const hudCoins = document.getElementById('afcs-coin-display');
+            if (hudCoins) hudCoins.textContent = nextBal + ' 🪙';
+            
+            owned.push(item.id);
+            localStorage.setItem(window.SHOP_STORAGE_OWNED, JSON.stringify(owned));
+        }
+        
+        equipped[item.category] = item.id;
+        localStorage.setItem(window.SHOP_STORAGE_EQUIPPED, JSON.stringify(equipped));
+        window.shopSyncAllEquipped();
+        window.openAfcsShop(window.SHOP_ACTIVE_TAB);
+    };
+    
+    window.openAfcsShop = function (tab) {
+        window.SHOP_ACTIVE_TAB = tab || 'all';
+        const old = document.getElementById('afcs-shop-modal');
+        if (old) old.remove();
+        
+        const owned = window.shopGetOwned();
+        const equipped = window.shopGetEquipped();
+        const coins = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
+        
+        const itemsToShow = window.SHOP_ACTIVE_TAB === 'all'
+        ? window.SHOP_CATALOG
+        : window.SHOP_CATALOG.filter(x => x.category === window.SHOP_ACTIVE_TAB);
+        
+        const tabs = Array.of(
+            { id: 'all', label: '🛍️ ALL' },
+            { id: 'music', label: '🎵 MUSIC' },
+            { id: 'theme', label: '🎨 THEMES' },
+            { id: 'trail', label: '✨ TRAILS' },
+            { id: 'badge', label: '🏅 BADGES' }
+        );
+        
+        const modal = document.createElement('div');
+        modal.id = 'afcs-shop-modal';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:99998;background:rgba(2,6,23,0.92);backdrop-filter:blur(8px);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:18px;user-select:none;';
+        
+        modal.innerHTML = `
+            <div style="width:100%;max-width:880px;max-height:88vh;background:#0f172a;border:2px solid #eab308;border-radius:16px;display:flex;flex-direction:column;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,0.85);">
+                <div style="padding:16px 20px;background:#090d16;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;">
+                    <div style="display:flex;align-items:center;gap:12px;">
+                        <span style="font-size:1.3rem;font-weight:900;color:#fde047;letter-spacing:1px;">🛒 AFCS COIN SHOP</span>
+                        <span style="background:#172554;border:1px solid #eab308;color:#fde047;padding:4px 12px;border-radius:8px;font-size:0.88rem;font-weight:bold;">
+                            Balance: ${coins} 🪙
+                        </span>
+                    </div>
+                    <button id="shop-close-btn" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:bold;">✕ CLOSE</button>
+                </div>
+        
+                <div style="padding:10px 20px;background:#090d16;border-bottom:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+                    <div style="display:flex;gap:6px;flex-wrap:wrap;">
+                        ${tabs.map(t => {
+        const active = window.SHOP_ACTIVE_TAB === t.id;
+        return `<button class="shop-tab-btn" data-tab="${t.id}" style="background:${active ? '#854d0e' : '#1e293b'};color:${active ? '#fef08a' : '#cbd5e1'};border:1px solid ${active ? '#eab308' : '#334155'};padding:6px 12px;border-radius:8px;font-weight:bold;font-size:0.8rem;cursor:pointer;">
+                                ${t.label}
+                            </button>`;
+    }).join('')}
+                    </div>
+                    <span id="shop-status-msg" style="font-size:0.8rem;color:#94a3b8;">Customize music, themes, trails & titles</span>
+                </div>
+    
+                <div style="padding:18px 20px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:14px;">
+                    ${itemsToShow.map(item => {
+    const isOwned = owned.includes(item.id);
+    const isEquipped = equipped[item.category] === item.id;
+    let btnText = '🛒 BUY (' + item.price + ' 🪙)';
+    let btnBg = '#0284c7';
+    let btnBorder = '#38bdf8';
+    
+    if (isEquipped) {
+        btnText = '✅ EQUIPPED';
+        btnBg = '#14532d';
+        btnBorder = '#4ade80';
+    } else if (isOwned) {
+        btnText = '⚡ EQUIP';
+        btnBg = '#1e293b';
+        btnBorder = '#eab308';
+    }
+    
+    return `
+                            <div style="background:linear-gradient(180deg,#1e293b 0%,#0f172a 100%);border:1px solid ${isEquipped ? '#4ade80' : '#334155'};border-radius:12px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;">
+                                <div>
+                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                                        <span style="font-size:1.8rem;">${item.icon}</span>
+                                        <span style="font-size:0.72rem;background:#090d16;border:1px solid #334155;color:#94a3b8;padding:3px 8px;border-radius:6px;text-transform:uppercase;font-weight:bold;">
+                                            ${item.category}
+                                        </span>
+                                    </div>
+                                    <div style="font-weight:800;font-size:1rem;color:#f8fafc;margin-bottom:4px;">${item.name}</div>
+                                    <p style="font-size:0.8rem;color:#94a3b8;line-height:1.4;margin:0;">${item.desc}</p>
+                                </div>
+                                <button class="shop-action-btn" data-id="${item.id}" style="margin-top:14px;width:100%;background:${btnBg};color:#fff;border:1px solid ${btnBorder};padding:9px 12px;border-radius:8px;font-weight:800;cursor:pointer;font-size:0.85rem;">
+                                    ${btnText}
+                                </button>
+                            </div>
+                        `;
+}).join('')}
+                </div>
+            </div>
+        `;
+
+document.body.appendChild(modal);
+
+const closeShop = () => {
+    modal.remove();
+    window.removeEventListener('keydown', escHandler);
+};
+const escHandler = e => {
+    if (e.code === 'Escape') closeShop();
+};
+
+document.getElementById('shop-close-btn').onclick = closeShop;
+modal.onclick = e => {
+    if (e.target === modal) closeShop();
+};
+window.addEventListener('keydown', escHandler);
+
+modal.querySelectorAll('.shop-tab-btn').forEach(btn => {
+    btn.onclick = () => window.openAfcsShop(btn.getAttribute('data-tab'));
+});
+
+modal.querySelectorAll('.shop-action-btn').forEach(btn => {
+    btn.onclick = () => window.shopBuyOrEquip(btn.getAttribute('data-id'));
+});
+};
+
+window.shopMountDockButton = function () {
+    if (document.getElementById('afcs-shop-dock-btn')) return;
+
+    const dock = typeof window.arcadeGetOrCreateDock === 'function'
+        ? window.arcadeGetOrCreateDock()
+        : document.body;
+
+    const btn = document.createElement('button');
+    btn.id = 'afcs-shop-dock-btn';
+    btn.title = 'Open AFCS Coin Shop (Custom Music, Themes & Trails)';
+    btn.innerHTML = '🛒 Shop';
+    btn.style.cssText = 'display:inline-flex;align-items:center;justify-content:center;gap:5px;background:rgba(15,23,42,0.92);color:#fde047;border:1px solid #eab308;border-radius:10px;padding:7px 12px;font-size:0.84rem;font-weight:800;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,0.45);transition:background 0.15s;';
+    btn.onmouseenter = () => { btn.style.background = '#422006'; };
+    btn.onmouseleave = () => { btn.style.background = 'rgba(15,23,42,0.92)'; };
+    btn.onclick = () => window.openAfcsShop('all');
+
+    dock.appendChild(btn);
+};
+
+if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
+    STATE.onSearchInput.push(function (query) {
+        const clean = String(query || '').trim().toLowerCase();
+        if (Array.of('shop', 'store', 'buy', 'market', 'music').includes(clean)) {
+            window.openAfcsShop('all');
+        }
+    });
+}
+
+const initShop = () => {
+    window.shopMountDockButton();
+    window.shopSyncAllEquipped();
+};
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initShop);
+} else {
+    initShop();
+}
+}
+function start2048Data() {
+    window.M2048_CFG = {
+        triggers: Array.of('2048', 'merge', 'tiles', 'cornerstone 2048'),
+        storageBestKey: 'afcs_2048_best',
+        milestones: {
+            512: 40,
+            1024: 90,
+            2048: 200
+        },
+        tileThemes: {
+            2: { bg: '#1e293b', fg: '#e2e8f0', tag: 'BRICK' },
+            4: { bg: '#1e3a5f', fg: '#bae6fd', tag: 'STONE' },
+            8: { bg: '#0f766e', fg: '#ccfbf1', tag: 'PILLAR' },
+            16: { bg: '#0369a1', fg: '#e0f2fe', tag: 'ARCH' },
+            32: { bg: '#4338ca', fg: '#e0e7ff', tag: 'TOWER' },
+            64: { bg: '#6d28d9', fg: '#ede9fe', tag: 'DUBAI' },
+            128: { bg: '#a21caf', fg: '#fae8ff', tag: 'SKYLINE' },
+            256: { bg: '#be123c', fg: '#ffe4e6', tag: 'SOLVER' },
+            512: { bg: '#b45309', fg: '#fef3c7', tag: 'PSALMS' },
+            1024: { bg: '#047857', fg: '#d1fae5', tag: 'BURJ 163' },
+            2048: { bg: '#ca8a04', fg: '#fef9c3', tag: '⛪ CORNERSTONE' },
+            4096: { bg: '#dc2626', fg: '#fee2e2', tag: '👑 LEGEND' }
+        }
+    };
+
+    window.M2048_STATE = {
+        active: false,
+        grid: Array.of(),
+        score: 0,
+        best: parseInt(localStorage.getItem('afcs_2048_best') || '0', 10),
+        claimedMilestones: Array.of(),
+        won2048: false,
+        keepPlaying: false,
+        over: false,
+        touchStartX: 0,
+        touchStartY: 0,
+        listeners: Array.of()
+    };
+
+    window.m2048AwardCoins = function (amount) {
+        const cur = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
+        const next = cur + amount;
+        localStorage.setItem('afcs_coins', String(next));
+        const badge = document.getElementById('afcs-coin-display');
+        if (badge) badge.textContent = next + ' 🪙';
+        return next;
+    };
+
+    if (typeof window.arcadeRegisterGame === 'function') {
+        window.arcadeRegisterGame({
+            id: 'game2048',
+            title: '2048: Cornerstone Merge',
+            icon: '🔢',
+            reward: '+40–330 🪙',
+            hint: 'Slide and merge tiles to build the 2048 Cornerstone...',
+            triggers: window.M2048_CFG.triggers,
+            launch: () => window.launch2048Game()
+        });
+    }
+}
+function start2048Engine() {
+    window.m2048SpawnTile = function () {
+        const st = window.M2048_STATE;
+        const empty = Array.of();
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+                if (st.grid.at(r).at(c) === 0) {
+                    empty.push({ r: r, c: c });
+                }
+            }
+        }
+        if (empty.length === 0) return;
+        const spot = empty.at(Math.floor(Math.random() * empty.length));
+        st.grid[spot.r][spot.c] = Math.random() < 0.9 ? 2 : 4;
+    };
+
+    window.m2048SlideLine = function (line) {
+        const st = window.M2048_STATE;
+        const filtered = line.filter(v => v !== 0);
+        const merged = Array.of();
+        let gained = 0;
+
+        for (let i = 0; i < filtered.length; i++) {
+            if (i + 1 < filtered.length && filtered.at(i) === filtered.at(i + 1)) {
+                const nextVal = filtered.at(i) * 2;
+                merged.push(nextVal);
+                gained += nextVal;
+
+                const milestoneReward = window.M2048_CFG.milestones[nextVal];
+                if (milestoneReward && !st.claimedMilestones.includes(nextVal)) {
+                    st.claimedMilestones.push(nextVal);
+                    const bal = window.m2048AwardCoins(milestoneReward);
+                    window.m2048SetBanner('🎉 Reached ' + nextVal + '! +' + milestoneReward + ' 🪙 (Balance: ' + bal + ' 🪙)', '#4ade80');
+                }
+                if (nextVal === 2048 && !st.won2048) {
+                    st.won2048 = true;
+                }
+                i++;
+            } else {
+                merged.push(filtered.at(i));
+            }
+        }
+
+        while (merged.length < 4) merged.push(0);
+        return { line: merged, gained: gained };
+    };
+
+    window.m2048Move = function (dir) {
+        const st = window.M2048_STATE;
+        if (!st.active || st.over) return;
+        if (st.won2048 && !st.keepPlaying) return;
+
+        const before = JSON.stringify(st.grid);
+        let totalGain = 0;
+
+        if (dir === 'left' || dir === 'right') {
+            for (let r = 0; r < 4; r++) {
+                const row = st.grid.at(r).slice();
+                if (dir === 'right') row.reverse();
+                const res = window.m2048SlideLine(row);
+                if (dir === 'right') res.line.reverse();
+                st.grid[r] = res.line;
+                totalGain += res.gained;
+            }
+        } else {
+            for (let c = 0; c < 4; c++) {
+                const col = Array.from({ length: 4 }, (_, r) => st.grid.at(r).at(c));
+                if (dir === 'down') col.reverse();
+                const res = window.m2048SlideLine(col);
+                if (dir === 'down') res.line.reverse();
+                for (let r = 0; r < 4; r++) {
+                    st.grid[r][c] = res.line.at(r);
+                }
+                totalGain += res.gained;
+            }
+        }
+
+        if (JSON.stringify(st.grid) === before) return;
+
+        st.score += totalGain;
+        if (st.score > st.best) {
+            st.best = st.score;
+            localStorage.setItem(window.M2048_CFG.storageBestKey, String(st.best));
+        }
+
+        window.m2048SpawnTile();
+        window.m2048CheckOver();
+        window.m2048Render();
+    };
+
+    window.m2048CheckOver = function () {
+        const st = window.M2048_STATE;
+        for (let r = 0; r < 4; r++) {
+            for (let c = 0; c < 4; c++) {
+                const val = st.grid.at(r).at(c);
+                if (val === 0) return;
+                if (c + 1 < 4 && st.grid.at(r).at(c + 1) === val) return;
+                if (r + 1 < 4 && st.grid.at(r + 1).at(c) === val) return;
+            }
+        }
+        st.over = true;
+        window.m2048SetBanner('💀 NO MOVES LEFT! Final Score: ' + st.score, '#f87171');
+    };
+}
+function start2048UI() {
+    window.m2048SetBanner = function (txt, color) {
+        const el = document.getElementById('m2048-banner');
+        if (!el) return;
+        el.textContent = txt;
+        el.style.color = color || '#fde047';
+    };
+
+    window.m2048BuildModal = function () {
+        const old = document.getElementById('afcs-2048-modal');
+        if (old) old.remove();
+
+        const modal = document.createElement('div');
+        modal.id = 'afcs-2048-modal';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at top,#0f172a 0%,#020617 100%);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px;user-select:none;';
+
+        modal.innerHTML = `
+            <div style="width:100%;max-width:520px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e293b;padding-bottom:10px;">
+                <span style="font-size:1.2rem;font-weight:900;color:#fde047;letter-spacing:1px;">🔢 2048: CORNERSTONE</span>
+                <div style="display:flex;gap:8px;align-items:center;">
+                    <button id="m2048-new-btn" style="background:#0284c7;color:#fff;border:1px solid #38bdf8;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:0.82rem;">↻ NEW</button>
+                    <button id="m2048-exit-btn" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:0.82rem;">✕ EXIT</button>
+                </div>
+            </div>
+
+            <div style="width:100%;max-width:520px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+                <div style="background:#090d16;border:1px solid #1e293b;border-radius:10px;padding:8px 14px;text-align:center;">
+                    <div style="font-size:0.72rem;color:#94a3b8;font-weight:bold;">SCORE</div>
+                    <div id="m2048-score-val" style="font-size:1.3rem;font-weight:900;color:#38bdf8;">0</div>
+                </div>
+                <div style="background:#090d16;border:1px solid #1e293b;border-radius:10px;padding:8px 14px;text-align:center;">
+                    <div style="font-size:0.72rem;color:#94a3b8;font-weight:bold;">BEST SCORE</div>
+                    <div id="m2048-best-val" style="font-size:1.3rem;font-weight:900;color:#fde047;">0</div>
+                </div>
+            </div>
+
+            <div id="m2048-banner" style="min-height:22px;font-size:0.92rem;font-weight:bold;color:#fde047;text-align:center;">
+                Merge tiles to build 2048 (⛪ CORNERSTONE)! Rewards at 512, 1024 & 2048.
+            </div>
+
+            <div style="position:relative;">
+                <div id="m2048-board" style="display:grid;grid-template-columns:repeat(4,82px);grid-template-rows:repeat(4,82px);gap:8px;background:#090d16;border:2px solid #334155;border-radius:14px;padding:10px;box-shadow:0 18px 45px rgba(0,0,0,0.85);"></div>
+                <div id="m2048-overlay" style="display:none;position:absolute;inset:0;background:rgba(2,6,23,0.9);border-radius:14px;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;"></div>
+            </div>
+
+            <div style="display:flex;gap:8px;">
+                <button id="m2048-btn-left" style="background:#1e293b;color:#fff;border:1px solid #475569;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">◀</button>
+                <button id="m2048-btn-up" style="background:#1e293b;color:#fff;border:1px solid #475569;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">▲</button>
+                <button id="m2048-btn-down" style="background:#1e293b;color:#fff;border:1px solid #475569;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">▼</button>
+                <button id="m2048-btn-right" style="background:#1e293b;color:#fff;border:1px solid #475569;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">▶</button>
+            </div>
+        `;
+
+        document.body.appendChild(modal);
+
+        document.getElementById('m2048-exit-btn').onclick = window.m2048CloseGame;
+        document.getElementById('m2048-new-btn').onclick = window.launch2048Game;
+        document.getElementById('m2048-btn-left').onclick = () => window.m2048Move('left');
+        document.getElementById('m2048-btn-up').onclick = () => window.m2048Move('up');
+        document.getElementById('m2048-btn-down').onclick = () => window.m2048Move('down');
+        document.getElementById('m2048-btn-right').onclick = () => window.m2048Move('right');
+
+        const boardEl = document.getElementById('m2048-board');
+        boardEl.ontouchstart = e => {
+            const t = e.touches.item(0);
+            if (!t) return;
+            window.M2048_STATE.touchStartX = t.clientX;
+            window.M2048_STATE.touchStartY = t.clientY;
+        };
+        boardEl.ontouchend = e => {
+            const t = e.changedTouches.item(0);
+            if (!t) return;
+            const dx = t.clientX - window.M2048_STATE.touchStartX;
+            const dy = t.clientY - window.M2048_STATE.touchStartY;
+            if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
+            if (Math.abs(dx) > Math.abs(dy)) window.m2048Move(dx > 0 ? 'right' : 'left');
+            else window.m2048Move(dy > 0 ? 'down' : 'up');
+        };
+
+        const keyHandler = function (e) {
+            if (!window.M2048_STATE.active) return;
+            if (e.code === 'Escape') {
+                window.m2048CloseGame();
+                return;
+            }
+            if (e.code === 'ArrowLeft' || e.code === 'KeyA') {
+                e.preventDefault();
+                window.m2048Move('left');
+            } else if (e.code === 'ArrowRight' || e.code === 'KeyD') {
+                e.preventDefault();
+                window.m2048Move('right');
+            } else if (e.code === 'ArrowUp' || e.code === 'KeyW') {
+                e.preventDefault();
+                window.m2048Move('up');
+            } else if (e.code === 'ArrowDown' || e.code === 'KeyS') {
+                e.preventDefault();
+                window.m2048Move('down');
+            }
+        };
+
+        window.addEventListener('keydown', keyHandler);
+        window.M2048_STATE.listeners.push(Array.of(window, 'keydown', keyHandler));
+    };
+
+    window.m2048Render = function () {
+        const st = window.M2048_STATE;
+        const board = document.getElementById('m2048-board');
+        const scoreEl = document.getElementById('m2048-score-val');
+        const bestEl = document.getElementById('m2048-best-val');
+        const ov = document.getElementById('m2048-overlay');
+        if (!board) return;
+
+        if (scoreEl) scoreEl.textContent = String(st.score);
+        if (bestEl) bestEl.textContent = String(st.best);
+
+        board.innerHTML = st.grid.map(row =>
+            row.map(val => {
+                if (val === 0) {
+                    return '<div style="width:82px;height:82px;background:#1e293b;border-radius:10px;opacity:0.45;"></div>';
+                }
+                const theme = window.M2048_CFG.tileThemes[val] || { bg: '#dc2626', fg: '#fff', tag: 'ULTRA' };
+                const fontSize = val >= 1024 ? '1.3rem' : (val >= 128 ? '1.5rem' : '1.75rem');
+                return `
+                    <div style="width:82px;height:82px;background:${theme.bg};color:${theme.fg};border:2px solid rgba(255,255,255,0.22);border-radius:10px;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 4px 12px rgba(0,0,0,0.45);">
+                        <div style="font-size:${fontSize};font-weight:900;line-height:1.1;">${val}</div>
+                        <div style="font-size:0.56rem;font-weight:800;letter-spacing:0.5px;margin-top:3px;opacity:0.9;">${theme.tag}</div>
+                    </div>
+                `;
+            }).join('')
+        ).join('');
+
+        if (!ov) return;
+        if (st.won2048 && !st.keepPlaying) {
+            ov.style.display = 'flex';
+            ov.innerHTML = `
+                <div style="font-size:1.8rem;font-weight:900;color:#fde047;margin-bottom:8px;">⛪ 2048 CORNERSTONE!</div>
+                <p style="color:#cbd5e1;font-size:0.9rem;margin-bottom:16px;">You built the Psalms 118:22 Cornerstone tile!</p>
+                <div style="display:flex;gap:10px;">
+                    <button id="m2048-endless-btn" style="background:#0284c7;color:#fff;border:1px solid #38bdf8;padding:9px 16px;border-radius:8px;font-weight:bold;cursor:pointer;">▶ KEEP GOING</button>
+                    <button id="m2048-reset-ov-btn" style="background:#1e293b;color:#e2e8f0;border:1px solid #475569;padding:9px 16px;border-radius:8px;font-weight:bold;cursor:pointer;">↻ NEW GAME</button>
+                </div>
+            `;
+            document.getElementById('m2048-endless-btn').onclick = () => {
+                st.keepPlaying = true;
+                ov.style.display = 'none';
+            };
+            document.getElementById('m2048-reset-ov-btn').onclick = window.launch2048Game;
+        } else if (st.over) {
+            ov.style.display = 'flex';
+            ov.innerHTML = `
+                <div style="font-size:1.8rem;font-weight:900;color:#f87171;margin-bottom:8px;">GRID LOCKED!</div>
+                <p style="color:#cbd5e1;font-size:0.95rem;margin-bottom:16px;">Final Score: <b>${st.score}</b></p>
+                <button id="m2048-over-btn" style="background:#eab308;color:#09090b;border:none;padding:10px 20px;border-radius:8px;font-weight:900;cursor:pointer;">↻ PLAY AGAIN</button>
+            `;
+            document.getElementById('m2048-over-btn').onclick = window.launch2048Game;
+        } else {
+            ov.style.display = 'none';
+        }
+    };
+
+    window.m2048CloseGame = function () {
+const st = window.M2048_STATE;
+st.active = false;
+st.listeners.forEach(([el, ev, fn]) => el.removeEventListener(ev, fn));
+st.listeners = Array.of();
+const modal = document.getElementById('afcs-2048-modal');
+if (modal) modal.remove();
+};
+window.launch2048Game = function () {
+if (!window.M2048_CFG) start2048Data();
+if (!window.m2048SpawnTile) start2048Engine();
+window.m2048CloseGame();
+if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('game2048');
+const st = window.M2048_STATE;
+st.active = true;
+st.grid = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0));
+st.score = 0;
+st.claimedMilestones = Array.of();
+st.won2048 = false;
+st.keepPlaying = false;
+st.over = false;
+window.m2048SpawnTile();
+window.m2048SpawnTile();
+window.m2048BuildModal();
+window.m2048Render();
+};
+if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
+STATE.onSearchInput.push(function (query) {
+const clean = String(query || '').trim().toLowerCase();
+if (window.M2048_CFG.triggers.includes(clean)) {
+window.launch2048Game();
+}
+});
+}
 }

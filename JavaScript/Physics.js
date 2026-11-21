@@ -866,7 +866,27 @@
                                 : `rgba(224, 242, 254, ${alpha.toFixed(3)})`;
                     ctx.fill();
                 }
-
+                 if (b.contains('grief-highlights-active') && !b.contains('theme-griefer')) {
+                    for (let idx = 0; idx < 28; idx++) {
+                        const s = stars.at(idx);
+                        if (!s) continue;
+                        s.phase += s.speed;
+                        s.y -= 0.55 + s.r * 0.25;
+                        if (s.y < -12) {
+                            s.y = canvas.height + 12;
+                            s.x = Math.random() * canvas.width;
+                        }
+                        const drawX = s.x + Math.sin(s.phase * 1.4) * 10;
+                        const alpha = 0.35 + ((Math.sin(s.phase) + 1) / 2) * 0.65;
+                        const isWhite = idx % 3 === 0;
+                        ctx.beginPath();
+                        ctx.arc(drawX, s.y, s.r * 1.4, 0, Math.PI * 2);
+                        ctx.fillStyle = isWhite
+                            ? `rgba(255, 255, 255, ${alpha.toFixed(3)})`
+                            : `rgba(204, 0, 0, ${alpha.toFixed(3)})`;
+                        ctx.fill();
+                    }
+                }
                 requestAnimationFrame(drawStars);
             }
 

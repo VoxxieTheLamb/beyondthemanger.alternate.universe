@@ -2444,9 +2444,9 @@ body.panel-is-open[data-panel-dock="left"] .codex-tracker-btn {
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
 }
 .burj-elevator-hud {
-    top: 84px;
-    left: 24px;
-    right: auto;
+    top: 132px !important;
+    left: 20px !important;
+    right: auto !important;
     display: inline-flex;
     align-items: center;
     gap: 6px;
@@ -2987,14 +2987,144 @@ border-color: #facc15 !important;
 color: #fef08a !important;
 box-shadow: 0 8px 28px rgba(0, 0, 0, 0.95), 0 0 30px rgba(250, 204, 21, 0.85) !important;
 }
+body.theme-griefer {
+    background: radial-gradient(circle at 50% 18%, rgba(204, 0, 0, 0.36) 0%, rgba(120, 0, 0, 0.22) 38%, rgba(0, 0, 0, 1) 74%), #000000 !important;
+    background-attachment: fixed !important;
+    color: #ffffff !important;
+    box-shadow: inset 0 0 170px rgba(204, 0, 0, 0.48), inset 0 0 70px rgba(255, 255, 255, 0.1) !important;
+}
+
+body.theme-griefer::before {
+    content: "" !important;
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+    background: radial-gradient(circle at 50% 16%, rgba(220, 38, 38, 0.32) 0%, rgba(153, 27, 27, 0.16) 44%, transparent 72%) !important;
+    animation: solver-core-pulse 2.6s ease-in-out infinite alternate !important;
+}
+
+body.theme-griefer::after {
+    content: "" !important;
+    position: fixed !important;
+    inset: 0 !important;
+    pointer-events: none !important;
+    z-index: 1 !important;
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(255, 255, 255, 0.035) 0px,
+        rgba(255, 255, 255, 0.035) 1px,
+        transparent 1px,
+        transparent 4px
+    ) !important;
+    box-shadow: inset 0 0 165px rgba(204, 0, 0, 0.72), inset 0 0 50px rgba(255, 255, 255, 0.2) !important;
+    animation: curious-light-breathe 3.2s ease-in-out infinite !important;
+}
+
+body.theme-griefer .center-text h1 {
+    background: linear-gradient(180deg, #ffffff 22%, #fca5a5 60%, #cc0000 100%) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+    filter: drop-shadow(0 0 20px rgba(204, 0, 0, 0.85)) drop-shadow(0 4px 16px rgba(255, 255, 255, 0.35)) !important;
+}
+
+body.theme-griefer .subtitle-main {
+    background: linear-gradient(90deg, #ffffff, #ef4444) !important;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+    -webkit-text-fill-color: transparent !important;
+}
+
+body.theme-griefer #searchInput {
+    border-color: #ffffff !important;
+    background-color: rgba(8, 0, 0, 0.95) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 22px rgba(204, 0, 0, 0.9), 0 0 12px rgba(255, 255, 255, 0.45) !important;
+}
+
+body.theme-griefer .site-navbar,
+body.theme-griefer .synopsis-card,
+body.theme-griefer .story-stat,
+body.theme-griefer .event-detail-item,
+body.theme-griefer .timeline-section,
+body.theme-griefer .countdown-wrapper,
+body.theme-griefer .countdown-box,
+body.theme-griefer .scripture-card,
+body.theme-griefer .theme-banner {
+    background: linear-gradient(160deg, rgba(16, 0, 0, 0.95), rgba(0, 0, 0, 0.98)) !important;
+    border-color: #ffffff !important;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.95), 0 0 26px rgba(204, 0, 0, 0.5) !important;
+}
+
+body.theme-griefer .wave,
+body.theme-griefer .crest {
+    filter: hue-rotate(150deg) saturate(2) brightness(0.95) drop-shadow(0 0 8px rgba(204, 0, 0, 0.9)) !important;
+}
+
+body.theme-griefer .night-sky-canvas {
+    opacity: 1 !important;
+}
+
+body.grief-highlights-active .site-navbar,
+body.grief-highlights-active .synopsis-card,
+body.grief-highlights-active .side-panel,
+body.grief-highlights-active .vip-modal-card,
+body.grief-highlights-active .credits-modal-card,
+body.grief-highlights-active .codex-modal-card {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 24px rgba(204, 0, 0, 0.65), inset 0 0 16px rgba(204, 0, 0, 0.25) !important;
+}
+
+body.grief-highlights-active #searchInput,
+body.grief-highlights-active .filter-btn.active,
+body.grief-highlights-active .faction-btn.active,
+body.grief-highlights-active .story-pill,
+body.grief-highlights-active .theme-banner,
+body.grief-highlights-active .scripture-card,
+body.grief-highlights-active .countdown-wrapper,
+body.grief-highlights-active .burj-elevator-hud,
+body.grief-highlights-active button.theme-mode-pill,
+body.grief-highlights-active .settings-hub-btn,
+body.grief-highlights-active #afcs-arcade-dock-btn,
+body.grief-highlights-active #afcs-shop-dock-btn {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 16px rgba(204, 0, 0, 0.75), 0 0 6px rgba(255, 255, 255, 0.4) !important;
+}
+
+body.grief-highlights-active .PeoplePics:not(.is-filtered-out):not([data-role="Teacher"]) {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(204, 0, 0, 0.75), 0 0 6px rgba(255, 255, 255, 0.35) !important;
+}
+
+body.grief-highlights-active .PeoplePics:not([data-role="Teacher"])::before {
+    border-color: #ffffff !important;
+    box-shadow: 0 0 26px rgba(204, 0, 0, 0.95) !important;
+}
+
+body.grief-highlights-active .scroll-progress-bar {
+    background: linear-gradient(90deg, #000000, #cc0000, #ffffff) !important;
+    filter: drop-shadow(0 2px 8px rgba(204, 0, 0, 0.95)) !important;
+}
+
+body.grief-highlights-active .center-text h1 {
+    filter: drop-shadow(0 0 16px rgba(204, 0, 0, 0.75)) drop-shadow(0 2px 10px rgba(255, 255, 255, 0.35)) !important;
+}
+.theme-mode-pill.is-griefer,
+button.theme-mode-pill.is-griefer {
+    border-color: #ffffff !important;
+    background: linear-gradient(135deg, rgba(16, 0, 0, 0.96), rgba(153, 0, 0, 0.88)) !important;
+    color: #ffffff !important;
+    box-shadow: 0 0 18px rgba(204, 0, 0, 0.85), 0 0 10px rgba(255, 255, 255, 0.45) !important;
+}
 .settings-hub-btn {
-    top: 20px !important;
+    top: 82px !important;
     bottom: auto !important;
-    left: 24px !important;
+    left: 20px !important;
     right: auto !important;
-    width: 46px !important;
-    height: 46px !important;
-    font-size: 22px !important;
+    width: 42px !important;
+    height: 42px !important;
+    font-size: 20px !important;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -3015,13 +3145,14 @@ box-shadow: 0 8px 28px rgba(0, 0, 0, 0.95), 0 0 30px rgba(250, 204, 21, 0.85) !i
 }
 
 .settings-hub-popover {
-    top: 76px !important;
+    top: 132px !important;
     bottom: auto !important;
-    left: 24px !important;
+    left: 20px !important;
     right: auto !important;
     width: 265px !important;
     transform: translateY(-10px) scale(0.95);
 }
+
 
 .settings-hub-popover.is-open {
     transform: translateY(0) scale(1);
@@ -3203,5 +3334,95 @@ body.panel-is-open[data-panel-dock="left"] .audio-mixer-popover {
     border: 2px solid #ffffff;
     box-shadow: 0 0 10px rgba(56, 189, 248, 0.85);
     cursor: pointer;
+}
+/* #endregion */
+/* #region Theming*/
+.theme-drop-item {
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.14s ease, filter 0.14s ease, box-shadow 0.14s ease;
+}
+
+.theme-drop-item:hover {
+    filter: brightness(1.18);
+    transform: translateX(2px);
+}
+
+.theme-drop-item.is-active {
+    outline: 1.5px solid #ffffff;
+    outline-offset: -2px;
+}
+
+.theme-drop-item.is-blue {
+    background: linear-gradient(90deg, rgba(12, 36, 74, 0.95), rgba(7, 20, 44, 0.95)) !important;
+    color: #7dd3fc !important;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.35) !important;
+}
+
+.theme-drop-item.is-gold {
+    background: linear-gradient(90deg, rgba(66, 42, 6, 0.95), rgba(28, 18, 4, 0.95)) !important;
+    color: #fde047 !important;
+    border-bottom: 1px solid rgba(250, 204, 21, 0.4) !important;
+}
+
+.theme-drop-item.is-red {
+    background: linear-gradient(90deg, rgba(69, 10, 10, 0.95), rgba(30, 5, 5, 0.95)) !important;
+    color: #fca5a5 !important;
+    border-bottom: 1px solid rgba(239, 68, 68, 0.4) !important;
+}
+
+.theme-drop-item.is-neon {
+    background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 255, 102, 0.13) 0px,
+        rgba(0, 255, 102, 0.13) 2px,
+        rgba(2, 18, 10, 0.96) 2px,
+        rgba(2, 18, 10, 0.96) 4px
+    ) !important;
+    background-size: 100% 16px !important;
+    color: #00ff66 !important;
+    text-shadow: 0 0 8px rgba(0, 255, 102, 0.75) !important;
+    border-bottom: 1px solid rgba(0, 255, 102, 0.45) !important;
+    animation: drop-crt-scan 1.1s linear infinite !important;
+}
+
+.theme-drop-item.is-doomsday {
+    background: linear-gradient(90deg, rgba(6, 62, 46, 0.95), rgba(3, 28, 22, 0.95)) !important;
+    color: #6ee7b7 !important;
+    border-bottom: 1px solid rgba(16, 185, 129, 0.4) !important;
+}
+
+.theme-drop-item.is-faithian {
+    background: linear-gradient(90deg, rgba(30, 58, 138, 0.92), rgba(127, 29, 29, 0.92)) !important;
+    color: #ffffff !important;
+    border-bottom: 1px solid rgba(250, 204, 21, 0.45) !important;
+}
+
+.theme-drop-item.is-hamilton {
+    background: linear-gradient(90deg, rgba(44, 34, 12, 0.96), rgba(18, 14, 6, 0.96)) !important;
+    color: #fef08a !important;
+    font-family: Georgia, serif !important;
+    border-bottom: 1px solid rgba(234, 179, 8, 0.45) !important;
+}
+
+.theme-drop-item.is-epic {
+    background: linear-gradient(90deg, rgba(12, 48, 78, 0.95), rgba(55, 16, 24, 0.95)) !important;
+    color: #bae6fd !important;
+    border-bottom: 1px solid rgba(56, 189, 248, 0.4) !important;
+}
+
+.theme-drop-item.is-murderdrones {
+    background: linear-gradient(90deg, rgba(24, 8, 38, 0.97), rgba(10, 4, 16, 0.98)) !important;
+    color: #facc15 !important;
+    font-family: monospace !important;
+    border-bottom: 1px solid rgba(192, 132, 252, 0.5) !important;
+    animation: drop-solver-glitch 2.4s infinite !important;
+}
+
+.theme-drop-item.is-griefer {
+    color: #ffffff !important;
+    border-bottom: 1px solid #ffffff !important;
+    text-shadow: 0 0 8px rgba(255, 0, 0, 0.9) !important;
+    animation: drop-grief-pulse 1.8s ease-in-out infinite !important;
 }
 /* #endregion */

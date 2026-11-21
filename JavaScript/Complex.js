@@ -136,6 +136,15 @@ document.addEventListener('DOMContentLoaded', () => {
         startWordleUI();
         startHangmanData();
         startHangmanUI();
+        startMinesweeperData();
+        startMinesweeperEngine();
+        startMinesweeperUI();
+        startAfcsShopData();
+        startAfcsShopEffects();
+        startAfcsShopUI();
+        start2048Data();
+        start2048Engine();
+        start2048UI();
 
     }
     startAll();
