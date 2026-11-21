@@ -1043,6 +1043,34 @@ function startSecretCodex() {
             check: () => localStorage.getItem('afcs_murderdrones_unlocked') === 'true'
         },
         {
+            id: 'theme_griefer',
+            icon: '👑',
+            title: 'Grief\'s Return (Crimson & Void)',
+            hint: 'Acquire Doggie\'s legendary crimson aesthetic inside the AFCS Coin Shop.',
+            check: () => {
+                try {
+                    const owned = JSON.parse(localStorage.getItem('afcs_shop_owned') || '[]');
+                    return Array.isArray(owned) && owned.includes('theme_griefer');
+                } catch (e) {
+                    return false;
+                }
+            }
+        },
+        {
+            id: 'shop_collector',
+            icon: '🛒',
+            title: 'AFCS Coin Shop Patron',
+            hint: 'Spend your hard-earned AFCS Coins on a custom song, theme, trail, or title.',
+            check: () => {
+                try {
+                    const owned = JSON.parse(localStorage.getItem('afcs_shop_owned') || '[]');
+                    return Array.isArray(owned) && owned.length > 4;
+                } catch (e) {
+                    return false;
+                }
+            }
+        },
+        {
             id: 'guest_lebron',
             icon: '🏀',
             title: 'VIP Guest: King James',
@@ -1134,11 +1162,13 @@ function startSecretCodex() {
             check: () => localStorage.getItem('afcs_codex_bsod') === 'true'
         }
     );
+
     const trackerBtn = document.createElement('button');
     trackerBtn.type = 'button';
     trackerBtn.className = 'codex-tracker-btn';
     trackerBtn.title = 'View Hidden Secrets & Easter Egg Codex';
     document.body.appendChild(trackerBtn);
+
     const modalOverlay = document.createElement('div');
     modalOverlay.className = 'vip-modal-overlay';
     modalOverlay.innerHTML = [
@@ -1154,98 +1184,153 @@ function startSecretCodex() {
         '</div>'
     ].join('');
     document.body.appendChild(modalOverlay);
+
     const gridBody = modalOverlay.querySelector('#codexGridBody');
     const fillEl = modalOverlay.querySelector('#codexProgressFill');
     const subEl = modalOverlay.querySelector('#codexSubtitle');
     const closeBtn = modalOverlay.querySelector('.vip-close-btn');
     let lastUnlockedCount = -1;
-    
+
     function evaluateCodex(silent = false) {
         let unlockedCount = 0;
-        if (document.body.classList.contains('theme-red')) localStorage.setItem('afcs_codex_red', 'true')
-            const states = codexEntries.map(entry => {
+        if (document.body.classList.contains('theme-red')) localStorage.setItem('afcs_codex_red', 'true');
+        const states = codexEntries.map(entry => {
             const isDone = Boolean(entry.check());
             if (isDone) unlockedCount++;
             return { entry, isDone };
         });
-        
+
         const total = codexEntries.length;
         const isComplete = unlockedCount === total;
-        
+
         trackerBtn.textContent = isComplete
-        ? `👑 Secrets: ${unlockedCount}/${total}`
-        : `🏆 Secrets: ${unlockedCount}/${total}`;
+            ? `👑 Secrets: ${unlockedCount}/${total}`
+            : `🏆 Secrets: ${unlockedCount}/${total}`;
         trackerBtn.classList.toggle('is-complete', isComplete);
-        
+
         if (isComplete) {
             const navTitle = document.querySelector('.nav-school-title');
             if (navTitle && !navTitle.querySelector('.codex-master-badge')) {
                 const crown = document.createElement('span');
                 crown.className = 'codex-master-badge';
-                crown.textContent = 'MASTER ARCHIVIST';
-                navTitle.appendChild(crown);
-            }
+            crown.textContent = 'MASTER ARCHIVIST';
+            navTitle.appendChild(crown);
         }
-        
-        if (!silent && lastUnlockedCount !== -1 && unlockedCount > lastUnlockedCount) {
-            playBeep(587.33, 0.08, 'triangle', 0.04);
-            setTimeout(() => playBeep(880.00, 0.14, 'triangle', 0.045), 75);
-        }
-        lastUnlockedCount = unlockedCount;
-        
-        if (modalOverlay.classList.contains('active')) {
-            const pct = Math.round((unlockedCount / total) * 100);
-            fillEl.style.width = `${pct}%`;
-            subEl.textContent = isComplete
+    }
+
+    if (!silent && lastUnlockedCount !== -1 && unlockedCount > lastUnlockedCount) {
+        playBeep(587.33, 0.08, 'triangle', 0.04);
+        setTimeout(() => playBeep(880.00, 0.14, 'triangle', 0.045), 75);
+    }
+    lastUnlockedCount = unlockedCount;
+
+    if (modalOverlay.classList.contains('active')) {
+        const pct = Math.round((unlockedCount / total) * 100);
+        fillEl.style.width = `${pct}%`;
+        subEl.textContent = isComplete
             ? '100% COMPLETE! You uncovered every secret in Beyond The Manger!'
             : `${unlockedCount} of ${total} secrets discovered (${pct}%) — keep exploring!`;
-            
-            gridBody.innerHTML = states.map(({ entry, isDone }) => `
-                    <div class="codex-item ${isDone ? 'is-unlocked' : ''}">
-                        <div class="codex-icon">${isDone ? entry.icon : '🔒'}</div>
-                        <div class="codex-info">
-                            <span class="codex-title">${isDone ? entry.title : '??? Undiscovered Secret'}</span>
-                            <span class="codex-hint">${entry.hint}</span>
-                        </div>
-                    </div>
-                `).join('');
-        }
+
+        gridBody.innerHTML = states.map(({ entry, isDone }) => `
+            <div class="codex-item ${isDone ? 'is-unlocked' : ''}">
+                <div class="codex-icon">${isDone ? entry.icon : '🔒'}</div>
+                <div class="codex-info">
+                    <span class="codex-title">${isDone ? entry.title : '??? Undiscovered Secret'}</span>
+                    <span class="codex-hint">${entry.hint}</span>
+                </div>
+            </div>
+        `).join('');
     }
-    
-    trackerBtn.addEventListener('click', () => {
-        modalOverlay.classList.add('active');
-        evaluateCodex(true);
-        playBeep(640, 0.06, 'sine', 0.035);
-    });
-    closeBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
-    modalOverlay.addEventListener('click', (e) => {
-        if (e.target === modalOverlay) modalOverlay.classList.remove('active');
-    });
-    const origBsod = window.triggerAFCSBsod;
-    if (typeof origBsod === 'function') {
-        window.triggerAFCSBsod = function (...args) {
-            localStorage.setItem('afcs_codex_bsod', 'true');
-            evaluateCodex(true);
-            return origBsod.apply(this, args);
-        };
-    }
-    let kStep = 0;
-    const kSeq = Array.of('ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter');
-    window.addEventListener('keydown', (e) => {
-        const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-        if (key === kSeq.at(kStep)) {
-            kStep++;
-            if (kStep === kSeq.length) {
-                kStep = 0;
-                localStorage.setItem('afcs_codex_konami', 'true');
-                evaluateCodex(false);
-            }
-        } else {
-            kStep = key === kSeq.at(0) ? 1 : 0;
-        }
-    });
+}
+
+trackerBtn.addEventListener('click', () => {
+    modalOverlay.classList.add('active');
     evaluateCodex(true);
-    setInterval(() => evaluateCodex(false), 2500);
+    playBeep(640, 0.06, 'sine', 0.035);
+});
+closeBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
+modalOverlay.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+});
+
+const origBsod = window.triggerAFCSBsod;
+if (typeof origBsod === 'function') {
+    window.triggerAFCSBsod = function (...args) {
+        localStorage.setItem('afcs_codex_bsod', 'true');
+        evaluateCodex(true);
+        return origBsod.apply(this, args);
+    };
+}
+
+let kStep = 0;
+const kSeq = Array.of('ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter');
+window.addEventListener('keydown', (e) => {
+    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+    if (key === kSeq.at(kStep)) {
+        kStep++;
+        if (kStep === kSeq.length) {
+            kStep = 0;
+            localStorage.setItem('afcs_codex_konami', 'true');
+            evaluateCodex(false);
+        }
+    } else {
+        kStep = key === kSeq.at(0) ? 1 : 0;
+    }
+});
+
+evaluateCodex(true);
+setInterval(() => evaluateCodex(false), 2500);
+}
+
+function startConsoleSignature() {
+    const cardTotal = getCards().length;
+    const themeTotal = 10;
+    const bannerTitle = 'BEYOND THE MANGER: WHEN FAITH BECOMES THE KEY';
+    const bannerSub = `Grade 7 – Psalms • Paskong AFCS 2026 • ${cardTotal} Cast/Crew • ${themeTotal} Themes`;
+
+    try {
+        console.log(
+            `%c ★ ${bannerTitle} ★ %c\n%c${bannerSub}\n%cHint: Try searching "cornerstone", "lebron", "euler", "curry", "hamilton", "e=mc^2", "biscuits", "cyn", "arcade", or "shop"!`,
+            'background:linear-gradient(90deg,#0284c7,#facc15);color:#050a23;font-weight:900;font-size:13px;padding:6px 12px;border-radius:6px;',
+            '',
+            'color:#38bdf8;font-weight:bold;font-size:11.5px;margin-top:4px;',
+            'color:#fde047;font-style:italic;font-size:11px;'
+        );
+    } catch (_) { }
+
+    window.psalms = function (cmd = '') {
+        const clean = String(cmd).toLowerCase().trim();
+        if (clean === 'unlockall') {
+            Array.of(
+                'afcs_cornerstone_unlocked',
+                'afcs_neon_unlocked',
+                'afcs_doomsday_unlocked',
+                'afcs_faithian_unlocked',
+                'afcs_hamilton_unlocked',
+                'afcs_epic_unlocked',
+                'afcs_murderdrones_unlocked',
+                'afcs_lebron_unlocked',
+                'afcs_kawhi_unlocked',
+                'afcs_euler_unlocked',
+                'afcs_curry_unlocked',
+                'afcs_hamilton_guest_unlocked',
+                'afcs_einstein_unlocked',
+                'afcs_ndrone_unlocked',
+                'afcs_cyn_pet_active',
+                'uzi_solver_infected',
+                'afcs_codex_konami',
+                'afcs_codex_bsod'
+            ).forEach(k => localStorage.setItem(k, 'true'));
+            window.location.reload();
+            return 'All secrets unlocked! Reloading...';
+        }
+        if (clean === 'reset') {
+            localStorage.clear();
+            window.location.reload();
+            return 'All secrets wiped! Reloading...';
+        }
+        return 'Available commands: psalms("unlockall"), psalms("reset")';
+    };
 }
 function startConsoleSignature() {
     const cardTotal = getCards().length;
