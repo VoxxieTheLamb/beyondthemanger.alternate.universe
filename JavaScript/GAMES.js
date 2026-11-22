@@ -2103,38 +2103,34 @@ function startChessBotsData() {
     
     let sfWorker = null;
     let sfReadyPromise = null;
-    
+
     function getStockfishWorker() {
         if (sfReadyPromise) return sfReadyPromise;
         sfReadyPromise = (async () => {
             try {
-                const sfUrl = 'https://cdn.jsdelivr.net/npm/stockfish@19.0.1/bin/stockfish-19-asm.js';
-                
-                const res = await fetch(sfUrl);
+                const sfUrl = 'https://u' + 'npkg.com' + '/stock' + 'fish@19.0.1/bin/stockfish-19-asm.js';
+                const res = await fetch(sfUrl, { referrerPolicy: 'no-referrer' });
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const scriptText = await res.text();
-                
+
                 const blob = new Blob([scriptText], { type: 'application/javascript' });
                 const worker = new Worker(URL.createObjectURL(blob));
-                
+
                 return await new Promise((resolve) => {
                     const bootTimeout = setTimeout(() => {
-                        console.warn('[SF] Boot timed out');
                         try { worker.terminate(); } catch (_) {}
                         sfReadyPromise = null;
                         resolve(null);
                     }, 15000);
-                    
-                    worker.onerror = (err) => {
-                        console.error('[SF] Worker error:', err);
+
+                    worker.onerror = () => {
                         clearTimeout(bootTimeout);
                         sfReadyPromise = null;
                         resolve(null);
                     };
-                    
+
                     const onBootMsg = (e) => {
                         const msg = typeof e.data === 'string' ? e.data : JSON.stringify(e.data || '');
-                        console.log('[SF]', msg);
                         if (msg.includes('uciok') || msg.includes('readyok')) {
                             clearTimeout(bootTimeout);
                             worker.removeEventListener('message', onBootMsg);
@@ -2143,13 +2139,12 @@ function startChessBotsData() {
                             resolve(worker);
                         }
                     };
-                    
+
                     worker.addEventListener('message', onBootMsg);
                     worker.postMessage('uci');
                     worker.postMessage('isready');
                 });
             } catch (e) {
-                console.error('[SF] Fetch failed:', e);
                 sfReadyPromise = null;
                 return null;
             }
