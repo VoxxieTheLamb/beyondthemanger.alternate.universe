@@ -2103,7 +2103,7 @@ function startChessBotsData() {
     
     let sfWorker = null;
     let sfReadyPromise = null;
-
+    
     function getStockfishWorker() {
         if (sfReadyPromise) return sfReadyPromise;
         sfReadyPromise = (async () => {
@@ -2112,23 +2112,23 @@ function startChessBotsData() {
                 const res = await fetch(sfUrl, { referrerPolicy: 'no-referrer' });
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const scriptText = await res.text();
-
+                
                 const blob = new Blob([scriptText], { type: 'application/javascript' });
                 const worker = new Worker(URL.createObjectURL(blob));
-
+                
                 return await new Promise((resolve) => {
                     const bootTimeout = setTimeout(() => {
                         try { worker.terminate(); } catch (_) {}
                         sfReadyPromise = null;
                         resolve(null);
                     }, 15000);
-
+                    
                     worker.onerror = () => {
                         clearTimeout(bootTimeout);
                         sfReadyPromise = null;
                         resolve(null);
                     };
-
+                    
                     const onBootMsg = (e) => {
                         const msg = typeof e.data === 'string' ? e.data : JSON.stringify(e.data || '');
                         if (msg.includes('uciok') || msg.includes('readyok')) {
@@ -2139,7 +2139,7 @@ function startChessBotsData() {
                             resolve(worker);
                         }
                     };
-
+                    
                     worker.addEventListener('message', onBootMsg);
                     worker.postMessage('uci');
                     worker.postMessage('isready');
@@ -7421,19 +7421,32 @@ function startAfcsShopEffects() {
         lastSpark: 0
     };
     
+    window.SHOP_RUNTIME.trackedAudios = new Set();
+    
     window.shopHookAudioPlay = function () {
         const rt = window.SHOP_RUNTIME;
         if (rt.playHooked) return;
         rt.playHooked = true;
         
+        const OrigAudio = window.Audio;
+        window.Audio = function (src) {
+            const inst = new OrigAudio(src);
+            rt.trackedAudios.add(inst);
+            return inst;
+        };
+        window.Audio.prototype = OrigAudio.prototype;
+        
         const origPlay = HTMLAudioElement.prototype.play;
         HTMLAudioElement.prototype.play = function (...args) {
-            const src = String(this.currentSrc || this.src || '').toLowerCase();
-            const isShopTrack = (this === window.SHOP_RUNTIME.htmlAudio);
-            if (!isShopTrack && src.includes('praise')) {
-                window.SHOP_RUNTIME.defaultBgmRef = this;
+            const isShopTrack = (this === rt.htmlAudio || this === rt.previewAudio);
+            if (!isShopTrack) {
+                rt.trackedAudios.add(this);
+                const src = String(this.currentSrc || this.src || '').toLowerCase();
+                if (src.includes('praise')) {
+                    rt.defaultBgmRef = this;
+                }
                 const eq = window.shopGetEquipped();
-                if (eq.music !== 'music_default') {
+                if (eq.music !== 'music_default' || rt.previewId !== null) {
                     this.pause();
                     this.muted = true;
                     return Promise.resolve();
@@ -7441,6 +7454,31 @@ function startAfcsShopEffects() {
             }
             return origPlay.apply(this, args);
         };
+    };
+    window.shopHookAudioPlay();
+    
+    window.shopToggleDefaultBgm = function (shouldPlay) {
+        const rt = window.SHOP_RUNTIME;
+        const candidates = new Set([
+            ...document.querySelectorAll('audio'),
+            ...(rt.trackedAudios || [])
+        ]);
+        if (rt.defaultBgmRef) candidates.add(rt.defaultBgmRef);
+        if (typeof STATE !== 'undefined') {
+            [STATE.bgm, STATE.musicAudio, STATE.audio].forEach(a => { if (a) candidates.add(a); });
+        }
+        
+        candidates.forEach(a => {
+            if (!a || a === rt.htmlAudio || a === rt.previewAudio) return;
+            if (shouldPlay) {
+                a.muted = false;
+                a.volume = window.shopGetMusicVolume();
+                a.play().catch(() => {});
+            } else {
+                a.pause();
+                a.muted = true;
+            }
+        });
     };
     
     window.shopGetMusicVolume = function () {
@@ -7461,29 +7499,6 @@ function startAfcsShopEffects() {
         if (rt.htmlAudio) {
             rt.htmlAudio.volume = window.shopGetMusicVolume();
         }
-    };
-    
-    window.shopToggleDefaultBgm = function (shouldPlay) {
-        const candidates = Array.from(document.querySelectorAll('audio'));
-        if (window.SHOP_RUNTIME.defaultBgmRef && !candidates.includes(window.SHOP_RUNTIME.defaultBgmRef)) {
-            candidates.push(window.SHOP_RUNTIME.defaultBgmRef);
-        }
-        if (typeof STATE !== 'undefined') {
-            const stateAudio = STATE.bgm || STATE.musicAudio || STATE.audio;
-            if (stateAudio && !candidates.includes(stateAudio)) candidates.push(stateAudio);
-        }
-        
-        candidates.forEach(a => {
-            if (!a || a === window.SHOP_RUNTIME.htmlAudio) return;
-            if (shouldPlay) {
-                a.muted = false;
-                a.volume = window.shopGetMusicVolume();
-                a.play().catch(() => {});
-            } else {
-                a.pause();
-                a.muted = true;
-            }
-        });
     };
     
     window.shopStopMusic = function () {
