@@ -827,7 +827,7 @@ function startOnlineBattleNet() {
         }
         const s = document.createElement('script');
         s.id = 'afcsPeerJsScript';
-        s.src = 'https://jsdelivr.net';
+        s.src = 'https://unpkg.com';
         s.onload = () => callback();
         s.onerror = () => handlers.onStatus('Failed to load PeerJS. Check internet connection.');
         document.head.appendChild(s);
@@ -1966,9 +1966,10 @@ function startChessBotsData() {
         { id: 'wendy', name: 'Wendy', rating: 1500, reward: 30, depth: 1, blunderChance: 0.35, avatar: '👩', taunt: 'Ready for a solid club match?' },
         { id: 'nora', name: 'Nora', rating: 2200, reward: 50, depth: 2, blunderChance: 0.14, avatar: '👩‍🎓', taunt: 'Every pawn structure tells a story.' },
         { id: 'hikaru', name: 'Hikaru Nakamura', rating: 2820, reward: 100, depth: 2, blunderChance: 0.04, avatar: '⚡', taunt: 'Chat, takes, takes, takes—I literally do not care.' },
+        { id: 'levy', name: 'GothamChess', rating: 2350, reward: 75, depth: 2, blunderChance: 0.08, avatar: '🎙️', taunt: 'AND HE SACRIFICES... THE ROOOOOOK!!' },
         { id: 'magnus', name: 'Magnus Carlsen', rating: 2882, reward: 200, depth: 3, blunderChance: 0.02, avatar: '👑', taunt: 'I will squeeze water from a stone in this endgame.' },
         { id: 'deepblue', name: 'IBM Deep Blue', rating: 3000, reward: 250, depth: 3, blunderChance: 0.0, avatar: '🖥️', taunt: 'EVALUATING 200,000,000 POSITIONS PER SECOND...' },
-        { id: 'stockfish', name: 'Stockfish v16', rating: 3630, reward: 1000, depth: 4, blunderChance: 0.0, avatar: '🐟', taunt: 'MATE IN 14 DETECTED. RESISTANCE IS SUBOPTIMAL.' }
+        { id: 'stockfish', name: 'Stockfish v16', rating: 3630, reward: 1000, depth: 5, blunderChance: 0.0, avatar: '🐟', taunt: 'MATE IN 14 DETECTED. RESISTANCE IS SUBOPTIMAL.' }
     ];
     
     const PIECE_VALUES = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000 };
@@ -1993,27 +1994,6 @@ function startChessBotsData() {
                 if (!sq) continue;
                 const val = PIECE_VALUES[sq.type] || 0;
                 const pos = getSquareBonus(r, c);
-                total += sq.color === 'w' ? (val + pos) : -(val + pos);
-            }
-        }
-        return total;
-    }
-    
-    function evaluateBoard(game) {
-        if (game.in_checkmate()) {
-            return game.turn() === 'w' ? -99999 : 99999;
-        }
-        if (game.in_draw() || game.in_stalemate() || game.in_threefold_repetition()) {
-            return 0;
-        }
-        const board = game.board();
-        let total = 0;
-        for (let r = 0; r < 8; r++) {
-            for (let c = 0; c < 8; c++) {
-                const sq = board[r][c];
-                if (!sq) continue;
-                const val = PIECE_VALUES[sq.type] || 0;
-                const pos = sq.color === 'w' ? CENTER_BONUS[7 - r][c] : CENTER_BONUS[r][c];
                 total += sq.color === 'w' ? (val + pos) : -(val + pos);
             }
         }
@@ -2066,17 +2046,26 @@ function startChessBotsData() {
             return moves.at(Math.floor(Math.random() * moves.length));
         }
         
+        const maxDepth = bot.id === 'stockfish' ? 5 : bot.depth;
+        const deadline = performance.now() + (bot.id === 'stockfish' ? 650 : 250);
         let bestMove = moves.at(0);
-        let bestValue = Infinity;
         
-        for (const m of moves) {
-            game.move(m);
-            const boardVal = minimax(game, bot.depth - 1, -Infinity, Infinity, true);
-            game.undo();
-            if (boardVal < bestValue) {
-                bestValue = boardVal;
-                bestMove = m;
+        for (let d = 1; d <= maxDepth; d++) {
+            if (d > 1 && performance.now() > deadline) break;
+            let iterBest = moves.at(0);
+            let iterVal = Infinity;
+            
+            for (const m of moves) {
+                if (d > 2 && performance.now() > deadline) break;
+                game.move(m);
+                const boardVal = minimax(game, d - 1, -Infinity, Infinity, true);
+                game.undo();
+                if (boardVal < iterVal) {
+                    iterVal = boardVal;
+                    iterBest = m;
+                }
             }
+            bestMove = iterBest;
         }
         return bestMove;
     }
@@ -2100,23 +2089,6 @@ function startChessBotsUI() {
         wK: '♔', wQ: '♕', wR: '♖', wB: '♗', wN: '♘', wP: '♙',
         bK: '♚', bQ: '♛', bR: '♜', bB: '♝', bN: '♞', bP: '♟'
     };
-    
-    function ensureChessEngine(cb) {
-        if (typeof window.Chess !== 'undefined') {
-            cb();
-            return;
-        }
-        const existing = document.getElementById('afcsChessJsLib');
-        if (existing) {
-            existing.addEventListener('load', cb, { once: true });
-            return;
-        }
-        const s = document.createElement('script');
-        s.id = 'afcsChessJsLib';
-        s.src = 'https://cloudflare.com';
-        s.onload = () => cb();
-        document.head.appendChild(s);
-    }
     
     const modal = document.createElement('div');
     modal.className = 'chesscom-modal-overlay';
@@ -2185,12 +2157,13 @@ function startChessBotsUI() {
                 const isSel = selectedSq === sq;
                 const isTarget = legalTargets.includes(sq);
                 const isKingCheck = inCheck && piece && piece.type === 'k' && piece.color === turnColor;
+                const bg = isKingCheck ? '#ef4444' : isSel ? '#f6f669' : (isDark ? '#b58863' : '#f0d9b5');
                 
                 const glyph = piece ? UNICODE_PIECES[piece.color + piece.type.toUpperCase()] : '';
                 const pieceCls = piece ? (piece.color === 'w' ? 'cc-w-piece' : 'cc-b-piece') : '';
                 
                 html += `
-                    <button type="button" class="cc-sq ${isDark ? 'is-dark' : 'is-light'} ${isSel ? 'is-selected' : ''} ${isTarget ? 'is-legal' : ''} ${isKingCheck ? 'is-check' : ''}" data-sq="${sq}">
+                    <button type="button" class="cc-sq ${isDark ? 'is-dark' : 'is-light'} ${isSel ? 'is-selected' : ''} ${isTarget ? 'is-legal' : ''} ${isKingCheck ? 'is-check' : ''}" data-sq="${sq}" style="background:${bg} !important; aspect-ratio:1/1; line-height:1; border:none; padding:0; display:flex; align-items:center; justify-content:center; font-size:clamp(22px,5vw,34px);">
                         <span class="${pieceCls}">${glyph}</span>
                         ${isTarget && !piece ? '<span class="cc-dot"></span>' : ''}
                     </button>
@@ -2198,7 +2171,6 @@ function startChessBotsUI() {
             }
         }
         boardEl.innerHTML = html;
-        
         boardEl.querySelectorAll('.cc-sq').forEach(btn => {
             btn.addEventListener('click', () => handleSquareClick(btn.dataset.sq));
         });
@@ -2348,6 +2320,26 @@ function startChessBotsUI() {
             return false;
         });
     }
+}
+function ensureChessEngine(cb) {
+    if (typeof window.Chess !== 'undefined') {
+        cb();
+        return;
+    }
+    const existing = document.getElementById('afcsChessJsLib');
+    if (existing) {
+        existing.addEventListener('load', cb, { once: true });
+        return;
+    }
+    const s = document.createElement('script');
+    s.id = 'afcsChessJsLib';
+    s.src = 'https://cdnjs.cloudflare.com/ajax/libs/chess.js/0.10.3/chess.min.js';
+    s.onload = () => cb();
+    s.onerror = () => {
+        statusEl.style.color = '#fca5a5';
+        statusEl.textContent = '❌ Failed to load chess.js. Check internet connection.';
+    };
+    document.head.appendChild(s);
 }
 function startDoorsGameData() {
     window.DOORS_CFG = {
@@ -5523,7 +5515,7 @@ function startArcadeHubData() {
             title: 'Chess.com Bot Gauntlet',
             icon: '♟️',
             reward: '+10–1000 🪙',
-            hint: 'Challenge Martin, Magnus, or 2823...',
+            hint: 'Challenge Martin, Magnus, or the dreaded Fish...',
             triggers: Array.of('chess', 'chess.com', 'stockfish', '2823'),
             launch: () => {
                 if (typeof window.openChessBots === 'function') window.openChessBots();
@@ -7053,6 +7045,16 @@ function startAfcsShopData() {
             desc: 'A red, black, and white theme to showcase GRIEF\'s aesthetic, without the frame perfect clicks..',
             cssVars: ''
         },
+        {
+            id: 'theme_midnight_purple',
+            category: 'theme',
+            icon: '🌌',
+            name: 'Theme - Copper-9 Void',
+            price: 220,
+            desc: 'Deep violet glow inspired by Copper-9.',
+            cssVars: 'body { background-color: #0b0514 !important; color: #f3e8ff !important; } button, input { border-color: #a855f7 !important; }'
+        },
+        
         
         
         {
@@ -7254,6 +7256,58 @@ function startAfcsShopEffects() {
             rt.htmlAudio.src = '';
             rt.htmlAudio = null;
         }
+    };
+    window.SHOP_RUNTIME.previewAudio = null;
+    window.SHOP_RUNTIME.previewTimer = null;
+    window.SHOP_RUNTIME.previewId = null;
+    
+    window.shopStopPreview = function (resumeEquipped = true) {
+        const rt = window.SHOP_RUNTIME;
+        if (rt.previewTimer) clearTimeout(rt.previewTimer);
+        rt.previewTimer = null;
+        if (rt.previewAudio) {
+            rt.previewAudio.pause();
+            rt.previewAudio.src = '';
+            rt.previewAudio = null;
+        }
+        const wasPreviewing = rt.previewId !== null;
+        rt.previewId = null;
+        
+        if (wasPreviewing && resumeEquipped) {
+            const eq = window.shopGetEquipped();
+            const item = window.SHOP_CATALOG.find(x => x.id === eq.music);
+            window.shopApplyMusic(item);
+        }
+    };
+    
+    window.shopPreviewMusic = function (itemId) {
+        const rt = window.SHOP_RUNTIME;
+        if (rt.previewId === itemId) {
+            window.shopStopPreview(true);
+            if (document.getElementById('afcs-shop-modal')) window.openAfcsShop(window.SHOP_ACTIVE_TAB);
+            return;
+        }
+        
+        window.shopStopPreview(false);
+        const item = window.SHOP_CATALOG.find(x => x.id === itemId);
+        if (!item || !item.src) return;
+        
+        window.shopStopMusic();
+        window.shopToggleDefaultBgm(false);
+        
+        const audio = new Audio(item.src);
+        audio.volume = window.shopGetMusicVolume();
+        rt.previewAudio = audio;
+        rt.previewId = itemId;
+        
+        audio.play().catch(() => {});
+        
+        rt.previewTimer = setTimeout(() => {
+            window.shopStopPreview(true);
+            if (document.getElementById('afcs-shop-modal')) window.openAfcsShop(window.SHOP_ACTIVE_TAB);
+        }, 5000);
+        
+        if (document.getElementById('afcs-shop-modal')) window.openAfcsShop(window.SHOP_ACTIVE_TAB);
     };
     window.shopSyncThemePill = function () {
         const pill = document.querySelector('.theme-mode-pill');
@@ -7482,6 +7536,7 @@ function startAfcsShopUI() {
     window.SHOP_ACTIVE_TAB = 'all';
     
     window.shopBuyOrEquip = function (itemId) {
+        window.shopStopPreview(false); 
         const item = window.SHOP_CATALOG.find(x => x.id === itemId);
         if (!item) return;
         
@@ -7580,24 +7635,35 @@ function startAfcsShopUI() {
         btnBorder = '#eab308';
     }
     
+    const isPreviewing = window.SHOP_RUNTIME && window.SHOP_RUNTIME.previewId === item.id;
+    const previewBtnHtml = (item.category === 'music' && item.src)
+    ? `<button class="shop-preview-btn" data-id="${item.id}" style="margin-top:8px;width:100%;background:${isPreviewing ? '#7f1d1d' : '#1e293b'};color:${isPreviewing ? '#fca5a5' : '#7dd3fc'};border:1px solid ${isPreviewing ? '#ef4444' : '#38bdf8'};padding:7px 10px;border-radius:8px;font-weight:bold;cursor:pointer;font-size:0.8rem;">
+            ${isPreviewing ? '⏹️ STOP PREVIEW' : '🔊 PREVIEW (5s)'}
+           </button>`
+    : '';
+    
     return `
-                            <div style="background:linear-gradient(180deg,#1e293b 0%,#0f172a 100%);border:1px solid ${isEquipped ? '#4ade80' : '#334155'};border-radius:12px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;">
-                                <div>
-                                    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
-                                        <span style="font-size:1.8rem;">${item.icon}</span>
-                                        <span style="font-size:0.72rem;background:#090d16;border:1px solid #334155;color:#94a3b8;padding:3px 8px;border-radius:6px;text-transform:uppercase;font-weight:bold;">
-                                            ${item.category}
-                                        </span>
-                                    </div>
-                                    <div style="font-weight:800;font-size:1rem;color:#f8fafc;margin-bottom:4px;">${item.name}</div>
-                                    <p style="font-size:0.8rem;color:#94a3b8;line-height:1.4;margin:0;">${item.desc}</p>
-                                </div>
-                                <button class="shop-action-btn" data-id="${item.id}" style="margin-top:14px;width:100%;background:${btnBg};color:#fff;border:1px solid ${btnBorder};padding:9px 12px;border-radius:8px;font-weight:800;cursor:pointer;font-size:0.85rem;">
-                                    ${btnText}
-                                </button>
-                            </div>
-                        `;
+        <div style="background:linear-gradient(180deg,#1e293b 0%,#0f172a 100%);border:1px solid ${isEquipped ? '#4ade80' : '#334155'};border-radius:12px;padding:16px;display:flex;flex-direction:column;justify-content:space-between;">
+            <div>
+                <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;">
+                    <span style="font-size:1.8rem;">${item.icon}</span>
+                    <span style="font-size:0.72rem;background:#090d16;border:1px solid #334155;color:#94a3b8;padding:3px 8px;border-radius:6px;text-transform:uppercase;font-weight:bold;">
+                        ${item.category}
+                    </span>
+                </div>
+                <div style="font-weight:800;font-size:1rem;color:#f8fafc;margin-bottom:4px;">${item.name}</div>
+                <p style="font-size:0.8rem;color:#94a3b8;line-height:1.4;margin:0;">${item.desc}</p>
+            </div>
+            <div>
+                ${previewBtnHtml}
+                <button class="shop-action-btn" data-id="${item.id}" style="margin-top:8px;width:100%;background:${btnBg};color:#fff;border:1px solid ${btnBorder};padding:9px 12px;border-radius:8px;font-weight:800;cursor:pointer;font-size:0.85rem;">
+                    ${btnText}
+                </button>
+            </div>
+        </div>
+    `;
 }).join('')}
+
                 </div>
             </div>
         `;
@@ -7605,6 +7671,7 @@ function startAfcsShopUI() {
 document.body.appendChild(modal);
 
 const closeShop = () => {
+    window.shopStopPreview(true);
     modal.remove();
     window.removeEventListener('keydown', escHandler);
 };
@@ -7624,6 +7691,9 @@ modal.querySelectorAll('.shop-tab-btn').forEach(btn => {
 
 modal.querySelectorAll('.shop-action-btn').forEach(btn => {
     btn.onclick = () => window.shopBuyOrEquip(btn.getAttribute('data-id'));
+});
+modal.querySelectorAll('.shop-preview-btn').forEach(btn => {
+    btn.onclick = () => window.shopPreviewMusic(btn.getAttribute('data-id'));
 });
 };
 
