@@ -271,12 +271,16 @@
     }
 }
 @keyframes cyn-pet-waddle {
-    0% { transform: translateY(0) rotate(-6deg); }
-    100% { transform: translateY(-5px) rotate(6deg); }
+    0% { transform: rotate(calc(var(--pet-rot, 0deg) - 6deg)) translateY(0); }
+    100% { transform: rotate(calc(var(--pet-rot, 0deg) + 6deg)) translateY(-5px); }
 }
 @keyframes cyn-pet-waddle-flip {
-    0% { transform: scaleX(-1) translateY(0) rotate(-6deg); }
-    100% { transform: scaleX(-1) translateY(-5px) rotate(6deg); }
+    0% { transform: rotate(calc(var(--pet-rot, 0deg) - 6deg)) scaleX(-1) translateY(0); }
+    100% { transform: rotate(calc(var(--pet-rot, 0deg) + 6deg)) scaleX(-1) translateY(-5px); }
+}
+@keyframes cyn-solver-form-spin {
+    from { transform: rotate(0deg) scale(1); }
+    to { transform: rotate(360deg) scale(1.06); }
 }
 @keyframes curious-light-breathe {
     0%, 100% {
@@ -555,12 +559,12 @@
     100% { background-position: 0 16px; }
 }
 /*
-    SIR BEFORE YOU FLAME ME FOR TS
-    THEY CONSENTED TO THIS
-    THEY AGREED TO IT
-    SUPPOSE IT DOESN'T WORK OUT
-    THEN
-    I'LL REMOVE IT
+SIR BEFORE YOU FLAME ME FOR TS
+THEY CONSENTED TO THIS
+THEY AGREED TO IT
+SUPPOSE IT DOESN'T WORK OUT
+THEN
+I'LL REMOVE IT
 */
 /* #endregion */
 /* #region Media Stuff */
@@ -570,12 +574,12 @@
         width: 100%;
         justify-self: center;
     }
-
+    
     body.panel-is-open[data-panel-dock="center"] .People,
     body.panel-is-open[data-panel-dock="bottom"] .People {
         grid-template-columns: repeat(var(--split-cols, 2), minmax(115px, 1fr)) var(--split-gap, 560px) repeat(var(--split-cols, 2), minmax(115px, 1fr));
     }
-
+    
     body.panel-is-open[data-panel-dock="bottom"] .main-content-layout {
         padding-bottom: 140px;
     }

@@ -597,7 +597,7 @@ function startSearchSecrets() {
                 <span>${active ? '✓' : ''}</span>
             </button>`;
         }).join('');
-
+        
         themeMenu.querySelectorAll('.theme-drop-item').forEach(btn => {
             btn.onclick = (e) => {
                 e.stopPropagation();
@@ -1162,13 +1162,13 @@ function startSecretCodex() {
             check: () => localStorage.getItem('afcs_codex_bsod') === 'true'
         }
     );
-
+    
     const trackerBtn = document.createElement('button');
     trackerBtn.type = 'button';
     trackerBtn.className = 'codex-tracker-btn';
     trackerBtn.title = 'View Hidden Secrets & Easter Egg Codex';
     document.body.appendChild(trackerBtn);
-
+    
     const modalOverlay = document.createElement('div');
     modalOverlay.className = 'vip-modal-overlay';
     modalOverlay.innerHTML = [
@@ -1184,13 +1184,13 @@ function startSecretCodex() {
         '</div>'
     ].join('');
     document.body.appendChild(modalOverlay);
-
+    
     const gridBody = modalOverlay.querySelector('#codexGridBody');
     const fillEl = modalOverlay.querySelector('#codexProgressFill');
     const subEl = modalOverlay.querySelector('#codexSubtitle');
     const closeBtn = modalOverlay.querySelector('.vip-close-btn');
     let lastUnlockedCount = -1;
-
+    
     function evaluateCodex(silent = false) {
         let unlockedCount = 0;
         if (document.body.classList.contains('theme-red')) localStorage.setItem('afcs_codex_red', 'true');
@@ -1199,39 +1199,39 @@ function startSecretCodex() {
             if (isDone) unlockedCount++;
             return { entry, isDone };
         });
-
+        
         const total = codexEntries.length;
         const isComplete = unlockedCount === total;
-
+        
         trackerBtn.textContent = isComplete
-            ? `👑 Secrets: ${unlockedCount}/${total}`
-            : `🏆 Secrets: ${unlockedCount}/${total}`;
+        ? `👑 Secrets: ${unlockedCount}/${total}`
+        : `🏆 Secrets: ${unlockedCount}/${total}`;
         trackerBtn.classList.toggle('is-complete', isComplete);
-
+        
         if (isComplete) {
             const navTitle = document.querySelector('.nav-school-title');
             if (navTitle && !navTitle.querySelector('.codex-master-badge')) {
                 const crown = document.createElement('span');
                 crown.className = 'codex-master-badge';
-            crown.textContent = 'MASTER ARCHIVIST';
-            navTitle.appendChild(crown);
+                crown.textContent = 'MASTER ARCHIVIST';
+                navTitle.appendChild(crown);
+            }
         }
-    }
-
-    if (!silent && lastUnlockedCount !== -1 && unlockedCount > lastUnlockedCount) {
-        playBeep(587.33, 0.08, 'triangle', 0.04);
-        setTimeout(() => playBeep(880.00, 0.14, 'triangle', 0.045), 75);
-    }
-    lastUnlockedCount = unlockedCount;
-
-    if (modalOverlay.classList.contains('active')) {
-        const pct = Math.round((unlockedCount / total) * 100);
-        fillEl.style.width = `${pct}%`;
-        subEl.textContent = isComplete
+        
+        if (!silent && lastUnlockedCount !== -1 && unlockedCount > lastUnlockedCount) {
+            playBeep(587.33, 0.08, 'triangle', 0.04);
+            setTimeout(() => playBeep(880.00, 0.14, 'triangle', 0.045), 75);
+        }
+        lastUnlockedCount = unlockedCount;
+        
+        if (modalOverlay.classList.contains('active')) {
+            const pct = Math.round((unlockedCount / total) * 100);
+            fillEl.style.width = `${pct}%`;
+            subEl.textContent = isComplete
             ? '100% COMPLETE! You uncovered every secret in Beyond The Manger!'
             : `${unlockedCount} of ${total} secrets discovered (${pct}%) — keep exploring!`;
-
-        gridBody.innerHTML = states.map(({ entry, isDone }) => `
+            
+            gridBody.innerHTML = states.map(({ entry, isDone }) => `
             <div class="codex-item ${isDone ? 'is-unlocked' : ''}">
                 <div class="codex-icon">${isDone ? entry.icon : '🔒'}</div>
                 <div class="codex-info">
@@ -1240,46 +1240,46 @@ function startSecretCodex() {
                 </div>
             </div>
         `).join('');
-    }
-}
-
-trackerBtn.addEventListener('click', () => {
-    modalOverlay.classList.add('active');
-    evaluateCodex(true);
-    playBeep(640, 0.06, 'sine', 0.035);
-});
-closeBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
-modalOverlay.addEventListener('click', (e) => {
-    if (e.target === modalOverlay) modalOverlay.classList.remove('active');
-});
-
-const origBsod = window.triggerAFCSBsod;
-if (typeof origBsod === 'function') {
-    window.triggerAFCSBsod = function (...args) {
-        localStorage.setItem('afcs_codex_bsod', 'true');
-        evaluateCodex(true);
-        return origBsod.apply(this, args);
-    };
-}
-
-let kStep = 0;
-const kSeq = Array.of('ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter');
-window.addEventListener('keydown', (e) => {
-    const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
-    if (key === kSeq.at(kStep)) {
-        kStep++;
-        if (kStep === kSeq.length) {
-            kStep = 0;
-            localStorage.setItem('afcs_codex_konami', 'true');
-            evaluateCodex(false);
         }
-    } else {
-        kStep = key === kSeq.at(0) ? 1 : 0;
     }
-});
-
-evaluateCodex(true);
-setInterval(() => evaluateCodex(false), 2500);
+    
+    trackerBtn.addEventListener('click', () => {
+        modalOverlay.classList.add('active');
+        evaluateCodex(true);
+        playBeep(640, 0.06, 'sine', 0.035);
+    });
+    closeBtn.addEventListener('click', () => modalOverlay.classList.remove('active'));
+    modalOverlay.addEventListener('click', (e) => {
+        if (e.target === modalOverlay) modalOverlay.classList.remove('active');
+    });
+    
+    const origBsod = window.triggerAFCSBsod;
+    if (typeof origBsod === 'function') {
+        window.triggerAFCSBsod = function (...args) {
+            localStorage.setItem('afcs_codex_bsod', 'true');
+            evaluateCodex(true);
+            return origBsod.apply(this, args);
+        };
+    }
+    
+    let kStep = 0;
+    const kSeq = Array.of('ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a', 'Enter');
+    window.addEventListener('keydown', (e) => {
+        const key = e.key.length === 1 ? e.key.toLowerCase() : e.key;
+        if (key === kSeq.at(kStep)) {
+            kStep++;
+            if (kStep === kSeq.length) {
+                kStep = 0;
+                localStorage.setItem('afcs_codex_konami', 'true');
+                evaluateCodex(false);
+            }
+        } else {
+            kStep = key === kSeq.at(0) ? 1 : 0;
+        }
+    });
+    
+    evaluateCodex(true);
+    setInterval(() => evaluateCodex(false), 2500);
 }
 
 function startConsoleSignature() {
@@ -1287,7 +1287,7 @@ function startConsoleSignature() {
     const themeTotal = 10;
     const bannerTitle = 'BEYOND THE MANGER: WHEN FAITH BECOMES THE KEY';
     const bannerSub = `Grade 7 – Psalms • Paskong AFCS 2026 • ${cardTotal} Cast/Crew • ${themeTotal} Themes`;
-
+    
     try {
         console.log(
             `%c ★ ${bannerTitle} ★ %c\n%c${bannerSub}\n%cHint: Try searching "cornerstone", "lebron", "euler", "curry", "hamilton", "e=mc^2", "biscuits", "cyn", "arcade", or "shop"!`,
@@ -1297,7 +1297,7 @@ function startConsoleSignature() {
             'color:#fde047;font-style:italic;font-size:11px;'
         );
     } catch (_) { }
-
+    
     window.psalms = function (cmd = '') {
         const clean = String(cmd).toLowerCase().trim();
         if (clean === 'unlockall') {
@@ -1387,7 +1387,7 @@ function startAfcsCoinGuard() {
     const SIG_KEY = 'afcs_coins_sig';
     const SALT = 'AFCS_PSALMS_2026_CORNERSTONE_118_22';
     let allowAuthorizedWrite = false;
-
+    
     function computeSig(val) {
         const str = SALT + ':' + String(val);
         let h1 = 0xdeadbeef;
@@ -1401,10 +1401,10 @@ function startAfcsCoinGuard() {
         h2 = Math.imul(h2 ^ (h2 >>> 16), 2246822507) ^ Math.imul(h1 ^ (h1 >>> 13), 3266489909);
         return (4294967296 * (2097151 & h2) + (h1 >>> 0)).toString(36);
     }
-
+    
     const origSetItem = Storage.prototype.setItem;
     const origGetItem = Storage.prototype.getItem;
-
+    
     function getVerifiedCoins() {
         const raw = origGetItem.call(localStorage, COIN_KEY);
         const sig = origGetItem.call(localStorage, SIG_KEY);
@@ -1420,11 +1420,11 @@ function startAfcsCoinGuard() {
         }
         return parsed;
     }
-
+    
     let lastVerified = getVerifiedCoins();
     origSetItem.call(localStorage, COIN_KEY, String(lastVerified));
     origSetItem.call(localStorage, SIG_KEY, computeSig(lastVerified));
-
+    
     function triggerCheatAlert() {
         if (typeof triggerScreenGlitch === 'function') triggerScreenGlitch(220);
         if (typeof playBeep === 'function') playBeep(140, 0.22, 'sawtooth', 0.06);
@@ -1437,7 +1437,7 @@ function startAfcsCoinGuard() {
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2800);
     }
-
+    
     Storage.prototype.setItem = function (key, value) {
         if (this === localStorage && (key === COIN_KEY || key === SIG_KEY) && !allowAuthorizedWrite) {
             const numVal = parseInt(String(value), 10);
@@ -1455,7 +1455,7 @@ function startAfcsCoinGuard() {
         }
         return origSetItem.apply(this, arguments);
     };
-
+    
     window.afcsSyncCoins = function (nextAmount) {
         const clean = Math.max(0, Math.floor(Number(nextAmount) || 0));
         lastVerified = clean;
@@ -1467,7 +1467,7 @@ function startAfcsCoinGuard() {
         if (badge) badge.textContent = clean + ' 🪙';
         return clean;
     };
-
+    
     window.addEventListener('storage', (e) => {
         if (e.key === COIN_KEY || e.key === SIG_KEY) {
             const checked = getVerifiedCoins();

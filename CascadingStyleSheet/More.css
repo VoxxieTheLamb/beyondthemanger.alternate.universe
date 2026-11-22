@@ -31,9 +31,9 @@ body.theme-hamilton * {
     border: 2px solid #78350f;
     border-radius: 4px 12px 6px 10px;
     box-shadow:
-        0 14px 32px rgba(0, 0, 0, 0.65),
-        inset 0 0 24px rgba(146, 64, 14, 0.25),
-        0 0 0 3px rgba(245, 158, 11, 0.25);
+    0 14px 32px rgba(0, 0, 0, 0.65),
+    inset 0 0 24px rgba(146, 64, 14, 0.25),
+    0 0 0 3px rgba(245, 158, 11, 0.25);
     font-family: Georgia, 'Times New Roman', serif;
     z-index: 99999;
     animation: parchmentUnfurl 0.18s cubic-bezier(0.22, 1, 0.36, 1);
@@ -145,9 +145,9 @@ body.theme-epic * {
     border: 2px solid #facc15;
     border-radius: 12px;
     box-shadow:
-        0 16px 36px rgba(0, 0, 0, 0.82),
-        0 0 24px rgba(56, 189, 248, 0.42),
-        inset 0 0 18px rgba(250, 204, 21, 0.16);
+    0 16px 36px rgba(0, 0, 0, 0.82),
+    0 0 24px rgba(56, 189, 248, 0.42),
+    inset 0 0 18px rgba(250, 204, 21, 0.16);
     backdrop-filter: blur(12px);
     z-index: 99999;
     animation: olympusDrop 0.18s cubic-bezier(0.22, 1, 0.36, 1);
@@ -241,9 +241,9 @@ body.theme-doomsday * {
     border: 2px solid #10b981;
     border-radius: 8px;
     box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.88),
-        0 0 26px rgba(16, 185, 129, 0.45),
-        inset 0 0 18px rgba(16, 185, 129, 0.18);
+    0 18px 40px rgba(0, 0, 0, 0.88),
+    0 0 26px rgba(16, 185, 129, 0.45),
+    inset 0 0 18px rgba(16, 185, 129, 0.18);
     backdrop-filter: blur(12px);
     font-family: 'Consolas', 'Courier New', monospace;
     z-index: 99999;
@@ -341,9 +341,9 @@ body.theme-faithian * {
     border: 2px solid #facc15;
     border-radius: 14px;
     box-shadow:
-        0 18px 38px rgba(0, 0, 0, 0.82),
-        0 0 24px rgba(239, 68, 68, 0.45),
-        0 0 24px rgba(37, 99, 235, 0.45);
+    0 18px 38px rgba(0, 0, 0, 0.82),
+    0 0 24px rgba(239, 68, 68, 0.45),
+    0 0 24px rgba(37, 99, 235, 0.45);
     backdrop-filter: blur(12px);
     z-index: 99999;
     animation: faithianPop 0.18s cubic-bezier(0.22, 1, 0.36, 1);
@@ -451,9 +451,9 @@ body.theme-mischievous * {
     border: 2px solid #ef4444;
     border-radius: 14px;
     box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.9),
-        0 0 28px rgba(239, 68, 68, 0.58),
-        inset 0 0 20px rgba(220, 38, 38, 0.22);
+    0 18px 40px rgba(0, 0, 0, 0.9),
+    0 0 28px rgba(239, 68, 68, 0.58),
+    inset 0 0 20px rgba(220, 38, 38, 0.22);
     backdrop-filter: blur(12px);
     z-index: 99999;
     animation: mischievousPop 0.18s cubic-bezier(0.22, 1, 0.36, 1);
@@ -563,9 +563,9 @@ body.search-fx-cornerstone * {
     border: 2px solid #fde047;
     border-radius: 14px;
     box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.85),
-        0 0 28px rgba(250, 204, 21, 0.5),
-        inset 0 0 20px rgba(254, 240, 138, 0.18);
+    0 18px 40px rgba(0, 0, 0, 0.85),
+    0 0 28px rgba(250, 204, 21, 0.5),
+    inset 0 0 20px rgba(254, 240, 138, 0.18);
     backdrop-filter: blur(12px);
     z-index: 99999;
     animation: curiousGlowIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);
@@ -707,9 +707,9 @@ body.party-mode * {
     border: 2px solid #00ff88;
     border-radius: 6px;
     box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.9),
-        0 0 26px rgba(0, 255, 136, 0.45),
-        inset 0 0 18px rgba(0, 240, 255, 0.16);
+    0 18px 40px rgba(0, 0, 0, 0.9),
+    0 0 26px rgba(0, 255, 136, 0.45),
+    inset 0 0 18px rgba(0, 240, 255, 0.16);
     backdrop-filter: blur(12px);
     font-family: 'Consolas', 'Courier New', monospace;
     z-index: 99999;
@@ -808,9 +808,9 @@ body:not(.theme-hamilton):not(.theme-epic):not(.theme-doomsday):not(.theme-faith
     border: 2px solid #38bdf8;
     border-radius: 14px;
     box-shadow:
-        0 18px 40px rgba(0, 0, 0, 0.85),
-        0 0 28px rgba(56, 189, 248, 0.5),
-        inset 0 0 20px rgba(186, 230, 253, 0.18);
+    0 18px 40px rgba(0, 0, 0, 0.85),
+    0 0 28px rgba(56, 189, 248, 0.5),
+    inset 0 0 20px rgba(186, 230, 253, 0.18);
     backdrop-filter: blur(12px);
     z-index: 99999;
     animation: guidingMistIn 0.18s cubic-bezier(0.22, 1, 0.36, 1);

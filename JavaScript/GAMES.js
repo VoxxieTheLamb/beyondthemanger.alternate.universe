@@ -4058,7 +4058,7 @@ function startGdDeadlockedLevel() {
                 addBlock(startX + i * step, y, w, h);
             }
         };
-
+        
         const addBlockBlock = (startX, startY, cols, rows, w = 28, h = 28) => {
             for (let r = 0; r < rows; r++) {
                 for (let c = 0; c < cols; c++) {
@@ -4069,14 +4069,14 @@ function startGdDeadlockedLevel() {
         const addSlope = (x, y, w, h, dir) => {
             st.obstacles.push({ type: 'slope', x: x, y: y, w: w || 28, h: h || 28, dir: dir || 'tl' });
         };
-
+        
         const addSlopeRow = (startX, startY, count, dir, w = 28, h = 28) => {
             const dy = (dir === 'tr' || dir === 'br') ? h : -h;
             for (let i = 0; i < count; i++) {
                 addSlope(startX + i * w, startY + i * dy, w, h, dir);
             }
         };
-
+        
         const addTopPyramid = (startX, steps, flatCols = 2, extraH = 0) => {
             for (let i = 0; i < steps; i++) {
                 if (i > 0) addBlockBlock(startX + i * 28, cY, 1, i, 28, 28);
@@ -4094,7 +4094,7 @@ function startGdDeadlockedLevel() {
                 addSlope(rightStart + i * 28, cY + rowCount * 28 + extraH, 28, 28, 'tl');
             }
         };
-
+        
         const addBottomPyramid = (startX, steps, flatCols = 2, extraH = 0) => {
             for (let i = 0; i < steps; i++) {
                 if (i > 0) addBlockBlock(startX + i * 28, gY - i * 28, 1, i, 28, 28);
@@ -4141,31 +4141,31 @@ function startGdDeadlockedLevel() {
         
         addPortal(2200, 'mode', 'wave', '#38bdf8', 'WAVE');
         addPortal(2260, 'speed', 1.28, '#f43f5e', '2.5X NC WAVE');
-
+        
         for (let wx = 2440; wx <= 3940; wx += 520) {
             addTopPyramid(wx, 4, 2, 14);
             addBottomPyramid(wx + 140, 3, 2, 14);
-
+            
             addSaw(wx + 355, cY + 145, 20);
-
+            
             addSlope(wx + 395, cY + 66, 28, 28, 'bl');
             addSlope(wx + 423, cY + 66, 28, 28, 'br');
             addSlope(wx + 395, cY + 94, 28, 28, 'tl');
             addSlope(wx + 423, cY + 94, 28, 28, 'tr');
-
+            
             addSlope(wx + 395, gY - 122, 28, 28, 'bl');
             addSlope(wx + 423, gY - 122, 28, 28, 'br');
             addSlope(wx + 395, gY - 94, 28, 28, 'tl');
             addSlope(wx + 423, gY - 94, 28, 28, 'tr');
-
+            
             addSaw(wx + 485, cY + 145, 20);
         }
-
+        
         addPortal(4380, 'mini', true, '#a855f7', 'MINI WAVE');
         for (let mx = 4560; mx <= 5440; mx += 220) {
             addBlock(mx, gY - 125, 28, 125);
             addSpike(mx + 1, gY - 125, true, 26, 26);
-
+            
             addBlock(mx + 110, cY, 28, 125);
             addSpike(mx + 111, cY + 151, false, 26, 26);
         }
@@ -4173,10 +4173,10 @@ function startGdDeadlockedLevel() {
         addPortal(5600, 'mini', false, '#22c55e', 'NORMAL');
         addPortal(5660, 'mode', 'ship', '#ec4899', 'SHIP');
         addPortal(5720, 'speed', 1.15, '#fbbf24', '2X SPEED');
-
+        
         addBlockBlock(5940, cY, 78, 4, 28, 28);
         addBlockBlock(5940, gY - 112, 78, 4, 28, 28);
-
+        
         for (let sx = 6100; sx <= 7950; sx += 310) {
             if ((sx / 310) % 2 === 0) {
                 addPortal(sx, 'gravity', -1, '#3b82f6', 'GRAVITY FLIP');
@@ -4188,26 +4188,26 @@ function startGdDeadlockedLevel() {
         addPortal(8350, 'gravity', 1, '#eab308', 'NORMAL GRAV');
         addPortal(8410, 'mode', 'ufo', '#f97316', 'UFO');
         addPortal(8470, 'speed', 1.2, '#fbbf24', '2X UFO');
-
+        
         for (let ux = 8650; ux <= 10150; ux += 380) {
             addBlockBlock(ux, cY, 2, 3, 28, 28);
             addSpike(ux + 1, cY + 112, false, 26, 28);
             addSpike(ux + 29, cY + 112, false, 26, 28);
-
+            
             addBlockBlock(ux, gY - 84, 2, 3, 28, 28);
             addSpike(ux + 1, gY - 84, true, 26, 28);
             addSpike(ux + 29, gY - 84, true, 26, 28);
-
+            
             addOrb(ux + 115, cY + 145, 'yellow');
-
+            
             addBlockBlock(ux + 190, cY, 2, 5, 28, 28);
             addSpike(ux + 191, cY + 168, false, 26, 28);
             addSpike(ux + 219, cY + 168, false, 26, 28);
-
+            
             addBlockBlock(ux + 190, gY - 28, 2, 1, 28, 28);
             addSpike(ux + 191, gY - 28, true, 26, 28);
             addSpike(ux + 219, gY - 28, true, 26, 28);
-
+            
             addSaw(ux + 305, cY + 85, 20);
             addOrb(ux + 305, gY - 85, 'blue');
             addPortal(ux + 355, 'gravity', 1, '#eab308', 'NORM');
@@ -4223,34 +4223,34 @@ function startGdDeadlockedLevel() {
         
         addPortal(12450, 'mode', 'wave', '#38bdf8', 'FINAL NC WAVE');
         addPortal(12510, 'speed', 1.34, '#f43f5e', '3X BOSS NC');
-
+        
         for (let bx = 12720; bx <= 14520; bx += 600) {
             addBottomPyramid(bx, 4, 1, 14);
             addTopPyramid(bx + 130, 4, 1, 14);
-
+            
             addSaw(bx + 295, cY + 145, 22);
-
+            
             addSlope(bx + 340, cY + 52, 28, 28, 'bl');
             addSlope(bx + 368, cY + 52, 28, 28, 'br');
             addSlope(bx + 340, cY + 80, 28, 28, 'tl');
             addSlope(bx + 368, cY + 80, 28, 28, 'tr');
-
+            
             addSlope(bx + 340, cY + 118, 28, 28, 'bl');
             addSlope(bx + 368, cY + 118, 28, 28, 'br');
             addSlope(bx + 340, cY + 146, 28, 28, 'tl');
             addSlope(bx + 368, cY + 146, 28, 28, 'tr');
-
+            
             addSlope(bx + 340, gY - 108, 28, 28, 'bl');
             addSlope(bx + 368, gY - 108, 28, 28, 'br');
             addSlope(bx + 340, gY - 80, 28, 28, 'tl');
             addSlope(bx + 368, gY - 80, 28, 28, 'tr');
-
+            
             addPortal(bx + 440, 'gravity', ((bx / 600) % 2 === 0) ? -1 : 1, '#3b82f6', 'GRAV WAVE');
-
+            
             addTopPyramid(bx + 475, 3, 1, 20);
             addBottomPyramid(bx + 475, 3, 1, 20);
         }
-
+        
         addPortal(14940, 'gravity', 1, '#eab308', 'NORMAL GRAV');
         
         addPortal(15020, 'mode', 'ship', '#ec4899', 'FINAL SHIP');
@@ -4362,13 +4362,13 @@ function startGdDeadlockedEngine() {
         const floorLimit = cfg.groundY - size;
         const ceilLimit = cfg.ceilingY;
         
-         if (st.mode === 'wave') {
+        if (st.mode === 'wave') {
             const slope = (st.mini ? 1.15 : 0.82) * baseSpeed;
             const dir = st.holding ? -1 : 1;
             st.vy = dir * slope * st.gravity;
             st.y += st.vy * dt;
             st.rot = st.vy < 0 ? -34 : 34;
-
+            
             if (st.y <= ceilLimit) {
                 st.y = ceilLimit;
                 st.rot = 0;
@@ -5716,11 +5716,11 @@ function startArcadeHubHook() {
         const count = window.ARCADE_REGISTRY.filter(g => unlocked.includes(g.id)).length;
         btn.innerHTML = '🕹️ Arcade <span style="background:#083344;color:#67e8f9;padding:1px 6px;border-radius:999px;font-size:0.72rem;margin-left:4px;">' + count + '/' + window.ARCADE_REGISTRY.length + '</span>';
     };
-
+    
     window.arcadeGetOrCreateDock = function () {
         let dock = document.getElementById('afcs-quick-dock');
         if (dock) return dock;
-
+        
         dock = document.createElement('div');
         dock.id = 'afcs-quick-dock';
         dock.style.cssText = 'position:fixed;left:24px;top:176px;display:flex;flex-wrap:wrap;align-items:center;gap:8px;z-index:90;max-width:calc(100vw - 48px);';
@@ -5731,14 +5731,14 @@ function startArcadeHubHook() {
         document.body.appendChild(dock);
         return dock;
     };
-
+    
     window.arcadeMountButton = function () {
         const dock = window.arcadeGetOrCreateDock();
         if (document.getElementById('afcs-arcade-dock-btn')) {
             window.arcadeUpdateBadge();
             return;
         }
-
+        
         const btn = document.createElement('button');
         btn.id = 'afcs-arcade-dock-btn';
         btn.title = 'Open AFCS Arcade Codex (Unlocked Mini-Games)';
@@ -5746,11 +5746,11 @@ function startArcadeHubHook() {
         btn.onmouseenter = () => { btn.style.background = '#083344'; };
         btn.onmouseleave = () => { btn.style.background = 'rgba(15,23,42,0.92)'; };
         btn.onclick = window.openArcadeHub;
-
+        
         dock.prepend(btn);
         window.arcadeUpdateBadge();
     };
-
+    
     if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
         STATE.onSearchInput.push(function (query) {
             const clean = String(query || '').trim().toLowerCase();
@@ -5766,7 +5766,7 @@ function startArcadeHubHook() {
             }
         });
     }
-
+    
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', window.arcadeMountButton);
     } else {
@@ -7006,8 +7006,8 @@ function startAfcsShopData() {
             desc: 'The Music that the Absolute Solver uses to bring power and [NULL] to the world. A song that brings power and peace to [NULL].',
             src: "music/solver.mp3"
         },
-
-
+        
+        
         {
             id: 'theme_default',
             category: 'theme',
@@ -7053,8 +7053,8 @@ function startAfcsShopData() {
             desc: 'A red, black, and white theme to showcase GRIEF\'s aesthetic, without the frame perfect clicks..',
             cssVars: ''
         },
-
-
+        
+        
         {
             id: 'trail_none',
             category: 'trail',
@@ -7100,9 +7100,9 @@ function startAfcsShopData() {
             desc: 'Leaves the blood of innocent Worker Drones wherever your mouse moves..',
             trailColor: '#000000'
         },
-
-
-
+        
+        
+        
         {
             id: 'badge_none',
             category: 'badge',
@@ -7179,12 +7179,12 @@ function startAfcsShopEffects() {
         trailColor: null,
         lastSpark: 0
     };
-
+    
     window.shopHookAudioPlay = function () {
         const rt = window.SHOP_RUNTIME;
         if (rt.playHooked) return;
         rt.playHooked = true;
-
+        
         const origPlay = HTMLAudioElement.prototype.play;
         HTMLAudioElement.prototype.play = function (...args) {
             const src = String(this.currentSrc || this.src || '').toLowerCase();
@@ -7201,7 +7201,7 @@ function startAfcsShopEffects() {
             return origPlay.apply(this, args);
         };
     };
-
+    
     window.shopGetMusicVolume = function () {
         if (typeof STATE !== 'undefined') {
             const master = typeof STATE.masterVol === 'number' ? STATE.masterVol : (typeof STATE.masterVolume === 'number' ? STATE.masterVolume : 1);
@@ -7214,14 +7214,14 @@ function startAfcsShopEffects() {
         const bVal = bSlider ? parseFloat(bSlider.value) / (parseFloat(bSlider.max) || 1) : 0.5;
         return Math.max(0, Math.min(1, mVal * bVal));
     };
-
+    
     window.shopRefreshMusicVolume = function () {
         const rt = window.SHOP_RUNTIME;
         if (rt.htmlAudio) {
             rt.htmlAudio.volume = window.shopGetMusicVolume();
         }
     };
-
+    
     window.shopToggleDefaultBgm = function (shouldPlay) {
         const candidates = Array.from(document.querySelectorAll('audio'));
         if (window.SHOP_RUNTIME.defaultBgmRef && !candidates.includes(window.SHOP_RUNTIME.defaultBgmRef)) {
@@ -7231,7 +7231,7 @@ function startAfcsShopEffects() {
             const stateAudio = STATE.bgm || STATE.musicAudio || STATE.audio;
             if (stateAudio && !candidates.includes(stateAudio)) candidates.push(stateAudio);
         }
-
+        
         candidates.forEach(a => {
             if (!a || a === window.SHOP_RUNTIME.htmlAudio) return;
             if (shouldPlay) {
@@ -7244,7 +7244,7 @@ function startAfcsShopEffects() {
             }
         });
     };
-
+    
     window.shopStopMusic = function () {
         const rt = window.SHOP_RUNTIME;
         if (rt.musicTimer) clearInterval(rt.musicTimer);
@@ -7258,7 +7258,7 @@ function startAfcsShopEffects() {
     window.shopSyncThemePill = function () {
         const pill = document.querySelector('.theme-mode-pill');
         if (!pill) return;
-
+        
         const isGriefActive = document.body.classList.contains('theme-griefer');
         if (isGriefActive) {
             pill.classList.remove('is-blue', 'is-red', 'is-neon', 'is-doomsday', 'is-faithian', 'is-hamilton', 'is-epic', 'is-murderdrones');
@@ -7276,9 +7276,9 @@ function startAfcsShopEffects() {
             window.shopToggleDefaultBgm(true);
             return;
         }
-
+        
         window.shopToggleDefaultBgm(false);
-
+        
         if (item.src) {
             const audio = new Audio(item.src);
             audio.loop = true;
@@ -7294,9 +7294,9 @@ function startAfcsShopEffects() {
             window.addEventListener('pointerdown', tryPlay, { once: true });
             return;
         }
-
+        
         if (!Array.isArray(item.synthNotes) || item.synthNotes.length === 0) return;
-
+        
         const rt = window.SHOP_RUNTIME;
         rt.noteIdx = 0;
         rt.musicTimer = setInterval(() => {
@@ -7326,13 +7326,13 @@ function startAfcsShopEffects() {
             } catch (e) {}
         }, item.tempoMs || 420);
     };
-
-        window.shopSyncGriefClasses = function () {
+    
+    window.shopSyncGriefClasses = function () {
         const eq = window.shopGetEquipped();
         const isGriefEquipped = eq.theme === 'theme_griefer';
-
+        
         document.body.classList.toggle('grief-highlights-active', isGriefEquipped);
-
+        
         if (!isGriefEquipped && document.body.classList.contains('theme-griefer')) {
             document.body.classList.remove('theme-griefer');
             if (typeof window.applyTheme === 'function') {
@@ -7341,7 +7341,7 @@ function startAfcsShopEffects() {
         }
         if (typeof window.syncThemePill === 'function') window.syncThemePill();
     };
-
+    
     window.shopApplyTheme = function (item) {
         if (item && item.id === 'theme_griefer') {
             if (typeof window.applyTheme === 'function') {
@@ -7353,7 +7353,7 @@ function startAfcsShopEffects() {
             }
         }
         window.shopSyncGriefClasses();
-
+        
         let styleEl = document.getElementById('afcs-shop-theme-style');
         if (!styleEl) {
             styleEl = document.createElement('style');
@@ -7361,7 +7361,7 @@ function startAfcsShopEffects() {
             document.head.appendChild(styleEl);
         }
         styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
-
+        
         if (!window.SHOP_RUNTIME.themeObserver) {
             const obs = new MutationObserver(() => {
                 const eq = window.shopGetEquipped();
@@ -7371,14 +7371,14 @@ function startAfcsShopEffects() {
             window.SHOP_RUNTIME.themeObserver = obs;
         }
     };
-
-
+    
+    
     window.shopApplyTheme = function (item) {
         if (item && item.id === 'theme_griefer' && typeof window.applyTheme === 'function') {
             window.applyTheme('griefer');
         }
         window.shopSyncGriefClasses();
-
+        
         let styleEl = document.getElementById('afcs-shop-theme-style');
         if (!styleEl) {
             styleEl = document.createElement('style');
@@ -7386,14 +7386,14 @@ function startAfcsShopEffects() {
             document.head.appendChild(styleEl);
         }
         styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
-
+        
         if (!window.SHOP_RUNTIME.themeObserver) {
             const obs = new MutationObserver(() => window.shopSyncGriefClasses());
             obs.observe(document.body, { attributes: true, attributeFilter: Array.of('class') });
             window.SHOP_RUNTIME.themeObserver = obs;
         }
     };
-
+    
     window.shopApplyTheme = function (item) {
         if (item && item.id === 'theme_griefer') {
             const otherThemes = Array.of(
@@ -7404,7 +7404,7 @@ function startAfcsShopEffects() {
             otherThemes.forEach(cls => document.body.classList.remove(cls));
         }
         window.shopSyncGriefClasses();
-
+        
         let styleEl = document.getElementById('afcs-shop-theme-style');
         if (!styleEl) {
             styleEl = document.createElement('style');
@@ -7412,26 +7412,26 @@ function startAfcsShopEffects() {
             document.head.appendChild(styleEl);
         }
         styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
-
+        
         if (!window.SHOP_RUNTIME.themeObserver) {
             const obs = new MutationObserver(() => window.shopSyncGriefClasses());
             obs.observe(document.body, { attributes: true, attributeFilter: Array.of('class') });
             window.SHOP_RUNTIME.themeObserver = obs;
         }
     };
-
+    
     window.shopApplyTrail = function (item) {
         const rt = window.SHOP_RUNTIME;
         rt.trailColor = item ? item.trailColor : null;
         if (rt.trailBound) return;
         rt.trailBound = true;
-
+        
         window.addEventListener('mousemove', e => {
             if (!rt.trailColor) return;
             const now = performance.now();
             if (now - rt.lastSpark < 45) return;
             rt.lastSpark = now;
-
+            
             const dot = document.createElement('div');
             dot.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;width:7px;height:7px;border-radius:50%;background:' + rt.trailColor + ';box-shadow:0 0 8px ' + rt.trailColor + ';pointer-events:none;z-index:99997;transform:translate(-50%,-50%);transition:opacity 0.45s,transform 0.45s;';
             document.body.appendChild(dot);
@@ -7442,7 +7442,7 @@ function startAfcsShopEffects() {
             setTimeout(() => dot.remove(), 460);
         });
     };
-
+    
     window.shopApplyBadge = function (item) {
         let badgeEl = document.getElementById('afcs-equipped-title-pill');
         if (!item || !item.badgeText) {
@@ -7457,7 +7457,7 @@ function startAfcsShopEffects() {
         }
         badgeEl.textContent = item.badgeText;
     };
-
+    
     window.shopSyncAllEquipped = function () {
         window.shopHookAudioPlay();
         const eq = window.shopGetEquipped();
@@ -7467,7 +7467,7 @@ function startAfcsShopEffects() {
         window.shopApplyTrail(findItem(eq.trail));
         window.shopApplyBadge(findItem(eq.badge));
     };
-
+    
     document.addEventListener('input', e => {
         if (e.target && e.target.type === 'range') {
             const eq = window.shopGetEquipped();
@@ -7629,11 +7629,11 @@ modal.querySelectorAll('.shop-action-btn').forEach(btn => {
 
 window.shopMountDockButton = function () {
     if (document.getElementById('afcs-shop-dock-btn')) return;
-
+    
     const dock = typeof window.arcadeGetOrCreateDock === 'function'
-        ? window.arcadeGetOrCreateDock()
-        : document.body;
-
+    ? window.arcadeGetOrCreateDock()
+    : document.body;
+    
     const btn = document.createElement('button');
     btn.id = 'afcs-shop-dock-btn';
     btn.title = 'Open AFCS Coin Shop (Custom Music, Themes & Trails)';
@@ -7642,7 +7642,7 @@ window.shopMountDockButton = function () {
     btn.onmouseenter = () => { btn.style.background = '#422006'; };
     btn.onmouseleave = () => { btn.style.background = 'rgba(15,23,42,0.92)'; };
     btn.onclick = () => window.openAfcsShop('all');
-
+    
     dock.appendChild(btn);
 };
 
@@ -7689,7 +7689,7 @@ function start2048Data() {
             4096: { bg: '#dc2626', fg: '#fee2e2', tag: '👑 LEGEND' }
         }
     };
-
+    
     window.M2048_STATE = {
         active: false,
         grid: Array.of(),
@@ -7703,7 +7703,7 @@ function start2048Data() {
         touchStartY: 0,
         listeners: Array.of()
     };
-
+    
     window.m2048AwardCoins = function (amount) {
         const cur = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
         const next = cur + amount;
@@ -7712,7 +7712,7 @@ function start2048Data() {
         if (badge) badge.textContent = next + ' 🪙';
         return next;
     };
-
+    
     if (typeof window.arcadeRegisterGame === 'function') {
         window.arcadeRegisterGame({
             id: 'game2048',
@@ -7740,19 +7740,19 @@ function start2048Engine() {
         const spot = empty.at(Math.floor(Math.random() * empty.length));
         st.grid[spot.r][spot.c] = Math.random() < 0.9 ? 2 : 4;
     };
-
+    
     window.m2048SlideLine = function (line) {
         const st = window.M2048_STATE;
         const filtered = line.filter(v => v !== 0);
         const merged = Array.of();
         let gained = 0;
-
+        
         for (let i = 0; i < filtered.length; i++) {
             if (i + 1 < filtered.length && filtered.at(i) === filtered.at(i + 1)) {
                 const nextVal = filtered.at(i) * 2;
                 merged.push(nextVal);
                 gained += nextVal;
-
+                
                 const milestoneReward = window.M2048_CFG.milestones[nextVal];
                 if (milestoneReward && !st.claimedMilestones.includes(nextVal)) {
                     st.claimedMilestones.push(nextVal);
@@ -7767,19 +7767,19 @@ function start2048Engine() {
                 merged.push(filtered.at(i));
             }
         }
-
+        
         while (merged.length < 4) merged.push(0);
         return { line: merged, gained: gained };
     };
-
+    
     window.m2048Move = function (dir) {
         const st = window.M2048_STATE;
         if (!st.active || st.over) return;
         if (st.won2048 && !st.keepPlaying) return;
-
+        
         const before = JSON.stringify(st.grid);
         let totalGain = 0;
-
+        
         if (dir === 'left' || dir === 'right') {
             for (let r = 0; r < 4; r++) {
                 const row = st.grid.at(r).slice();
@@ -7801,20 +7801,20 @@ function start2048Engine() {
                 totalGain += res.gained;
             }
         }
-
+        
         if (JSON.stringify(st.grid) === before) return;
-
+        
         st.score += totalGain;
         if (st.score > st.best) {
             st.best = st.score;
             localStorage.setItem(window.M2048_CFG.storageBestKey, String(st.best));
         }
-
+        
         window.m2048SpawnTile();
         window.m2048CheckOver();
         window.m2048Render();
     };
-
+    
     window.m2048CheckOver = function () {
         const st = window.M2048_STATE;
         for (let r = 0; r < 4; r++) {
@@ -7836,15 +7836,15 @@ function start2048UI() {
         el.textContent = txt;
         el.style.color = color || '#fde047';
     };
-
+    
     window.m2048BuildModal = function () {
         const old = document.getElementById('afcs-2048-modal');
         if (old) old.remove();
-
+        
         const modal = document.createElement('div');
         modal.id = 'afcs-2048-modal';
         modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at top,#0f172a 0%,#020617 100%);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px;user-select:none;';
-
+        
         modal.innerHTML = `
             <div style="width:100%;max-width:520px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e293b;padding-bottom:10px;">
                 <span style="font-size:1.2rem;font-weight:900;color:#fde047;letter-spacing:1px;">🔢 2048: CORNERSTONE</span>
@@ -7853,7 +7853,7 @@ function start2048UI() {
                     <button id="m2048-exit-btn" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:0.82rem;">✕ EXIT</button>
                 </div>
             </div>
-
+        
             <div style="width:100%;max-width:520px;display:grid;grid-template-columns:1fr 1fr;gap:10px;">
                 <div style="background:#090d16;border:1px solid #1e293b;border-radius:10px;padding:8px 14px;text-align:center;">
                     <div style="font-size:0.72rem;color:#94a3b8;font-weight:bold;">SCORE</div>
@@ -7864,16 +7864,16 @@ function start2048UI() {
                     <div id="m2048-best-val" style="font-size:1.3rem;font-weight:900;color:#fde047;">0</div>
                 </div>
             </div>
-
+        
             <div id="m2048-banner" style="min-height:22px;font-size:0.92rem;font-weight:bold;color:#fde047;text-align:center;">
                 Merge tiles to build 2048 (⛪ CORNERSTONE)! Rewards at 512, 1024 & 2048.
             </div>
-
+        
             <div style="position:relative;">
                 <div id="m2048-board" style="display:grid;grid-template-columns:repeat(4,82px);grid-template-rows:repeat(4,82px);gap:8px;background:#090d16;border:2px solid #334155;border-radius:14px;padding:10px;box-shadow:0 18px 45px rgba(0,0,0,0.85);"></div>
                 <div id="m2048-overlay" style="display:none;position:absolute;inset:0;background:rgba(2,6,23,0.9);border-radius:14px;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:20px;"></div>
             </div>
-
+        
             <div style="display:flex;gap:8px;">
                 <button id="m2048-btn-left" style="background:#1e293b;color:#fff;border:1px solid #475569;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">◀</button>
                 <button id="m2048-btn-up" style="background:#1e293b;color:#fff;border:1px solid #475569;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">▲</button>
@@ -7881,16 +7881,16 @@ function start2048UI() {
                 <button id="m2048-btn-right" style="background:#1e293b;color:#fff;border:1px solid #475569;padding:8px 16px;border-radius:8px;cursor:pointer;font-weight:bold;">▶</button>
             </div>
         `;
-
+        
         document.body.appendChild(modal);
-
+        
         document.getElementById('m2048-exit-btn').onclick = window.m2048CloseGame;
         document.getElementById('m2048-new-btn').onclick = window.launch2048Game;
         document.getElementById('m2048-btn-left').onclick = () => window.m2048Move('left');
         document.getElementById('m2048-btn-up').onclick = () => window.m2048Move('up');
         document.getElementById('m2048-btn-down').onclick = () => window.m2048Move('down');
         document.getElementById('m2048-btn-right').onclick = () => window.m2048Move('right');
-
+        
         const boardEl = document.getElementById('m2048-board');
         boardEl.ontouchstart = e => {
             const t = e.touches.item(0);
@@ -7907,7 +7907,7 @@ function start2048UI() {
             if (Math.abs(dx) > Math.abs(dy)) window.m2048Move(dx > 0 ? 'right' : 'left');
             else window.m2048Move(dy > 0 ? 'down' : 'up');
         };
-
+        
         const keyHandler = function (e) {
             if (!window.M2048_STATE.active) return;
             if (e.code === 'Escape') {
@@ -7928,11 +7928,11 @@ function start2048UI() {
                 window.m2048Move('down');
             }
         };
-
+        
         window.addEventListener('keydown', keyHandler);
         window.M2048_STATE.listeners.push(Array.of(window, 'keydown', keyHandler));
     };
-
+    
     window.m2048Render = function () {
         const st = window.M2048_STATE;
         const board = document.getElementById('m2048-board');
@@ -7940,10 +7940,10 @@ function start2048UI() {
         const bestEl = document.getElementById('m2048-best-val');
         const ov = document.getElementById('m2048-overlay');
         if (!board) return;
-
+        
         if (scoreEl) scoreEl.textContent = String(st.score);
         if (bestEl) bestEl.textContent = String(st.best);
-
+        
         board.innerHTML = st.grid.map(row =>
             row.map(val => {
                 if (val === 0) {
@@ -7959,7 +7959,7 @@ function start2048UI() {
                 `;
             }).join('')
         ).join('');
-
+        
         if (!ov) return;
         if (st.won2048 && !st.keepPlaying) {
             ov.style.display = 'flex';
@@ -7988,39 +7988,39 @@ function start2048UI() {
             ov.style.display = 'none';
         }
     };
-
+    
     window.m2048CloseGame = function () {
-const st = window.M2048_STATE;
-st.active = false;
-st.listeners.forEach(([el, ev, fn]) => el.removeEventListener(ev, fn));
-st.listeners = Array.of();
-const modal = document.getElementById('afcs-2048-modal');
-if (modal) modal.remove();
-};
-window.launch2048Game = function () {
-if (!window.M2048_CFG) start2048Data();
-if (!window.m2048SpawnTile) start2048Engine();
-window.m2048CloseGame();
-if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('game2048');
-const st = window.M2048_STATE;
-st.active = true;
-st.grid = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0));
-st.score = 0;
-st.claimedMilestones = Array.of();
-st.won2048 = false;
-st.keepPlaying = false;
-st.over = false;
-window.m2048SpawnTile();
-window.m2048SpawnTile();
-window.m2048BuildModal();
-window.m2048Render();
-};
-if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
-STATE.onSearchInput.push(function (query) {
-const clean = String(query || '').trim().toLowerCase();
-if (window.M2048_CFG.triggers.includes(clean)) {
-window.launch2048Game();
-}
-});
-}
+        const st = window.M2048_STATE;
+        st.active = false;
+        st.listeners.forEach(([el, ev, fn]) => el.removeEventListener(ev, fn));
+        st.listeners = Array.of();
+        const modal = document.getElementById('afcs-2048-modal');
+        if (modal) modal.remove();
+    };
+    window.launch2048Game = function () {
+        if (!window.M2048_CFG) start2048Data();
+        if (!window.m2048SpawnTile) start2048Engine();
+        window.m2048CloseGame();
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('game2048');
+        const st = window.M2048_STATE;
+        st.active = true;
+        st.grid = Array.from({ length: 4 }, () => Array.from({ length: 4 }, () => 0));
+        st.score = 0;
+        st.claimedMilestones = Array.of();
+        st.won2048 = false;
+        st.keepPlaying = false;
+        st.over = false;
+        window.m2048SpawnTile();
+        window.m2048SpawnTile();
+        window.m2048BuildModal();
+        window.m2048Render();
+    };
+    if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
+        STATE.onSearchInput.push(function (query) {
+            const clean = String(query || '').trim().toLowerCase();
+            if (window.M2048_CFG.triggers.includes(clean)) {
+                window.launch2048Game();
+            }
+        });
+    }
 }

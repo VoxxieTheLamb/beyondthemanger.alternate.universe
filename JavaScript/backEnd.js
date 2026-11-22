@@ -2,15 +2,15 @@ function startSupabaseBackend() {
     const SUPABASE_URL = 'https://gpdlfljkcgnlcysmhjfj.supabase.co';
     const SUPABASE_ANON_KEY = 'sb_publishable_eeCV9rkKJ7lIwkVNHst93g_AyXlOLm9';
     const COIN_KEY = 'afcs_coins';
-
+    
     if (!SUPABASE_ANON_KEY || SUPABASE_ANON_KEY.includes('PASTE_YOUR')) return;
-
+    
     const origSetItem = Storage.prototype.setItem;
     const origGetItem = Storage.prototype.getItem;
     let serverBalance = Math.max(0, parseInt(origGetItem.call(localStorage, COIN_KEY) || '150', 10) || 150);
     let sbClient = null;
     let syncing = false;
-
+    
     function applyLocalMirror(val) {
         serverBalance = Math.max(0, Math.floor(Number(val) || 0));
         syncing = true;
@@ -19,7 +19,7 @@ function startSupabaseBackend() {
         const badge = document.getElementById('afcs-coin-display');
         if (badge) badge.textContent = serverBalance + ' 🪙';
     }
-
+    
     function warnBlockedCoinEdit(attempted) {
         applyLocalMirror(serverBalance);
         if (typeof triggerScreenGlitch === 'function') triggerScreenGlitch(220);
@@ -33,7 +33,7 @@ function startSupabaseBackend() {
         document.body.appendChild(toast);
         setTimeout(() => toast.remove(), 2800);
     }
-
+    
     function loadSdk(cb) {
         if (window.supabase && typeof window.supabase.createClient === 'function') {
             cb();
@@ -44,7 +44,7 @@ function startSupabaseBackend() {
         s.onload = cb;
         document.head.appendChild(s);
     }
-
+    
     Storage.prototype.setItem = function (key, value) {
         if (this === localStorage && key === COIN_KEY && !syncing) {
             const nextVal = parseInt(String(value), 10);
@@ -69,7 +69,7 @@ function startSupabaseBackend() {
         }
         return origSetItem.apply(this, arguments);
     };
-
+    
     window.submitGlobalDeadlocked = async function (pct, customName) {
         if (!sbClient) return;
         await sbClient.rpc('submit_deadlocked_score', {
@@ -77,18 +77,18 @@ function startSupabaseBackend() {
             p_name: customName || null
         });
     };
-
+    
     window.fetchGlobalDeadlockedTop = async function () {
         if (!sbClient) return Array.of();
         const { data } = await sbClient
-            .from('player_vault')
-            .select('display_name, deadlocked_best')
-            .gt('deadlocked_best', 0)
-            .order('deadlocked_best', { ascending: false })
-            .limit(10);
+        .from('player_vault')
+        .select('display_name, deadlocked_best')
+        .gt('deadlocked_best', 0)
+        .order('deadlocked_best', { ascending: false })
+        .limit(10);
         return Array.isArray(data) ? data : Array.of();
     };
-
+    
     loadSdk(async () => {
         sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const { data: sessionData } = await sbClient.auth.getSession();
