@@ -513,7 +513,7 @@ function startPortraitPhysics() {
     });
 }
 function startScrollEffects() {
-    const revealTargets = document.querySelectorAll('.synopsis-card, .search-wrapper, .filter-bar, .faction-bar, .PersonWrapper, .teaser-footer');
+    const revealTargets = document.querySelectorAll('.synopsis-card, .faq-section, .feedback-section, .search-wrapper, .filter-bar, .faction-bar, .PersonWrapper, .teaser-footer');
     if (revealTargets.length) {
         revealTargets.forEach(el => el.classList.add('reveal-on-scroll'));
         
@@ -897,5 +897,232 @@ function startNightSkyStars() {
         }
     };
     window.wakeStarCanvas();
+}
+function startFaqSection() {
+    const synopsisSection = document.querySelector('.synopsis-section');
+    if (!synopsisSection || !CONFIG.faqs || !CONFIG.faqs.length) return;
+    
+    const section = document.createElement('section');
+    section.className = 'faq-section reveal-on-scroll';
+    section.innerHTML = [
+        '<div class="faq-card">',
+        '  <div class="faq-header">',
+        '    <div>',
+        '      <span class="story-pill">❓ GOT QUESTIONS?</span>',
+        '      <h2 class="faq-heading">Frequently Asked Questions</h2>',
+        '    </div>',
+        '    <button type="button" class="faq-toggle-all-btn" id="faqToggleAllBtn">Show All Answers</button>',
+        '  </div>',
+        '  <div class="faq-list" id="faqList"></div>',
+        '</div>'
+    ].join('');
+    
+    synopsisSection.insertAdjacentElement('afterend', section);
+    
+    const listEl = section.querySelector('#faqList');
+    const toggleAllBtn = section.querySelector('#faqToggleAllBtn');
+    
+    CONFIG.faqs.forEach((item) => {
+        const row = document.createElement('div');
+        row.className = 'faq-item';
+        row.innerHTML = [
+            `<button type="button" class="faq-question" aria-expanded="false">`,
+            `  <span>${item.q}</span>`,
+            `  <span class="faq-chevron">▾</span>`,
+            `</button>`,
+            `<div class="faq-answer"><p>${item.a}</p></div>`
+        ].join('');
+        
+        const qBtn = row.querySelector('.faq-question');
+        qBtn.addEventListener('click', () => {
+            const isOpen = row.classList.toggle('is-open');
+            qBtn.setAttribute('aria-expanded', String(isOpen));
+            syncToggleAllLabel();
+            playBeep(isOpen ? 620 : 460, 0.05, 'sine', 0.03);
+        });
+        
+        listEl.appendChild(row);
+    });
+    
+    function syncToggleAllLabel() {
+        const items = Array.from(listEl.querySelectorAll('.faq-item'));
+        const allOpen = items.length > 0 && items.every(el => el.classList.contains('is-open'));
+        toggleAllBtn.textContent = allOpen ? 'Hide All Answers' : 'Show All Answers';
+        toggleAllBtn.classList.toggle('is-active', allOpen);
+    }
+    
+    toggleAllBtn.addEventListener('click', () => {
+        const items = Array.from(listEl.querySelectorAll('.faq-item'));
+        const shouldOpen = !items.every(el => el.classList.contains('is-open'));
+        
+        items.forEach(el => {
+            el.classList.toggle('is-open', shouldOpen);
+            el.querySelector('.faq-question')?.setAttribute('aria-expanded', String(shouldOpen));
+        });
+        
+        syncToggleAllLabel();
+        playBeep(shouldOpen ? 680 : 420, 0.06, 'sine', 0.035);
+    });
+}
+function startFeedbackSection() {
+    const anchor = document.querySelector('.faq-section') || document.querySelector('.synopsis-section');
+    if (!anchor) return;
+    
+    const section = document.createElement('section');
+    section.className = 'feedback-section reveal-on-scroll';
+    section.innerHTML = [
+        '<div class="feedback-card">',
+        '  <div class="feedback-header">',
+        '    <span class="story-pill">💌 WE\'D LOVE TO HEAR FROM YOU</span>',
+        '    <h2 class="feedback-heading">Requests &amp; Feedback</h2>',
+        '    <p class="feedback-sub">Have a question for the Q&amp;A, a website feature idea, or encouragement for Grade 7 – Psalms?</p>',
+        '  </div>',
+        '  <form class="feedback-form" id="feedbackForm">',
+        '    <div class="feedback-row">',
+        '      <input type="text" class="feedback-input" id="fbName" placeholder="Your Name (or Anonymous)" maxlength="60">',
+        '      <select class="feedback-select" id="fbCategory">',
+        '        <option value="Question for Q&A">❓ Question for Q&A</option>',
+        '        <option value="Website Feature Request">✨ Website Feature Request</option>',
+        '        <option value="Play Feedback / Encouragement">🎭 Play Feedback / Encouragement</option>',
+        '        <option value="Bug Report">🐞 Bug Report</option>',
+        '      </select>',
+        '    </div>',
+        '    <textarea class="feedback-textarea" id="fbMessage" rows="3" placeholder="Write your request, question, or message here..." required></textarea>',
+        '    <div class="feedback-actions">',
+        '      <button type="submit" class="feedback-submit-btn">✉️ Send via Email</button>',
+        '      <button type="button" class="feedback-copy-btn" id="fbCopyBtn">📋 Copy Message to Send</button>',
+        '    </div>',
+        '    <div class="feedback-status" id="fbStatus"></div>',
+        '  </form>',
+        '</div>'
+    ].join('');
+    
+    anchor.insertAdjacentElement('afterend', section);
+    
+    const form = section.querySelector('#feedbackForm');
+    const nameInput = section.querySelector('#fbName');
+    const catSelect = section.querySelector('#fbCategory');
+    const msgInput = section.querySelector('#fbMessage');
+    const copyBtn = section.querySelector('#fbCopyBtn');
+    const statusEl = section.querySelector('#fbStatus');
+    
+    function buildFormattedText() {
+        const sender = nameInput.value.trim() || 'Anonymous Visitor';
+        const category = catSelect.value;
+        const message = msgInput.value.trim();
+        return {
+            subject: `[Beyond The Manger] ${category} from ${sender}`,
+            body: `From: ${sender}\nCategory: ${category}\n\nMessage:\n${message}\n\n— Sent from Beyond The Manger (Grade 7 – Psalms)`
+        };
+    }
+    
+    function showStatus(text, isError = false) {
+        statusEl.textContent = text;
+        statusEl.style.color = isError ? '#fda4af' : '#6ee7b7';
+        statusEl.classList.add('visible');
+    }
+    
+    const submitBtn = form.querySelector('.feedback-submit-btn');
+    const COOLDOWN_MS = 20000; // 20-second cooldown
+    let isLocked = false;
+    
+    function startCooldown(remainingMs) {
+        isLocked = true;
+        submitBtn.disabled = true;
+        
+        function tick() {
+            const left = Math.ceil((Number(localStorage.getItem('afcs_fb_cooldown_until')) - Date.now()) / 1000);
+            if (left <= 0) {
+                isLocked = false;
+                submitBtn.disabled = false;
+                submitBtn.textContent = '✉️ Send Message';
+            } else {
+                submitBtn.textContent = `⏳ Wait ${left}s...`;
+                setTimeout(tick, 500);
+            }
+        }
+        tick();
+    }
+    
+    // Resume cooldown automatically if user refreshes the page
+    const savedUntil = Number(localStorage.getItem('afcs_fb_cooldown_until') || 0);
+    if (savedUntil > Date.now()) {
+        startCooldown(savedUntil - Date.now());
+    }
+    
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        if (isLocked) return;
+        
+        const until = Number(localStorage.getItem('afcs_fb_cooldown_until') || 0);
+        if (until > Date.now()) {
+            startCooldown(until - Date.now());
+            return;
+        }
+        
+        const message = msgInput.value.trim();
+        if (!message) {
+            showStatus('Please type a message first!', true);
+            return;
+        }
+        
+        isLocked = true;
+        submitBtn.disabled = true;
+        submitBtn.textContent = '⏳ Sending...';
+        
+        const sender = nameInput.value.trim() || 'Anonymous Visitor';
+        const category = catSelect.value;
+        
+        try {
+            const res = await fetch('https://api.web3forms.com/submit', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify({
+                    access_key: CONFIG.web3formsKey,
+                    subject: `[Beyond The Manger] ${category} from ${sender}`,
+                    from_name: sender,
+                    category: category,
+                    message: message
+                })
+            });
+            
+            const data = await res.json();
+            if (data.success) {
+                showStatus('✓ Sent! Thank you for your feedback.');
+                form.reset();
+                playBeep(680, 0.08, 'sine', 0.04);
+                setTimeout(() => playBeep(880, 0.12, 'sine', 0.04), 80);
+                
+                localStorage.setItem('afcs_fb_cooldown_until', String(Date.now() + COOLDOWN_MS));
+                startCooldown(COOLDOWN_MS);
+            } else {
+                throw new Error(data.message || 'Submission failed');
+            }
+        } catch (err) {
+            isLocked = false;
+            submitBtn.disabled = false;
+            submitBtn.textContent = '✉️ Send Message';
+            showStatus('⚠️ Could not send automatically. Try the Copy button instead!', true);
+            playBeep(320, 0.12, 'sawtooth', 0.04);
+        }
+    });
+    
+    copyBtn.addEventListener('click', () => {
+        if (!msgInput.value.trim()) {
+            showStatus('Please type a message first!', true);
+            msgInput.focus();
+            return;
+        }
+        const { body } = buildFormattedText();
+        navigator.clipboard.writeText(body).then(() => {
+            copyBtn.textContent = '✓ Copied!';
+            showStatus('✓ Message copied! Paste it in Messenger, Discord, or email to send.');
+            playBeep(784, 0.08, 'sine', 0.04);
+            setTimeout(() => { copyBtn.textContent = '📋 Copy Message to Send'; }, 2200);
+        });
+    });
 }
 //#endregion

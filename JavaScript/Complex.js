@@ -156,6 +156,8 @@ document.addEventListener('DOMContentLoaded', () => {
         startParticleCanvas();
         startCursorGlow();
         startPortraitPhysics();
+        startFaqSection();
+        startFeedbackSection();
         startScrollEffects();
         startTimeOfDayTheme();
         startNightSkyStars();

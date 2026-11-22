@@ -374,7 +374,43 @@ const CONFIG = {
             { speech: '[CALLBACK PING]. Final handshake. You belong to the Solver now.' },
             { speech: '[CALLBACK PING]. System conquered. Happy holidays from your new overlord. Giggle.' }
         ]
-    }
+    },
+    faqs: [
+            {
+                q: "When and where is the live performance?",
+                a: "The live stage premiere is on December 17, 2026 at the AFCS Stage in the Covered Court."
+            },
+            {
+                q: "What is the play about?",
+                a: "At a meet and greet, something happens that shifts someone's worldview..."
+            },
+            {
+                q: "What language is the play performed in?",
+                a: "Beyond The Manger is a 6-part Taglish stage play blending action-thriller mystery with drama."
+            },
+            {
+                q: "Who is presenting this production?",
+                a: "Presented by Grade 7 – Psalms (S.Y. 2026–2027) of Antipolo Faith Christian School Inc. for Paskong AFCS 2026."
+            },
+            {
+                q: "How did you make this?",
+                a: "I created the baseline and the functions, and used Artificial Intelligence to sharpen my work."
+            },
+            {
+                q: "Is there a price for attending?",
+                a: "Currently, no, there is not a price for the Show. We will keep you informed."
+            },
+            {
+                q: "What time is the performance?",
+                a: "At 6pm on December 17."
+            },
+            {
+                q: "Where can I request features?",
+                a: "Request your features below."
+            }
+        ],
+        web3formsKey: "e5782444-af9b-4d75-818a-d50163048ed9"
+
 }; // Configuration Studd
 const STATE = {
     masterMuted: localStorage.getItem('afcsMasterMuted') === 'true',
