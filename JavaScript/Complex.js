@@ -1,24 +1,24 @@
 function startFormalPortal() {
-    if (!DOM.searchInput) return;
-    
-    STATE.onSearchInput.push((val) => {
-        if (val === 'formal' || val === 'main') {
-            DOM.searchInput.value = '';
-            const toast = document.createElement('div');
-            toast.style.cssText = 'position:fixed;top:28px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:999px;background:rgba(5,10,35,0.96);border:2px solid #facc15;color:#fef08a;font-weight:800;font-size:13px;letter-spacing:0.6px;z-index:999999;box-shadow:0 12px 32px rgba(0,0,0,0.85),0 0 24px rgba(250,204,21,0.6);';
-            toast.textContent = '🏛️ Returning to Beyond The Manger: Official Showcase...';
-            document.body.appendChild(toast);
-            
-            playBeep(587.33, 0.08, 'sine', 0.04);
-            setTimeout(() => playBeep(783.99, 0.14, 'sine', 0.045), 75);
-            
-            setTimeout(() => {
-                window.location.href = 'https://voxxiethelamb.github.io/beyondthemanger/';
-            }, 650);
-            return true;
-        }
-        return false;
-    });
+  if (!DOM.searchInput) return;
+  
+  STATE.onSearchInput.push((val) => {
+    if (val === 'formal' || val === 'main') {
+      DOM.searchInput.value = '';
+      const toast = document.createElement('div');
+      toast.style.cssText = 'position:fixed;top:28px;left:50%;transform:translateX(-50%);padding:12px 24px;border-radius:999px;background:rgba(5,10,35,0.96);border:2px solid #facc15;color:#fef08a;font-weight:800;font-size:13px;letter-spacing:0.6px;z-index:999999;box-shadow:0 12px 32px rgba(0,0,0,0.85),0 0 24px rgba(250,204,21,0.6);';
+      toast.textContent = '🏛️ Returning to Beyond The Manger: Official Showcase...';
+      document.body.appendChild(toast);
+      
+      playBeep(587.33, 0.08, 'sine', 0.04);
+      setTimeout(() => playBeep(783.99, 0.14, 'sine', 0.045), 75);
+      
+      setTimeout(() => {
+        window.location.href = 'https://voxxiethelamb.github.io/beyondthemanger/';
+      }, 650);
+      return true;
+    }
+    return false;
+  });
 }
 function startSupabaseBackend() {
   if (!window.supabase) return;
@@ -27,18 +27,18 @@ function startSupabaseBackend() {
     'sb_publishable_eeCV9rkKJ7lIwkVNHst93g_AyXlOLm9'
   );
   window.AFCS_SUPABASE = sb;
-
+  
   window.openFissionLeaderboardModal = async function () {
     const old = document.getElementById('fission-lb-modal');
     if (old) old.remove();
-
+    
     const { data } = await sb
-      .from('fission_leaderboard')
-      .select('operator_name, energy, days_survived, cause_of_meltdown, coins_awarded')
-      .order('days_survived', { ascending: false })
-      .order('energy', { ascending: false })
-      .limit(15);
-
+    .from('fission_leaderboard')
+    .select('operator_name, energy, days_survived, cause_of_meltdown, coins_awarded')
+    .order('days_survived', { ascending: false })
+    .order('energy', { ascending: false })
+    .limit(15);
+    
     const rowsHtml = (data || []).map((r, idx) => `
       <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:#090d16;border:1px solid ${idx === 0 ? '#facc15' : '#1e293b'};margin-bottom:6px;">
         <div>
@@ -51,7 +51,7 @@ function startSupabaseBackend() {
         </div>
       </div>
     `).join('') || '<p style="color:#94a3b8;text-align:center;">No reactor runs logged yet.</p>';
-
+    
     const modal = document.createElement('div');
     modal.id = 'fission-lb-modal';
     modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(2,6,23,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;color:#f8fafc;font-family:system-ui,sans-serif;';
@@ -72,23 +72,23 @@ function startSupabaseBackend() {
       </div>
     `;
     document.body.appendChild(modal);
-
+    
     document.getElementById('flb-close').onclick = () => modal.remove();
     modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
-
+    
     document.getElementById('flb-claim-btn').onclick = async () => {
       const codeInput = document.getElementById('flb-code-input');
       const msgEl = document.getElementById('flb-claim-msg');
       const code = codeInput.value.trim();
       if (!code) return;
-
+      
       const { data: res, error } = await sb.rpc('claim_fission_coins', { p_code: code });
       if (error || !res || !res.success) {
         msgEl.style.color = '#f87171';
         msgEl.textContent = (res && res.error) || 'Failed to claim code.';
         return;
       }
-
+      
       const cur = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
       const next = cur + res.coins_awarded;
       if (typeof window.afcsSyncCoins === 'function') {
@@ -96,13 +96,13 @@ function startSupabaseBackend() {
       } else {
         localStorage.setItem('afcs_coins', String(next));
       }
-
+      
       codeInput.value = '';
       msgEl.style.color = '#4ade80';
       msgEl.textContent = `Claimed +${res.coins_awarded} 🪙 from ${res.operator_name} (Day ${res.days_survived})!`;
     };
   };
-
+  
   if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
     STATE.onSearchInput.push((val) => {
       if (val === 'fission' || val === 'fission mania' || val === 'leaderboard') {
@@ -116,137 +116,138 @@ function startSupabaseBackend() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-    //#region START Everything
-    function startAll() {
-        createPeople();
-        startSupabaseBackend();
-        startAfcsCoinGuard();
-        startFormalPortal();
-        startAudioControls();
-        startPraiseBGM();
-        startDoomsdayRift();
-        startNGuest();
-        startSecretCodex();
-        startDynamicTabPanel();
-        startUziAlterEgo();
-        startSolverOverhaul();
-        startEpicStorm();
-        bdayParty();
-        startCynDesktopPet();
-        startWhackACyn();
-        startTradingCardData();
-        startTradingCardBinderUI();
-        startPortraitBadges();
-        startCompareBattleData();
-        startCompareBattleUI(); 
-        startOnlineBattleNet();
-        startOnlineBattleUI();
-        startPjskData();
-        startPjskUI();
-        startBadgeLegend();
-        startSimonLightboardGame();
-        startChessBotsData();
-        startChessBotsUI();
-        alphaBetaThing();
-        startConsoleSignature();
-        navBarThing();
-        startImageFallback();
-        startDecorativeWaves();
-        startHamiltonOverhaul();
-        startParticleCanvas();
-        startCursorGlow();
-        startPortraitPhysics();
-        startFaqSection();
-        startFeedbackSection();
-        startScrollEffects();
-        startTimeOfDayTheme();
-        startNightSkyStars();
-        searchThings();
-        filterCards();
-        startSidePanel();
-        startCompareModal();
-        startPlaybillModal();
-        startDoomsdayCursor();
-        startDoomsdayRift();
-        startFaithianCursorAndRally();
-        startFaithianContextMenu();
-        startDoomsdayContextMenu();
-        startTourGuide();
-        startScriptureCard();
-        startWeatherWidget();
-        startCalendarExport();
-        startVenueFloorPlan();
-        startVenueFacts();
-        startTimeline();
-        startCountdown();
-        startModalsAndShortcuts();
-        startSearchSecrets();
-        lebronJames();
-        startLeonhardEuler();
-        startNewtonAlterEgo();
-        startCurryGuest();
-        startJordanAlterEgo();
-        startHamiltonGuest();
-        startBurrAlterEgo();
-        startEinsteinGuest();
-        startGalileoAlterEgo();
-        startMusicalScale();
-        startCharacterInteractions();
-        startCornerstoneShimmer();
-        startPersonRecognitionProtocol();
-        startTrailerControls();
-        startHiddenBugBSOD();
-        startEpicCursorAndStorm();
-        startEpicContextMenu();
-        startMischievousLightCursor();
-        startMischievousLightContextMenu(); 
-        startCuriousLightCursor();
-        startCuriousLightContextMenu();
-        startSolverCursor();
-        startPartyHackerCursor();
-        startPartyHackerContextMenu();
-        startGuidingLightCursor();
-        startGuidingLightContextMenu();
-        startDoorsGameData();
-        startDoorsCore();
-        startDoorsCorridor();
-        startDoorsEntities();
-        startDoorsLibrary();
-        startDoorsKeyRoom();
-        startDoorsFinaleAndRun();
-        startBurjElevatorData();
-        startBurjElevatorPuzzlesA();
-        startBurjElevatorPuzzlesB();
-        startBurjElevatorModal();
-        startBurjElevatorController();
-        startGdDeadlockedData();
-        startGdDeadlockedLevel();
-        startGdDeadlockedEngine();
-        startGdDeadlockedUI();
-        startBuckshotData();
-        startBuckshotAI();
-        startBuckshotModal();
-        startBuckshotController();
-        startArcadeHubData();
-        startArcadeHubUI();
-        startArcadeHubHook();
-        startArcadeCompareEntry();
-        startWordleData();
-        startWordleUI();
-        startHangmanData();
-        startHangmanUI();
-        startMinesweeperData();
-        startMinesweeperEngine();
-        startMinesweeperUI();
-        startAfcsShopData();
-        startAfcsShopEffects();
-        startAfcsShopUI();
-        start2048Data();
-        start2048Engine();
-        start2048UI();
-        startHideUiToggle();
-        
-    }
-    startAll();
-    //#endregion
+  //#region START Everything
+  function startAll() {
+    createPeople();
+    startSupabaseBackend();
+    startAfcsCoinGuard();
+    startFormalPortal();
+    startAudioControls();
+    startAfcsShopData();
+    startAfcsShopEffects();
+    if (typeof window.shopHookAudioPlay === 'function') window.shopHookAudioPlay();
+    startPraiseBGM();
+    startDoomsdayRift();
+    startNGuest();
+    startSecretCodex();
+    startDynamicTabPanel();
+    startUziAlterEgo();
+    startSolverOverhaul();
+    startEpicStorm();
+    bdayParty();
+    startCynDesktopPet();
+    startWhackACyn();
+    startTradingCardData();
+    startTradingCardBinderUI();
+    startPortraitBadges();
+    startCompareBattleData();
+    startCompareBattleUI(); 
+    startOnlineBattleNet();
+    startOnlineBattleUI();
+    startPjskData();
+    startPjskUI();
+    startBadgeLegend();
+    startSimonLightboardGame();
+    startChessBotsData();
+    startChessBotsUI();
+    alphaBetaThing();
+    startConsoleSignature();
+    navBarThing();
+    startImageFallback();
+    startDecorativeWaves();
+    startHamiltonOverhaul();
+    startParticleCanvas();
+    startCursorGlow();
+    startPortraitPhysics();
+    startFaqSection();
+    startFeedbackSection();
+    startScrollEffects();
+    startTimeOfDayTheme();
+    startNightSkyStars();
+    searchThings();
+    filterCards();
+    startSidePanel();
+    startCompareModal();
+    startPlaybillModal();
+    startDoomsdayCursor();
+    startDoomsdayRift();
+    startFaithianCursorAndRally();
+    startFaithianContextMenu();
+    startDoomsdayContextMenu();
+    startTourGuide();
+    startScriptureCard();
+    startWeatherWidget();
+    startCalendarExport();
+    startVenueFloorPlan();
+    startVenueFacts();
+    startTimeline();
+    startCountdown();
+    startModalsAndShortcuts();
+    startSearchSecrets();
+    lebronJames();
+    startLeonhardEuler();
+    startNewtonAlterEgo();
+    startCurryGuest();
+    startJordanAlterEgo();
+    startHamiltonGuest();
+    startBurrAlterEgo();
+    startEinsteinGuest();
+    startGalileoAlterEgo();
+    startMusicalScale();
+    startCharacterInteractions();
+    startCornerstoneShimmer();
+    startPersonRecognitionProtocol();
+    startTrailerControls();
+    startHiddenBugBSOD();
+    startEpicCursorAndStorm();
+    startEpicContextMenu();
+    startMischievousLightCursor();
+    startMischievousLightContextMenu(); 
+    startCuriousLightCursor();
+    startCuriousLightContextMenu();
+    startSolverCursor();
+    startPartyHackerCursor();
+    startPartyHackerContextMenu();
+    startGuidingLightCursor();
+    startGuidingLightContextMenu();
+    startDoorsGameData();
+    startDoorsCore();
+    startDoorsCorridor();
+    startDoorsEntities();
+    startDoorsLibrary();
+    startDoorsKeyRoom();
+    startDoorsFinaleAndRun();
+    startBurjElevatorData();
+    startBurjElevatorPuzzlesA();
+    startBurjElevatorPuzzlesB();
+    startBurjElevatorModal();
+    startBurjElevatorController();
+    startGdDeadlockedData();
+    startGdDeadlockedLevel();
+    startGdDeadlockedEngine();
+    startGdDeadlockedUI();
+    startBuckshotData();
+    startBuckshotAI();
+    startBuckshotModal();
+    startBuckshotController();
+    startArcadeHubData();
+    startArcadeHubUI();
+    startArcadeHubHook();
+    startArcadeCompareEntry();
+    startWordleData();
+    startWordleUI();
+    startHangmanData();
+    startHangmanUI();
+    startMinesweeperData();
+    startMinesweeperEngine();
+    startMinesweeperUI();
+    startAfcsShopUI();
+    start2048Data();
+    start2048Engine();
+    start2048UI();
+    startHideUiToggle();
+    
+  }
+  startAll();
+  //#endregion
 });

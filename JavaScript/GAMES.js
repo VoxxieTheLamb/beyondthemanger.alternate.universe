@@ -7472,37 +7472,64 @@ function startAfcsShopEffects() {
     
     window.SHOP_RUNTIME.trackedAudios = new Set();
     
-    window.shopHookAudioPlay = function () {
+     window.shopHookAudioPlay = function () {
         const rt = window.SHOP_RUNTIME;
         if (rt.playHooked) return;
         rt.playHooked = true;
-        
-        const OrigAudio = window.Audio;
-        window.Audio = function (src) {
-            const inst = new OrigAudio(src);
-            rt.trackedAudios.add(inst);
-            return inst;
-        };
-        window.Audio.prototype = OrigAudio.prototype;
-        
+
         const origPlay = HTMLAudioElement.prototype.play;
         HTMLAudioElement.prototype.play = function (...args) {
-            const isShopTrack = (this === rt.htmlAudio || this === rt.previewAudio);
-            if (!isShopTrack) {
-                rt.trackedAudios.add(this);
-                const src = String(this.currentSrc || this.src || '').toLowerCase();
-                if (src.includes('praise')) {
-                    rt.defaultBgmRef = this;
-                }
+            const src = String(this.currentSrc || this.src || '').toLowerCase();
+            const isShopTrack = (this === window.SHOP_RUNTIME.htmlAudio);
+            if (!isShopTrack && src.includes('praise')) {
+                window.SHOP_RUNTIME.defaultBgmRef = this;
                 const eq = window.shopGetEquipped();
-                if (eq.music !== 'music_default' || rt.previewId !== null) {
+                if (eq.music !== 'music_default') {
                     this.pause();
                     this.muted = true;
+                    this.currentTime = 0;
                     return Promise.resolve();
                 }
             }
             return origPlay.apply(this, args);
         };
+
+        document.addEventListener('play', (e) => {
+            const target = e.target;
+            if (!(target instanceof HTMLAudioElement)) return;
+            const src = String(target.currentSrc || target.src || '').toLowerCase();
+            if (target !== window.SHOP_RUNTIME.htmlAudio && src.includes('praise')) {
+                window.SHOP_RUNTIME.defaultBgmRef = target;
+                const eq = window.shopGetEquipped();
+                if (eq.music !== 'music_default') {
+                    target.pause();
+                    target.muted = true;
+                }
+            }
+        }, true);
+    };
+
+    window.shopToggleDefaultBgm = function (shouldPlay) {
+        const candidates = Array.from(document.querySelectorAll('audio'));
+        if (window.SHOP_RUNTIME.defaultBgmRef && !candidates.includes(window.SHOP_RUNTIME.defaultBgmRef)) {
+            candidates.push(window.SHOP_RUNTIME.defaultBgmRef);
+        }
+        if (typeof STATE !== 'undefined') {
+            const stateAudio = STATE.bgm || STATE.musicAudio || STATE.audio || STATE.praiseAudio;
+            if (stateAudio && !candidates.includes(stateAudio)) candidates.push(stateAudio);
+        }
+
+        candidates.forEach(a => {
+            if (!a || a === window.SHOP_RUNTIME.htmlAudio) return;
+            if (shouldPlay) {
+                a.muted = false;
+                a.volume = window.shopGetMusicVolume();
+                a.play().catch(() => {});
+            } else {
+                a.pause();
+                a.muted = true;
+            }
+        });
     };
     window.shopHookAudioPlay();
     
