@@ -208,6 +208,7 @@ function startWhackACyn() {
     });
     
     function openWhackModal() {
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('whack');
         modal.classList.add('active');
         clearAllNodes();
         score = 0;
@@ -519,6 +520,7 @@ function startTradingCardBinderUI() {
     });
     
     function openBinderModal() {
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('cards');
         revealEl.classList.remove('is-visible');
         renderBinder();
         modal.classList.add('active');
@@ -1766,6 +1768,7 @@ function startPjskUI() {
         playBeep(659.25, 0.06, 'triangle', 0.04);
     });
     function openPjskModal() {
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('pjsk');
         resultBanner.classList.remove('is-visible');
         syncSongMeta();
         clearNotesDOM();
@@ -2100,20 +2103,20 @@ function startChessBotsData() {
     
     let sfWorker = null;
     let sfReadyPromise = null;
-
+    
     function getStockfishWorker() {
         if (sfReadyPromise) return sfReadyPromise;
         sfReadyPromise = (async () => {
             try {
-                const sfUrl = 'https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js';
-
+                const sfUrl = 'https://cdn.jsdelivr.net/npm/stockfish@19.0.1/bin/stockfish-19-asm.js';
+                
                 const res = await fetch(sfUrl);
                 if (!res.ok) throw new Error('HTTP ' + res.status);
                 const scriptText = await res.text();
-
+                
                 const blob = new Blob([scriptText], { type: 'application/javascript' });
                 const worker = new Worker(URL.createObjectURL(blob));
-
+                
                 return await new Promise((resolve) => {
                     const bootTimeout = setTimeout(() => {
                         console.warn('[SF] Boot timed out');
@@ -2121,14 +2124,14 @@ function startChessBotsData() {
                         sfReadyPromise = null;
                         resolve(null);
                     }, 15000);
-
+                    
                     worker.onerror = (err) => {
                         console.error('[SF] Worker error:', err);
                         clearTimeout(bootTimeout);
                         sfReadyPromise = null;
                         resolve(null);
                     };
-
+                    
                     const onBootMsg = (e) => {
                         const msg = typeof e.data === 'string' ? e.data : JSON.stringify(e.data || '');
                         console.log('[SF]', msg);
@@ -2140,7 +2143,7 @@ function startChessBotsData() {
                             resolve(worker);
                         }
                     };
-
+                    
                     worker.addEventListener('message', onBootMsg);
                     worker.postMessage('uci');
                     worker.postMessage('isready');
@@ -2538,6 +2541,7 @@ function startChessBotsUI() {
     });
     
     function openChessComModal() {
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('chess');
         modal.classList.add('active');
         startNewMatch();
     }
@@ -3382,6 +3386,7 @@ window.doorsCloseGame = function () {
 };
 
 window.launchDoorsGame = function () {
+    if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('doors');
     if (!window.doorsBuildModal) startDoorsCore();
     if (!window.doorsRenderCorridor) startDoorsCorridor();
     if (!window.doorsFlickerLights) startDoorsEntities();
@@ -4106,6 +4111,7 @@ function startBurjElevatorController() {
     };
     
     window.launchBurjElevator = function () {
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('elevator');
         if (!window.ELEV_CFG) startBurjElevatorData();
         if (!window.elevRenderCircuit) startBurjElevatorPuzzlesA();
         if (!window.elevStartKeypad) startBurjElevatorPuzzlesB();
@@ -5143,6 +5149,7 @@ function startGdDeadlockedUI() {
         if (modal) modal.remove();
     };
     window.launchGdDeadlocked = function () {
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('gd');
         if (!window.GD_CFG) startGdDeadlockedData();
         if (!window.gdBuildDeadlockedMap) startGdDeadlockedLevel();
         if (!window.gdUpdatePhysics) startGdDeadlockedEngine();
@@ -5678,6 +5685,7 @@ function startBuckshotController() {
     };
     
     window.launchBuckshotSolver = function () {
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('buckshot');
         if (!window.BUCK_CFG) startBuckshotData();
         if (!window.buckStartRound) startBuckshotAI();
         if (!window.buckBuildModal) startBuckshotModal();
@@ -5711,7 +5719,6 @@ function startArcadeHubData() {
             triggers: Array.of('cards', 'binder', 'tcg'),
             launch: () => {
                 if (typeof window.openTradingCardBinder === 'function') window.openTradingCardBinder();
-                else if (typeof startTradingCardBinderUI === 'function') startTradingCardBinderUI();
             }
         },
         {
@@ -5722,8 +5729,7 @@ function startArcadeHubData() {
             hint: 'Type the Solver error symbol [null]...',
             triggers: Array.of('[null]', 'whack a cyn', 'cyn'),
             launch: () => {
-                if (typeof window.launchWhackACyn === 'function') window.launchWhackACyn();
-                else if (typeof startWhackACyn === 'function') startWhackACyn();
+                if (typeof window.openWhackACynGame === 'function') window.openWhackACynGame();
             }
         },
         {
@@ -5734,8 +5740,7 @@ function startArcadeHubData() {
             hint: 'Say the signature Wonderhoi catchphrase...',
             triggers: Array.of('pjsk', 'sekai', 'wonderhoi'),
             launch: () => {
-                if (typeof window.openPjskStage === 'function') window.openPjskStage();
-                else if (typeof startPjskUI === 'function') startPjskUI();
+                if (typeof window.openPjskLiveGame === 'function') window.openPjskLiveGame();
             }
         },
         {
@@ -5747,7 +5752,7 @@ function startArcadeHubData() {
             triggers: Array.of('fission', 'fission mania'),
             launch: () => {
                 if (typeof window.openFissionMania === 'function') window.openFissionMania();
-                else if (typeof startFissionManiaUI === 'function') startFissionManiaUI();
+                else if (typeof window.openFissionManiaGame === 'function') window.openFissionManiaGame();
             }
         },
         {
@@ -5758,8 +5763,7 @@ function startArcadeHubData() {
             hint: 'Challenge Martin, Magnus, or the dreaded Fish...',
             triggers: Array.of('chess', 'chess.com', 'stockfish', '2823'),
             launch: () => {
-                if (typeof window.openChessBots === 'function') window.openChessBots();
-                else if (typeof startChessBotsUI === 'function') startChessBotsUI();
+                if (typeof window.openChessComBots === 'function') window.openChessComBots();
             }
         },
         {
@@ -5822,7 +5826,7 @@ function startArcadeHubData() {
         if (!unlocked.includes(gameId)) {
             unlocked.push(gameId);
             localStorage.setItem(window.ARCADE_STORAGE_KEY, JSON.stringify(unlocked));
-            window.arcadeUpdateBadge();
+            if (typeof window.arcadeUpdateBadge === 'function') window.arcadeUpdateBadge();
         }
     };
     
@@ -5831,7 +5835,7 @@ function startArcadeHubData() {
         const idx = window.ARCADE_REGISTRY.findIndex(g => g.id === entry.id);
         if (idx >= 0) window.ARCADE_REGISTRY[idx] = entry;
         else window.ARCADE_REGISTRY.push(entry);
-        window.arcadeUpdateBadge();
+        if (typeof window.arcadeUpdateBadge === 'function') window.arcadeUpdateBadge();
     };
 }
 function startArcadeHubUI() {
