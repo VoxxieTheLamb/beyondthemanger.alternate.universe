@@ -558,6 +558,152 @@
     0% { background-position: 0 0; }
     100% { background-position: 0 16px; }
 }
+@media print {
+    html, body {
+        background: #ffffff !important;
+        color: #111827 !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        zoom: 0.72;
+    }
+    .wavy-frame,
+    .site-navbar,
+    .key-tracker,
+    .shortcut-help-btn,
+    .audio-toggle-btn,
+    .wave-toggle-btn,
+    .theme-mode-pill,
+    .pitch-bar,
+    .scroll-progress-bar,
+    .search-wrapper,
+    .filter-bar,
+    .faction-bar,
+    .alpha-jump-bar,
+    .active-reset-pill,
+    .badge-legend-strip,
+    .back-to-top-btn,
+    .freedom-tracker,
+    .burj-elevator-hud,
+    .calendar-save-btn,
+    .floorplan-toggle-btn,
+    .fp-reader-btn,
+    .fp-mobile-tip,
+    .lebron-led-scoreboard,
+    .lebron-hero-hoop,
+    .reactor-guess-box,
+    #spotlightBtn,
+    #openPlaybillBtn,
+    .side-panel,
+    .panel-overlay,
+    .vip-modal-overlay,
+    .video,
+    .bottom-item,
+    .zerotwo-companion-wrap,
+    .center + h1,
+    body .main-content-layout > .center {
+        display: none !important;
+    }
+    .Title {
+        display: block !important;
+        min-height: auto !important;
+        padding: 8px 0 4px 0 !important;
+    }
+    .center-text {
+        padding: 0 !important;
+        text-align: center !important;
+    }
+    .center-text h1 {
+        font-size: 1.85rem !important;
+        margin: 0 0 4px 0 !important;
+        background: none !important;
+        -webkit-text-fill-color: #0f172a !important;
+        color: #0f172a !important;
+        filter: none !important;
+    }
+    .center-text h2,
+    .subtitle-main {
+        font-size: 1rem !important;
+        background: none !important;
+        -webkit-text-fill-color: #334155 !important;
+        color: #334155 !important;
+        filter: none !important;
+    }
+    .synopsis-section {
+        padding: 6px 0 !important;
+    }
+    .synopsis-card {
+        padding: 18px 20px !important;
+    }
+    .scripture-actions {
+        display: none !important;
+    }
+    .synopsis-card,
+    .story-stat,
+    .theme-banner,
+    .scripture-card,
+    .event-detail-item,
+    .timeline-section,
+    .countdown-wrapper,
+    .countdown-box {
+        background: #f8fafc !important;
+        color: #0f172a !important;
+        border: 1px solid #cbd5e1 !important;
+        box-shadow: none !important;
+        break-inside: avoid;
+    }
+    .synopsis-heading,
+    .synopsis-tagline,
+    .synopsis-story,
+    .stat-value,
+    .detail-value,
+    .theme-quote,
+    .scripture-text,
+    .scripture-ref,
+    .scripture-header,
+    .countdown-num,
+    .tl-label {
+        color: #0f172a !important;
+        text-shadow: none !important;
+    }
+    .PeoplePics {
+        border-color: #94a3b8 !important;
+        box-shadow: none !important;
+        background: #f1f5f9 !important;
+    }
+    .PeoplePics .overlay-text {
+        opacity: 1 !important;
+        background: rgba(15, 23, 42, 0.85) !important;
+        color: #ffffff !important;
+    }
+    .monogram-avatar {
+        background: #e2e8f0 !important;
+        color: #0f172a !important;
+        text-shadow: none !important;
+        border: 1px solid #94a3b8 !important;
+    }
+    .portrait-role-pip {
+        background: #ffffff !important;
+        box-shadow: none !important;
+    }
+    .reveal-on-scroll,
+    .PersonWrapper.reveal-on-scroll .PeoplePics,
+    .PersonWrapper.reveal-on-scroll .portrait-role-pip {
+        opacity: 1 !important;
+        transform: none !important;
+        filter: none !important;
+    }
+}
+@media (max-width: 600px) {
+    .feedback-row {
+        grid-template-columns: 1fr;
+    }
+}
+@media print {
+    .faq-section,
+    .feedback-section {
+        display: none !important;
+    }
+}
 /*
 SIR BEFORE YOU FLAME ME FOR TS
 THEY CONSENTED TO THIS
