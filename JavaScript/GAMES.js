@@ -8823,14 +8823,14 @@ function startBlackjackUI() {
         const allInBtn = document.getElementById('bj-allin-btn');
         const customInput = document.getElementById('bj-custom-input');
         const customSetBtn = document.getElementById('bj-custom-set-btn');
-
+        
         const ceilToTen = val => Math.ceil(val / 10) * 10;
-
+        
         if (dealBtn) dealBtn.onclick = window.bjDealHand;
         if (hitBtn) hitBtn.onclick = window.bjHit;
         if (standBtn) standBtn.onclick = () => window.bjStand(false);
         if (doubleBtn) doubleBtn.onclick = window.bjDoubleDown;
-
+        
         if (halfBtn) {
             halfBtn.onclick = () => {
                 const cur = window.bjGetCoins();
@@ -8839,7 +8839,7 @@ function startBlackjackUI() {
                 window.bjRender('Half-in wager set to ' + st.bet + ' 🪙!', '#38bdf8');
             };
         }
-
+        
         if (allInBtn) {
             allInBtn.onclick = () => {
                 const cur = window.bjGetCoins();
@@ -8847,7 +8847,7 @@ function startBlackjackUI() {
                 window.bjRender('🔥 ALL IN! Wager set to ' + st.bet + ' 🪙!', '#f43f5e');
             };
         }
-
+        
         const applyCustomBet = () => {
             if (!customInput) return;
             const raw = parseFloat(customInput.value);
@@ -8857,7 +8857,7 @@ function startBlackjackUI() {
             st.bet = cur > 0 ? Math.min(cur, Math.max(10, ceiled)) : 10;
             window.bjRender('Custom wager (ceiled to 10): ' + st.bet + ' 🪙!', '#fde047');
         };
-
+        
         if (customSetBtn) customSetBtn.onclick = applyCustomBet;
         if (customInput) {
             customInput.onkeydown = e => {
@@ -8895,13 +8895,515 @@ function startBlackjackUI() {
         st.bet = Math.min(25, Math.max(5, window.bjGetCoins()));
         window.bjBuildModal();
         window.bjRender('Let\'s go gambling! Select your wager and hit DEAL.', '#fde047');
-        };
-        if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
-            STATE.onSearchInput.push(function (query) {
-                const clean = String(query || '').trim().toLowerCase();
-                if (window.BJ_CFG.triggers.includes(clean)) {
-                    window.launchBlackjackGame();
-                }
-            });
-        }
+    };
+    if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
+        STATE.onSearchInput.push(function (query) {
+            const clean = String(query || '').trim().toLowerCase();
+            if (window.BJ_CFG.triggers.includes(clean)) {
+                window.launchBlackjackGame();
+            }
+        });
     }
+}
+
+function startSurviveSolverData() {
+    window.SOLVER_GAME_CFG = {
+        triggers: Array.of('survive the solver', 'survive', 'undertale', 'soul', 'bullet hell'),
+        durationSec: 30,
+        boxW: 340,
+        boxH: 260,
+        baseReward: 120,
+        noHitBonus: 40,
+        maxHp: 20
+    };
+    
+    window.SOLVER_GAME_STATE = {
+        active: false,
+        running: false,
+        rafId: null,
+        lastTs: 0,
+        elapsed: 0,
+        hp: 20,
+        invuln: 0,
+        soulX: 170,
+        soulY: 130,
+        keys: {},
+        bullets: Array.of(),
+        lasers: Array.of(),
+        spawnTimer: 0,
+        laserTimer: 0,
+        audioCtx: null,
+        listeners: Array.of()
+    };
+    
+    window.solverAwardCoins = function (amount) {
+        const cur = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
+        const next = cur + amount;
+        localStorage.setItem('afcs_coins', String(next));
+        const badge = document.getElementById('afcs-coin-display');
+        if (badge) badge.textContent = next + ' 🪙';
+        return next;
+    };
+    
+    window.solverSfx = function (kind) {
+        const st = window.SOLVER_GAME_STATE;
+        try {
+            if (!st.audioCtx) {
+                const Ctx = window.AudioContext || window.webkitAudioContext;
+                if (Ctx) st.audioCtx = new Ctx();
+            }
+            if (!st.audioCtx) return;
+            if (st.audioCtx.state === 'suspended') st.audioCtx.resume();
+            const now = st.audioCtx.currentTime;
+            const osc = st.audioCtx.createOscillator();
+            const gain = st.audioCtx.createGain();
+            
+            if (kind === 'hit') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(160, now);
+                osc.frequency.exponentialRampToValueAtTime(55, now + 0.18);
+                gain.gain.setValueAtTime(0.08, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.2);
+                osc.connect(gain);
+                gain.connect(st.audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.21);
+            } else if (kind === 'laser') {
+                osc.type = 'square';
+                osc.frequency.setValueAtTime(520, now);
+                osc.frequency.exponentialRampToValueAtTime(140, now + 0.22);
+                gain.gain.setValueAtTime(0.045, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.23);
+                osc.connect(gain);
+                gain.connect(st.audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.24);
+            } else if (kind === 'win') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.09);
+                osc.frequency.setValueAtTime(783.99, now + 0.18);
+                osc.frequency.setValueAtTime(1046.5, now + 0.27);
+                gain.gain.setValueAtTime(0.07, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.45);
+                osc.connect(gain);
+                gain.connect(st.audioCtx.destination);
+                osc.start(now);
+                osc.stop(now + 0.46);
+            }
+        } catch (e) {}
+    };
+    
+    if (typeof window.arcadeRegisterGame === 'function') {
+        window.arcadeRegisterGame({
+            id: 'survive_solver',
+            title: 'Survive the Solver',
+            icon: '❤️',
+            reward: '+120–160 🪙',
+            hint: 'Dodge Cyn’s [NULL] barrage inside the Battle Box for 30s...',
+            triggers: window.SOLVER_GAME_CFG.triggers,
+            launch: () => window.launchSurviveSolver()
+        });
+    }
+}
+function startSurviveSolverEngine() {
+    window.solverSpawnBullet = function (x, y, vx, vy, r, glyph, color) {
+        window.SOLVER_GAME_STATE.bullets.push({
+            x: x,
+            y: y,
+            vx: vx,
+            vy: vy,
+            r: r || 7,
+            glyph: glyph || '⬡',
+            color: color || '#facc15'
+        });
+    };
+    
+    window.solverDamageSoul = function (dmg) {
+        const st = window.SOLVER_GAME_STATE;
+        if (st.invuln > 0 || !st.running) return;
+        st.hp = Math.max(0, st.hp - dmg);
+        st.invuln = 0.85;
+        window.solverSfx('hit');
+        
+        const hpEl = document.getElementById('solver-hp-txt');
+        const barEl = document.getElementById('solver-hp-fill');
+        if (hpEl) hpEl.textContent = st.hp + ' / ' + window.SOLVER_GAME_CFG.maxHp;
+        if (barEl) barEl.style.width = Math.round((st.hp / window.SOLVER_GAME_CFG.maxHp) * 100) + '%';
+        
+        if (st.hp <= 0) {
+            window.solverFinishRun(false);
+        }
+    };
+    
+    window.solverStep = function (dt) {
+        const st = window.SOLVER_GAME_STATE;
+        const cfg = window.SOLVER_GAME_CFG;
+        if (!st.running) return;
+        
+        st.elapsed += dt;
+        if (st.invuln > 0) st.invuln = Math.max(0, st.invuln - dt);
+        
+        if (st.elapsed >= cfg.durationSec) {
+            window.solverFinishRun(true);
+            return;
+        }
+        
+        const timeEl = document.getElementById('solver-time-txt');
+        if (timeEl) timeEl.textContent = Math.max(0, cfg.durationSec - st.elapsed).toFixed(1) + 's';
+        
+        const slow = st.keys.ShiftLeft || st.keys.ShiftRight;
+        const speed = slow ? 115 : 210;
+        let dx = 0;
+        let dy = 0;
+        if (st.keys.ArrowLeft || st.keys.KeyA) dx -= 1;
+        if (st.keys.ArrowRight || st.keys.KeyD) dx += 1;
+        if (st.keys.ArrowUp || st.keys.KeyW) dy -= 1;
+        if (st.keys.ArrowDown || st.keys.KeyS) dy += 1;
+        
+        if (dx !== 0 && dy !== 0) {
+            dx *= 0.7071;
+            dy *= 0.7071;
+        }
+        st.soulX = Math.max(12, Math.min(cfg.boxW - 12, st.soulX + dx * speed * dt));
+        st.soulY = Math.max(12, Math.min(cfg.boxH - 12, st.soulY + dy * speed * dt));
+        
+        const phaseEl = document.getElementById('solver-phase-txt');
+        st.spawnTimer -= dt;
+        st.laserTimer -= dt;
+        
+        if (st.elapsed < 7) {
+            if (phaseEl) phaseEl.textContent = 'PHASE 1: [NULL] BARRAGE';
+            if (st.spawnTimer <= 0) {
+                st.spawnTimer = 0.42;
+                const edge = Math.floor(Math.random() * 4);
+                let sx = 0;
+                let sy = 0;
+                if (edge === 0) { sx = Math.random() * cfg.boxW; sy = -10; }
+                else if (edge === 1) { sx = cfg.boxW + 10; sy = Math.random() * cfg.boxH; }
+                else if (edge === 2) { sx = Math.random() * cfg.boxW; sy = cfg.boxH + 10; }
+                else { sx = -10; sy = Math.random() * cfg.boxH; }
+                const ang = Math.atan2(st.soulY - sy, st.soulX - sx);
+                const spd = 145 + Math.random() * 45;
+                window.solverSpawnBullet(sx, sy, Math.cos(ang) * spd, Math.sin(ang) * spd, 8, '⬡', '#facc15');
+            }
+        } else if (st.elapsed < 15) {
+            if (phaseEl) phaseEl.textContent = 'PHASE 2: CALLBACK LASERS';
+            if (st.laserTimer <= 0) {
+                st.laserTimer = 1.25;
+                const horiz = Math.random() < 0.5;
+                st.lasers.push({
+                    horiz: horiz,
+                    pos: horiz ? (24 + Math.random() * (cfg.boxH - 48)) : (24 + Math.random() * (cfg.boxW - 48)),
+                    warn: 0.65,
+                    fire: 0.25,
+                    firedSfx: false
+                });
+            }
+            if (st.spawnTimer <= 0) {
+                st.spawnTimer = 0.65;
+                const sx = Math.random() * cfg.boxW;
+                window.solverSpawnBullet(sx, -10, (Math.random() - 0.5) * 60, 155, 7, '✦', '#c084fc');
+            }
+        } else if (st.elapsed < 23) {
+            if (phaseEl) phaseEl.textContent = 'PHASE 3: GRIEF SPIKE WAVES';
+            if (st.spawnTimer <= 0) {
+                st.spawnTimer = 0.72;
+                const fromTop = Math.random() < 0.5;
+                const gapX = 45 + Math.random() * (cfg.boxW - 90);
+                for (let x = 16; x <= cfg.boxW - 16; x += 26) {
+                    if (Math.abs(x - gapX) < 34) continue;
+                    window.solverSpawnBullet(x, fromTop ? -8 : cfg.boxH + 8, 0, fromTop ? 165 : -165, 7, '▲', '#f43f5e');
+                }
+            }
+        } else {
+            if (phaseEl) phaseEl.textContent = 'PHASE 4: ABSOLUTE OVERDRIVE';
+            if (st.spawnTimer <= 0) {
+                st.spawnTimer = 0.32;
+                const baseAng = st.elapsed * 3.1;
+                for (let k = 0; k < 2; k++) {
+                    const a = baseAng + k * Math.PI;
+                    const sx = cfg.boxW / 2 + Math.cos(a) * 195;
+                    const sy = cfg.boxH / 2 + Math.sin(a) * 155;
+                    const toCenter = Math.atan2(cfg.boxH / 2 - sy, cfg.boxW / 2 - sx);
+                    window.solverSpawnBullet(sx, sy, Math.cos(toCenter) * 165, Math.sin(toCenter) * 165, 7, '⬡', '#facc15');
+                }
+            }
+            if (st.laserTimer <= 0) {
+                st.laserTimer = 1.4;
+                st.lasers.push({
+                    horiz: Math.random() < 0.5,
+                    pos: st.soulY,
+                    warn: 0.6,
+                    fire: 0.22,
+                    firedSfx: false
+                });
+            }
+        }
+        
+        for (let i = st.bullets.length - 1; i >= 0; i--) {
+            const b = st.bullets.at(i);
+            b.x += b.vx * dt;
+            b.y += b.vy * dt;
+            if (b.x < -30 || b.x > cfg.boxW + 30 || b.y < -30 || b.y > cfg.boxH + 30) {
+                st.bullets.splice(i, 1);
+                continue;
+            }
+            const dist = Math.hypot(b.x - st.soulX, b.y - st.soulY);
+            if (dist < b.r + 5) {
+                window.solverDamageSoul(4);
+            }
+        }
+        
+        for (let i = st.lasers.length - 1; i >= 0; i--) {
+            const l = st.lasers.at(i);
+            if (l.warn > 0) {
+                l.warn -= dt;
+            } else {
+                if (!l.firedSfx) {
+                    l.firedSfx = true;
+                    window.solverSfx('laser');
+                }
+                l.fire -= dt;
+                const hitDist = l.horiz ? Math.abs(st.soulY - l.pos) : Math.abs(st.soulX - l.pos);
+                if (hitDist < 11) {
+                    window.solverDamageSoul(5);
+                }
+                if (l.fire <= 0) {
+                    st.lasers.splice(i, 1);
+                }
+            }
+        }
+    };
+    
+    window.solverDraw = function () {
+        const st = window.SOLVER_GAME_STATE;
+        const cfg = window.SOLVER_GAME_CFG;
+        const canvas = document.getElementById('solver-battle-canvas');
+        if (!canvas) return;
+        const ctx = canvas.getContext('2d');
+        
+        ctx.fillStyle = '#050508';
+        ctx.fillRect(0, 0, cfg.boxW, cfg.boxH);
+        
+        for (const l of st.lasers) {
+            if (l.warn > 0) {
+                ctx.strokeStyle = 'rgba(250, 204, 21, 0.55)';
+                ctx.lineWidth = 2;
+                ctx.setLineDash(Array.of(6, 6));
+                ctx.beginPath();
+                if (l.horiz) {
+                    ctx.moveTo(0, l.pos);
+                    ctx.lineTo(cfg.boxW, l.pos);
+                } else {
+                    ctx.moveTo(l.pos, 0);
+                    ctx.lineTo(l.pos, cfg.boxH);
+                }
+                ctx.stroke();
+                ctx.setLineDash(Array.of());
+            } else {
+                ctx.fillStyle = '#ffffff';
+                ctx.shadowColor = '#facc15';
+                ctx.shadowBlur = 14;
+                if (l.horiz) ctx.fillRect(0, l.pos - 8, cfg.boxW, 16);
+                else ctx.fillRect(l.pos - 8, 0, 16, cfg.boxH);
+                ctx.shadowBlur = 0;
+            }
+        }
+        
+        ctx.font = 'bold 15px monospace';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        for (const b of st.bullets) {
+            ctx.fillStyle = b.color;
+            ctx.fillText(b.glyph, b.x, b.y);
+        }
+        
+        const blinkHide = st.invuln > 0 && Math.floor(st.invuln * 18) % 2 === 0;
+        if (!blinkHide) {
+            ctx.font = '18px system-ui';
+            ctx.fillStyle = st.keys.ShiftLeft || st.keys.ShiftRight ? '#38bdf8' : '#ef4444';
+            ctx.shadowColor = st.keys.ShiftLeft || st.keys.ShiftRight ? '#38bdf8' : '#ef4444';
+            ctx.shadowBlur = 10;
+            ctx.fillText('♥', st.soulX, st.soulY);
+            ctx.shadowBlur = 0;
+        }
+    };
+    
+    window.solverLoop = function (ts) {
+        const st = window.SOLVER_GAME_STATE;
+        if (!st.active || !st.running) return;
+        const dt = Math.min(0.05, (ts - st.lastTs) / 1000);
+        st.lastTs = ts;
+        window.solverStep(dt);
+        window.solverDraw();
+        if (st.running) {
+            st.rafId = requestAnimationFrame(window.solverLoop);
+        }
+    };
+}
+function startSurviveSolverUI() {
+    window.solverFinishRun = function (survived) {
+        if (noHit) localStorage.setItem('afcs_codex_solver_pacifist', 'true');
+        const st = window.SOLVER_GAME_STATE;
+        const cfg = window.SOLVER_GAME_CFG;
+        st.running = false;
+        if (st.rafId) cancelAnimationFrame(st.rafId);
+        st.rafId = null;
+        
+        const ov = document.getElementById('solver-end-overlay');
+        if (!ov) return;
+        ov.style.display = 'flex';
+        
+        if (survived) {
+            window.solverSfx('win');
+            const noHit = st.hp === cfg.maxHp;
+            const totalCoins = cfg.baseReward + (noHit ? cfg.noHitBonus : 0);
+            const bal = window.solverAwardCoins(totalCoins);
+            ov.innerHTML = `
+                <div style="font-size:1.55rem;font-weight:900;color:#4ade80;margin-bottom:6px;">
+                    ${noHit ? '👑 PACIFIST NO-HIT CLEAR!' : '❤️ YOU SURVIVED THE SOLVER!'}
+                </div>
+                <p style="color:#fef08a;font-size:0.9rem;margin:0 0 14px 0;">
+                    Earned <b>+${totalCoins} 🪙</b> (Balance: ${bal} 🪙)
+                </p>
+                <button id="solver-retry-btn" style="background:#facc15;color:#090702;border:none;padding:9px 20px;border-radius:8px;font-weight:900;cursor:pointer;">↻ PLAY AGAIN</button>
+            `;
+        } else {
+            ov.innerHTML = `
+                <div style="font-size:1.65rem;font-weight:900;color:#ef4444;margin-bottom:6px;">💔 SOUL SHATTERED</div>
+                <p style="color:#cbd5e1;font-size:0.88rem;margin:0 0 14px 0;">
+                    Survived <b>${st.elapsed.toFixed(1)}s</b> / ${cfg.durationSec}s — Stay determined!
+                </p>
+                <button id="solver-retry-btn" style="background:#facc15;color:#090702;border:none;padding:9px 20px;border-radius:8px;font-weight:900;cursor:pointer;">↻ TRY AGAIN</button>
+            `;
+        }
+        
+        const retryBtn = document.getElementById('solver-retry-btn');
+        if (retryBtn) retryBtn.onclick = window.launchSurviveSolver;
+    };
+    
+    window.solverBuildModal = function () {
+        const old = document.getElementById('afcs-survive-solver-modal');
+        if (old) old.remove();
+        
+        const cfg = window.SOLVER_GAME_CFG;
+        const modal = document.createElement('div');
+        modal.id = 'afcs-survive-solver-modal';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(2,2,5,0.94);backdrop-filter:blur(8px);color:#ffffff;font-family:"Courier New",monospace;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;user-select:none;';
+        
+        modal.innerHTML = `
+            <div style="width:100%;max-width:440px;background:#08080c;border:3px solid #ffffff;border-radius:12px;padding:18px;box-shadow:0 0 40px rgba(250,204,21,0.35);display:flex;flex-direction:column;align-items:center;gap:12px;">
+                <div style="width:100%;display:flex;justify-content:space-between;align-items:center;border-bottom:2px solid #ffffff;padding-bottom:8px;">
+                    <span style="font-weight:900;color:#facc15;font-size:1rem;">⬡ SURVIVE THE SOLVER</span>
+                    <button id="solver-exit-btn" style="background:#450a0a;color:#fecaca;border:1px solid #ef4444;padding:4px 10px;border-radius:6px;cursor:pointer;font-weight:bold;">✕ EXIT</button>
+                </div>
+        
+                <div style="width:100%;background:#111118;border:2px solid #facc15;border-radius:8px;padding:8px 12px;font-size:0.82rem;color:#fef08a;text-align:center;">
+                    * Cyn giggles: "Let’s see how long your little SOUL lasts!"
+                </div>
+        
+                <div style="width:100%;display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;font-weight:bold;">
+                    <span id="solver-phase-txt" style="color:#c084fc;">PHASE 1: [NULL] BARRAGE</span>
+                    <span style="color:#38bdf8;">TIME: <b id="solver-time-txt">30.0s</b></span>
+                </div>
+        
+                <div style="position:relative;border:4px solid #ffffff;background:#050508;line-height:0;">
+                    <canvas id="solver-battle-canvas" width="${cfg.boxW}" height="${cfg.boxH}" style="display:block;touch-action:none;"></canvas>
+                    <div id="solver-end-overlay" style="display:none;position:absolute;inset:0;background:rgba(5,5,8,0.9);flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:16px;line-height:1.4;"></div>
+                </div>
+        
+                <div style="width:100%;display:flex;align-items:center;gap:10px;font-size:0.85rem;font-weight:900;">
+                    <span style="color:#facc15;">SOUL HP</span>
+                    <div style="flex:1;height:14px;background:#450a0a;border:1.5px solid #ffffff;">
+                        <div id="solver-hp-fill" style="width:100%;height:100%;background:#facc15;transition:width 0.12s;"></div>
+                    </div>
+                    <span id="solver-hp-txt" style="color:#ffffff;">20 / 20</span>
+                </div>
+        
+                <div style="font-size:0.75rem;color:#94a3b8;text-align:center;">
+                    Move: <b>WASD / Arrows</b> (or Drag inside box) • Hold <b>[SHIFT]</b> for Focus Slow
+                </div>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        document.getElementById('solver-exit-btn').onclick = window.solverCloseGame;
+        
+        const canvas = document.getElementById('solver-battle-canvas');
+        const moveToTouch = e => {
+            const t = e.touches.item(0);
+            if (!t) return;
+            const rect = canvas.getBoundingClientRect();
+            const st = window.SOLVER_GAME_STATE;
+            st.soulX = Math.max(12, Math.min(cfg.boxW - 12, t.clientX - rect.left));
+            st.soulY = Math.max(12, Math.min(cfg.boxH - 12, t.clientY - rect.top));
+        };
+        canvas.ontouchstart = e => { e.preventDefault(); moveToTouch(e); };
+        canvas.ontouchmove = e => { e.preventDefault(); moveToTouch(e); };
+        
+        const downHandler = e => {
+            if (!window.SOLVER_GAME_STATE.active) return;
+            if (e.code === 'Escape') {
+                window.solverCloseGame();
+                return;
+            }
+            window.SOLVER_GAME_STATE.keys[e.code] = true;
+        };
+        const upHandler = e => {
+            window.SOLVER_GAME_STATE.keys[e.code] = false;
+        };
+        
+        window.addEventListener('keydown', downHandler);
+        window.addEventListener('keyup', upHandler);
+        window.SOLVER_GAME_STATE.listeners.push(Array.of(window, 'keydown', downHandler));
+        window.SOLVER_GAME_STATE.listeners.push(Array.of(window, 'keyup', upHandler));
+    };
+    
+    window.solverCloseGame = function () {
+        const st = window.SOLVER_GAME_STATE;
+        st.active = false;
+        st.running = false;
+        if (st.rafId) cancelAnimationFrame(st.rafId);
+        st.rafId = null;
+        st.listeners.forEach(([el, ev, fn]) => el.removeEventListener(ev, fn));
+        st.listeners = Array.of();
+        const modal = document.getElementById('afcs-survive-solver-modal');
+        if (modal) modal.remove();
+    };
+    
+    window.launchSurviveSolver = function () {
+        if (!window.SOLVER_GAME_CFG) startSurviveSolverData();
+        if (!window.solverStep) startSurviveSolverEngine();
+        window.solverCloseGame();
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('survive_solver');
+        
+        const st = window.SOLVER_GAME_STATE;
+        const cfg = window.SOLVER_GAME_CFG;
+        st.active = true;
+        st.running = true;
+        st.elapsed = 0;
+        st.hp = cfg.maxHp;
+        st.invuln = 0;
+        st.soulX = cfg.boxW / 2;
+        st.soulY = cfg.boxH / 2;
+        st.keys = {};
+        st.bullets = Array.of();
+        st.lasers = Array.of();
+        st.spawnTimer = 0.2;
+        st.laserTimer = 0.8;
+        
+        window.solverBuildModal();
+        st.lastTs = performance.now();
+        st.rafId = requestAnimationFrame(window.solverLoop);
+    };
+    
+    if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
+        STATE.onSearchInput.push(function (query) {
+            const clean = String(query || '').trim().toLowerCase();
+            if (window.SOLVER_GAME_CFG.triggers.includes(clean)) {
+                window.launchSurviveSolver();
+            }
+        });
+    }
+}

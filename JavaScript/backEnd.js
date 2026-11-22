@@ -49,7 +49,8 @@ function startSupabaseBackend() {
         if (this === localStorage && key === COIN_KEY && !syncing) {
             const nextVal = parseInt(String(value), 10);
             const delta = nextVal - serverBalance;
-            if (isNaN(nextVal) || nextVal < 0 || delta > 1000) {
+            const maxAllowedDelta = Math.max(1000, serverBalance * 3);
+            if (isNaN(nextVal) || nextVal < 0 || delta > maxAllowedDelta) {
                 warnBlockedCoinEdit(value);
                 return;
             }

@@ -249,6 +249,9 @@ document.addEventListener('DOMContentLoaded', () => {
     startBlackjackData();
     startBlackjackEngine();
     startBlackjackUI();
+    startSurviveSolverData();
+    startSurviveSolverEngine();
+    startSurviveSolverUI();
     
   }
   startAll();
