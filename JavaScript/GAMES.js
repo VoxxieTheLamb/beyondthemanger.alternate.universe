@@ -1965,19 +1965,76 @@ function startChessBotsData() {
         { id: 'martin', name: 'Martin', rating: 250, reward: 10, depth: 0, blunderChance: 0.78, avatar: '🧔', taunt: 'I just learned how the horsey moves!' },
         { id: 'wendy', name: 'Wendy', rating: 1500, reward: 30, depth: 1, blunderChance: 0.35, avatar: '👩', taunt: 'Ready for a solid club match?' },
         { id: 'nora', name: 'Nora', rating: 2200, reward: 50, depth: 2, blunderChance: 0.14, avatar: '👩‍🎓', taunt: 'Every pawn structure tells a story.' },
-        { id: 'hikaru', name: 'Hikaru Nakamura', rating: 2820, reward: 100, depth: 2, blunderChance: 0.04, avatar: '⚡', taunt: 'Chat, takes, takes, takes—I literally do not care.' },
         { id: 'levy', name: 'GothamChess', rating: 2350, reward: 75, depth: 2, blunderChance: 0.08, avatar: '🎙️', taunt: 'AND HE SACRIFICES... THE ROOOOOOK!!' },
+        { id: 'hikaru', name: 'Hikaru Nakamura', rating: 2820, reward: 100, depth: 2, blunderChance: 0.04, avatar: '⚡', taunt: 'Chat, takes, takes, takes—I literally do not care.' },
         { id: 'magnus', name: 'Magnus Carlsen', rating: 2882, reward: 200, depth: 3, blunderChance: 0.02, avatar: '👑', taunt: 'I will squeeze water from a stone in this endgame.' },
         { id: 'deepblue', name: 'IBM Deep Blue', rating: 3000, reward: 250, depth: 3, blunderChance: 0.0, avatar: '🖥️', taunt: 'EVALUATING 200,000,000 POSITIONS PER SECOND...' },
-        { id: 'stockfish', name: 'Stockfish v16', rating: 3630, reward: 1000, depth: 5, blunderChance: 0.0, avatar: '🐟', taunt: 'MATE IN 14 DETECTED. RESISTANCE IS SUBOPTIMAL.' }
+        { id: 'stockfish', name: 'Stockfish v19', rating: 3630, reward: 1000, depth: 15, blunderChance: 0.0, avatar: '🐟', taunt: 'MATE IN 14 DETECTED. RESISTANCE IS SUBOPTIMAL.', note: '// Send a outside recorded video (via phone) of you and your surroundings (at least 3 feet away), playing as Black and beating Stockfish with NO help from any source online or offline, (proof by showing Chrome tabs), and I will personally reward P100 to you. Good luck!' }
     ];
     
     const PIECE_VALUES = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 20000 };
-    
-    function getSquareBonus(r, c) {
-        const distCenter = Math.abs(3.5 - r) + Math.abs(3.5 - c);
-        return Math.round((7 - distCenter) * 4);
-    }
+    const PST = {
+        p: [
+            [  0,  0,  0,  0,  0,  0,  0,  0],
+            [ 50, 50, 50, 50, 50, 50, 50, 50],
+            [ 10, 10, 20, 30, 30, 20, 10, 10],
+            [  5,  5, 10, 27, 27, 10,  5,  5],
+            [  0,  0,  0, 25, 25,  0,  0,  0],
+            [  5, -5,-10,  0,  0,-10, -5,  5],
+            [  5, 10, 10,-25,-25, 10, 10,  5],
+            [  0,  0,  0,  0,  0,  0,  0,  0]
+        ],
+        n: [
+            [-50,-40,-30,-30,-30,-30,-40,-50],
+            [-40,-20,  0,  0,  0,  0,-20,-40],
+            [-30,  0, 15, 20, 20, 15,  0,-30],
+            [-30,  5, 20, 25, 25, 20,  5,-30],
+            [-30,  0, 20, 25, 25, 20,  0,-30],
+            [-30,  5, 15, 20, 20, 15,  5,-30],
+            [-40,-20,  0,  5,  5,  0,-20,-40],
+            [-50,-40,-30,-30,-30,-30,-40,-50]
+        ],
+        b: [
+            [-20,-10,-10,-10,-10,-10,-10,-20],
+            [-10,  0,  0,  0,  0,  0,  0,-10],
+            [-10,  0, 10, 15, 15, 10,  0,-10],
+            [-10,  5,  5, 15, 15,  5,  5,-10],
+            [-10,  0, 15, 15, 15, 15,  0,-10],
+            [-10, 15, 15, 15, 15, 15, 15,-10],
+            [-10,  5,  0,  0,  0,  0,  5,-10],
+            [-20,-10,-10,-10,-10,-10,-10,-20]
+        ],
+        r: [
+            [  0,  0,  0,  0,  0,  0,  0,  0],
+            [  5, 10, 10, 10, 10, 10, 10,  5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [ -5,  0,  0,  0,  0,  0,  0, -5],
+            [  0, -5,  0, 10, 10,  5, -5,  0]
+        ],
+        q: [
+            [-20,-10,-10, -5, -5,-10,-10,-20],
+            [-10,  0,  0,  0,  0,  0,  0,-10],
+            [-10,  0,  5,  5,  5,  5,  0,-10],
+            [ -5,  0,  5,  5,  5,  5,  0, -5],
+            [  0,  0,  5,  5,  5,  5,  0, -5],
+            [-10,  5,  5,  5,  5,  5,  0,-10],
+            [-10,  0,  5,  0,  0,  0,  0,-10],
+            [-20,-10,-10, -5, -5,-10,-10,-20]
+        ],
+        k: [
+            [-30,-40,-40,-50,-50,-40,-40,-30],
+            [-30,-40,-40,-50,-50,-40,-40,-30],
+            [-30,-40,-40,-50,-50,-40,-40,-30],
+            [-30,-40,-40,-50,-50,-40,-40,-30],
+            [-20,-30,-30,-40,-40,-30,-30,-20],
+            [-10,-20,-20,-20,-20,-20,-20,-10],
+            [ 20, 20, -5, -5, -5, -5, 20, 20],
+            [ 20, 30, 10,  0,  0, 10, 30, 20]
+        ]
+    };
     
     function evaluateBoard(game) {
         if (game.in_checkmate()) {
@@ -1993,7 +2050,8 @@ function startChessBotsData() {
                 const sq = board[r][c];
                 if (!sq) continue;
                 const val = PIECE_VALUES[sq.type] || 0;
-                const pos = getSquareBonus(r, c);
+                const tableRow = sq.color === 'w' ? r : (7 - r);
+                const pos = (PST[sq.type] && PST[sq.type][tableRow] && PST[sq.type][tableRow][c]) || 0;
                 total += sq.color === 'w' ? (val + pos) : -(val + pos);
             }
         }
@@ -2002,8 +2060,10 @@ function startChessBotsData() {
     
     function orderMoves(moves) {
         return moves.sort((a, b) => {
-            const scoreA = (a.captured ? 10 : 0) + (a.promotion ? 8 : 0);
-            const scoreB = (b.captured ? 10 : 0) + (b.promotion ? 8 : 0);
+            const capA = a.captured ? (PIECE_VALUES[a.captured] * 10 - PIECE_VALUES[a.piece]) : 0;
+            const capB = b.captured ? (PIECE_VALUES[b.captured] * 10 - PIECE_VALUES[b.piece]) : 0;
+            const scoreA = capA + (a.promotion ? 800 : 0) + (a.san.includes('+') ? 60 : 0) + (a.flags.includes('k') || a.flags.includes('q') ? 50 : 0);
+            const scoreB = capB + (b.promotion ? 800 : 0) + (b.san.includes('+') ? 60 : 0) + (b.flags.includes('k') || b.flags.includes('q') ? 50 : 0);
             return scoreB - scoreA;
         });
     }
@@ -2038,7 +2098,64 @@ function startChessBotsData() {
         }
     }
     
-    function chooseBotMove(game, bot) {
+    let sfWorker = null;
+    let sfReadyPromise = null;
+
+    function getStockfishWorker() {
+        if (sfReadyPromise) return sfReadyPromise;
+        sfReadyPromise = (async () => {
+            try {
+                const sfUrl = 'https://cdnjs.cloudflare.com/ajax/libs/stockfish.js/10.0.2/stockfish.js';
+
+                const res = await fetch(sfUrl);
+                if (!res.ok) throw new Error('HTTP ' + res.status);
+                const scriptText = await res.text();
+
+                const blob = new Blob([scriptText], { type: 'application/javascript' });
+                const worker = new Worker(URL.createObjectURL(blob));
+
+                return await new Promise((resolve) => {
+                    const bootTimeout = setTimeout(() => {
+                        console.warn('[SF] Boot timed out');
+                        try { worker.terminate(); } catch (_) {}
+                        sfReadyPromise = null;
+                        resolve(null);
+                    }, 15000);
+
+                    worker.onerror = (err) => {
+                        console.error('[SF] Worker error:', err);
+                        clearTimeout(bootTimeout);
+                        sfReadyPromise = null;
+                        resolve(null);
+                    };
+
+                    const onBootMsg = (e) => {
+                        const msg = typeof e.data === 'string' ? e.data : JSON.stringify(e.data || '');
+                        console.log('[SF]', msg);
+                        if (msg.includes('uciok') || msg.includes('readyok')) {
+                            clearTimeout(bootTimeout);
+                            worker.removeEventListener('message', onBootMsg);
+                            worker.postMessage('setoption name Skill Level value 20');
+                            sfWorker = worker;
+                            resolve(worker);
+                        }
+                    };
+
+                    worker.addEventListener('message', onBootMsg);
+                    worker.postMessage('uci');
+                    worker.postMessage('isready');
+                });
+            } catch (e) {
+                console.error('[SF] Fetch failed:', e);
+                sfReadyPromise = null;
+                return null;
+            }
+        })();
+        return sfReadyPromise;
+    }
+    
+    
+    async function chooseBotMove(game, bot, onMidTaunt) {
         const moves = orderMoves(game.moves({ verbose: true }));
         if (!moves.length) return null;
         
@@ -2046,27 +2163,88 @@ function startChessBotsData() {
             return moves.at(Math.floor(Math.random() * moves.length));
         }
         
-        const maxDepth = bot.id === 'stockfish' ? 5 : bot.depth;
-        const deadline = performance.now() + (bot.id === 'stockfish' ? 650 : 250);
+        const isFish = bot.id === 'stockfish';
+        
+        if (isFish) {
+            const worker = await getStockfishWorker();
+            if (!worker) {
+                return { offlineError: true };
+            }
+            
+            const fen = game.fen();
+            const uciMove = await new Promise((resolve) => {
+                let resolved = false;
+                const tauntTimer = setTimeout(() => {
+                    if (!resolved && typeof onMidTaunt === 'function') onMidTaunt();
+                }, 2500);
+                
+                const hardCap = setTimeout(() => {
+                    if (!resolved) {
+                        resolved = true;
+                        worker.postMessage('stop');
+                        resolve(null);
+                    }
+                }, 5500);
+                
+                const onMsg = (e) => {
+                    const line = String(e.data || '');
+                    if (line.startsWith('bestmove')) {
+                        clearTimeout(tauntTimer);
+                        clearTimeout(hardCap);
+                        worker.removeEventListener('message', onMsg);
+                        if (!resolved) {
+                            resolved = true;
+                            const moveStr = line.split(' ').at(1);
+                            resolve(moveStr && moveStr !== '(none)' ? moveStr : null);
+                        }
+                    }
+                };
+                
+                worker.addEventListener('message', onMsg);
+                worker.postMessage('position fen ' + fen);
+                worker.postMessage('go movetime 5000');
+            });
+            
+            if (uciMove && uciMove.length >= 4) {
+                const from = uciMove.slice(0, 2);
+                const to = uciMove.slice(2, 4);
+                const promotion = uciMove.length > 4 ? uciMove.charAt(4) : 'q';
+                const matched = moves.find(m => m.from === from && m.to === to && (!m.promotion || m.promotion === promotion));
+                if (matched) return matched;
+            }
+            return { offlineError: true };
+        }
+        
+        const maxDepth = isFish ? 5 : bot.depth;
+        const start = performance.now();
+        const tauntMark = start + 2500;
+        const deadline = start + (isFish ? 5000 : 400);
+        const isBotWhite = game.turn() === 'w';
         let bestMove = moves.at(0);
         
         for (let d = 1; d <= maxDepth; d++) {
             if (d > 1 && performance.now() > deadline) break;
             let iterBest = moves.at(0);
-            let iterVal = Infinity;
+            let iterVal = isBotWhite ? -Infinity : Infinity;
+            let completed = true;
             
             for (const m of moves) {
-                if (d > 2 && performance.now() > deadline) break;
+                if (d > 1 && performance.now() > deadline) {
+                    completed = false;
+                    break;
+                }
+                
                 game.move(m);
-                const boardVal = minimax(game, d - 1, -Infinity, Infinity, true);
+                const boardVal = minimax(game, d - 1, -Infinity, Infinity, !isBotWhite);
                 game.undo();
-                if (boardVal < iterVal) {
+                if (isBotWhite ? (boardVal > iterVal) : (boardVal < iterVal)) {
                     iterVal = boardVal;
                     iterBest = m;
                 }
             }
-            bestMove = iterBest;
+            if (completed) bestMove = iterBest;
         }
+        return bestMove;
         return bestMove;
     }
     
@@ -2084,6 +2262,7 @@ function startChessBotsUI() {
     let selectedSq = null;
     let legalTargets = [];
     let botThinking = false;
+    let playerColor = 'w';
     
     const UNICODE_PIECES = {
         wK: '♔', wQ: '♕', wR: '♖', wB: '♗', wN: '♘', wP: '♙',
@@ -2114,7 +2293,9 @@ function startChessBotsUI() {
     
             <div class="cc-status-bar" id="ccStatus">Loading Chess Engine...</div>
     
-            <div class="cc-footer">
+             <div class="cc-footer">
+                <button type="button" class="cc-btn is-active-side" id="ccSideWhiteBtn" style="border-color:#fde047;color:#fde047;">♔ White</button>
+                <button type="button" class="cc-btn" id="ccSideBlackBtn">♚ Black</button>
                 <button type="button" class="cc-btn" id="ccNewGameBtn">↻ New Match</button>
                 <button type="button" class="cc-btn is-danger" id="ccResignBtn">🏳️ Resign</button>
             </div>
@@ -2133,11 +2314,15 @@ function startChessBotsUI() {
     
     function syncRivalBanner() {
         const bot = chessData.bots.at(selectedBotIdx);
+        const noteHtml = bot.note
+        ? `<div style="margin-top:6px;padding-top:6px;border-top:1px dashed rgba(250,204,21,0.35);font-size:0.78rem;color:#fde047;font-style:normal;">${bot.note}</div>`
+        : '';
         rivalBanner.innerHTML = `
             <div class="cc-rival-avatar">${bot.avatar}</div>
             <div class="cc-rival-info">
                 <div class="cc-rival-name">${bot.name} <span class="cc-elo">(${bot.rating})</span> • Prize: <strong style="color:#fde047;">+${bot.reward} 🪙</strong></div>
                 <div class="cc-rival-taunt">"${bot.taunt}"</div>
+                ${noteHtml}
             </div>
         `;
     }
@@ -2149,8 +2334,10 @@ function startChessBotsUI() {
         const turnColor = game.turn();
         let html = '';
         
-        for (let r = 0; r < 8; r++) {
-            for (let c = 0; c < 8; c++) {
+        for (let viewR = 0; viewR < 8; viewR++) {
+            for (let viewC = 0; viewC < 8; viewC++) {
+                const r = playerColor === 'w' ? viewR : (7 - viewR);
+                const c = playerColor === 'w' ? viewC : (7 - viewC);
                 const sq = sqName(r, c);
                 const piece = b[r][c];
                 const isDark = (r + c) % 2 === 1;
@@ -2175,14 +2362,13 @@ function startChessBotsUI() {
             btn.addEventListener('click', () => handleSquareClick(btn.dataset.sq));
         });
     }
-    
     function checkMatchEnd() {
         if (!game || !game.game_over()) return false;
         const bot = chessData.bots.at(selectedBotIdx);
         
         if (game.in_checkmate()) {
-            const whiteWon = game.turn() === 'b';
-            if (whiteWon) {
+            const playerWon = game.turn() !== playerColor;
+            if (playerWon) {
                 const prevCoins = Number(localStorage.getItem('afcs_coins') || '0');
                 localStorage.setItem('afcs_coins', String(prevCoins + bot.reward));
                 statusEl.style.color = '#4ade80';
@@ -2203,20 +2389,45 @@ function startChessBotsUI() {
         }
         return true;
     }
-    
     function triggerBotTurn() {
-        if (!game || game.game_over() || game.turn() !== 'b') return;
+        if (!game || game.game_over() || game.turn() === playerColor) return;
         const bot = chessData.bots.at(selectedBotIdx);
         botThinking = true;
         statusEl.style.color = '#bae6fd';
         statusEl.textContent = `${bot.avatar} ${bot.name} is thinking...`;
         
-        setTimeout(() => {
+        setTimeout(async () => {
             if (!game || game.game_over()) {
                 botThinking = false;
                 return;
             }
-            const moveObj = chessData.chooseBotMove(game, bot);
+            const moveObj = await chessData.chooseBotMove(game, bot, () => {
+                const cynLine = 'Giggle. The [FISH] has crashed your CPU. How delightful.';
+                statusEl.style.color = '#facc15';
+                statusEl.textContent = `⬡ ${cynLine}`;
+                
+                const petBubble = document.querySelector('#cyn-pet-bubble, .cyn-speech-bubble, [data-cyn-bubble]');
+                if (petBubble) {
+                    petBubble.textContent = cynLine;
+                    petBubble.style.opacity = '1';
+                    petBubble.classList.add('is-visible', 'active');
+                }
+                if (typeof window.cynSpeak === 'function') {
+                    window.cynSpeak(cynLine);
+                }
+                if (typeof triggerScreenGlitch === 'function') triggerScreenGlitch(140);
+                playBeep(880, 0.12, 'sawtooth', 0.05);
+            });
+            
+            if (moveObj && moveObj.offlineError) {
+                botThinking = false;
+                statusEl.style.color = '#f87171';
+                statusEl.textContent = '❌ Stockfish v19 requires an active internet connection! Match voided.';
+                game.load('8/8/8/8/8/8/8/8 w - - 0 1');
+                renderBoard();
+                return;
+            }
+            
             if (moveObj) {
                 game.move(moveObj);
                 playBeep(moveObj.captured ? 320 : 480, 0.06, 'triangle', 0.04);
@@ -2224,14 +2435,14 @@ function startChessBotsUI() {
             botThinking = false;
             renderBoard();
             if (!checkMatchEnd()) {
+                const sideLabel = playerColor === 'w' ? 'White' : 'Black';
                 statusEl.style.color = game.in_check() ? '#fca5a5' : '#e2e8f0';
-                statusEl.textContent = game.in_check() ? '⚠️ CHECK! Defend your King!' : 'Your turn (White)';
+                statusEl.textContent = game.in_check() ? '⚠️ CHECK! Defend your King!' : `Your turn (${sideLabel})`;
             }
-        }, bot.id === 'stockfish' ? 280 : 180);
+        }, bot.id === 'stockfish' ? 120 : 180);
     }
-    
     function handleSquareClick(sq) {
-        if (!game || botThinking || game.game_over() || game.turn() !== 'w') return;
+        if (!game || botThinking || game.game_over() || game.turn() !== playerColor) return;
         
         if (selectedSq && legalTargets.includes(sq)) {
             const moveResult = game.move({ from: selectedSq, to: sq, promotion: 'q' });
@@ -2248,7 +2459,7 @@ function startChessBotsUI() {
         }
         
         const piece = game.get(sq);
-        if (piece && piece.color === 'w') {
+        if (piece && piece.color === playerColor) {
             selectedSq = sq;
             const moves = game.moves({ square: sq, verbose: true });
             legalTargets = moves.map(m => m.to);
@@ -2259,20 +2470,35 @@ function startChessBotsUI() {
         }
         renderBoard();
     }
-    
+    function syncSideButtons() {
+        const wBtn = modal.querySelector('#ccSideWhiteBtn');
+        const bBtn = modal.querySelector('#ccSideBlackBtn');
+        if (wBtn) {
+            wBtn.style.borderColor = playerColor === 'w' ? '#fde047' : '';
+            wBtn.style.color = playerColor === 'w' ? '#fde047' : '';
+        }
+        if (bBtn) {
+            bBtn.style.borderColor = playerColor === 'b' ? '#fde047' : '';
+            bBtn.style.color = playerColor === 'b' ? '#fde047' : '';
+        }
+    }
     function startNewMatch() {
         ensureChessEngine(() => {
             game = new window.Chess();
             selectedSq = null;
             legalTargets = [];
             botThinking = false;
+            syncSideButtons();
             syncRivalBanner();
             renderBoard();
-            statusEl.style.color = '#e2e8f0';
-            statusEl.textContent = 'Your turn (White) — Click a piece to move!';
+            if (playerColor === 'b') {
+                triggerBotTurn();
+            } else {
+                statusEl.style.color = '#e2e8f0';
+                statusEl.textContent = 'Your turn (White) — Click a piece to move!';
+            }
         });
     }
-    
     botBar.querySelectorAll('.cc-bot-chip').forEach(chip => {
         chip.addEventListener('click', () => {
             selectedBotIdx = Number(chip.dataset.idx);
@@ -2286,6 +2512,20 @@ function startChessBotsUI() {
     modal.querySelector('#ccNewGameBtn').addEventListener('click', () => {
         startNewMatch();
         playBeep(587.33, 0.07, 'triangle', 0.04);
+    });
+    
+    modal.querySelector('#ccSideWhiteBtn').addEventListener('click', () => {
+        if (playerColor === 'w') return;
+        playerColor = 'w';
+        startNewMatch();
+        playBeep(659.25, 0.07, 'triangle', 0.04);
+    });
+    
+    modal.querySelector('#ccSideBlackBtn').addEventListener('click', () => {
+        if (playerColor === 'b') return;
+        playerColor = 'b';
+        startNewMatch();
+        playBeep(523.25, 0.07, 'triangle', 0.04);
     });
     
     modal.querySelector('#ccResignBtn').addEventListener('click', () => {
