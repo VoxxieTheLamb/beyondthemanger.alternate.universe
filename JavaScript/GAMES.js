@@ -334,7 +334,56 @@ function startTradingCardData() {
 function startTradingCardBinderUI() {
     const tcg = window.AFCS_TCG;
     if (!tcg) return;
-    
+    function resolveCardVisual(card) {
+        const rosterMatchKeys = {
+            c01: 'arles',
+            c02: 'eulogio',
+            c03: 'abrena',
+            c04: 'amadora',
+            c05: 'angeles',
+            c06: 'dela cruz',
+            c07: 'ibarra',
+            c08: 'tulaylay',
+            c09: 'uba',
+            c10: 'tan',
+            c11: 'mantal',
+            c12: 'del rosario',
+            c13: 'barcenas',
+            c14: 'pagarigan',
+            c15: 'tesoro',
+            c16: 'pinpin',
+            c17: 'opera',
+            c18: 'sevilla',
+            c19: 'san andres',
+            c20: 'gapasin'
+        };
+
+        const clean = card.name.replace(/\(.*?\)/g, '').trim().split(/\s+/);
+        const initials = ((clean.at(0)?.charAt(0) || '') + (clean.at(-1)?.charAt(0) || '')).toUpperCase();
+        const fallbackHtml = `<div class="monogram-avatar" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">${initials}</div>`;
+
+        const key = rosterMatchKeys[card.id];
+        if (key) {
+            const match = Array.from(document.querySelectorAll('.PeoplePics')).find(el => {
+                const txt = (el.querySelector('.overlay-text')?.textContent || '').toLowerCase();
+                return txt.includes(key);
+            });
+
+            if (match) {
+                const domImg = match.querySelector('img');
+                const isMissing = match.classList.contains('is-missing-photo') || !domImg || domImg.style.display === 'none';
+                if (!isMissing) {
+                    const liveSrc = domImg.getAttribute('src') || domImg.dataset.src;
+                    if (liveSrc) {
+                        return `<img src="${liveSrc}" alt="${card.name}" onerror="this.outerHTML='${fallbackHtml.replace(/"/g, '&quot;')}'">`;
+                    }
+                }
+            }
+            return fallbackHtml;
+        }
+
+        return `<img src="${card.img}" alt="${card.name}" onerror="this.outerHTML='${fallbackHtml.replace(/"/g, '&quot;')}'">`;
+    }
     const modal = document.createElement('div');
     modal.className = 'tcg-modal-overlay';
     modal.innerHTML = `
@@ -383,8 +432,8 @@ function startTradingCardBinderUI() {
                     <span class="tcg-card-num">#${card.num}</span>
                     <span class="tcg-card-rarity">${card.rarity}</span>
                 </div>
-                <div class="tcg-card-art">
-                    <img src="${card.img}" alt="${card.name}" onerror="this.src='mainPics/AFCS.jpg'">
+                 <div class="tcg-card-art">
+                    ${resolveCardVisual(card)}
                 </div>
                 <div class="tcg-card-name">${card.name}</div>
                 <div class="tcg-card-role">${card.role}</div>

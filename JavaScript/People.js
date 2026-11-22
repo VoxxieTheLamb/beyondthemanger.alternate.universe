@@ -175,6 +175,7 @@ function startImageFallback() {
     
     function convertBrokenImg(img) {
         if (!img || img.tagName !== 'IMG' || !img.isConnected) return;
+        if (img.closest('.tcg-card-art')) return;
         const card = img.closest('.PeoplePics');
         const isDrawer = img.closest('#panelImageContainer');
         if (img && img.dataset.src) {

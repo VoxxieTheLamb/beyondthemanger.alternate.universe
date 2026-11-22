@@ -570,7 +570,8 @@ function startScrollEffects() {
             }
         }, { passive: true });
     }
-    
+    document.querySelectorAll('.PersonWrapper:not([data-no-reveal="true"])')
+
     const progressBar = document.createElement('div');
     progressBar.className = 'scroll-progress-bar';
     document.body.appendChild(progressBar);

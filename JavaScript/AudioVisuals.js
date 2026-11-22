@@ -84,6 +84,34 @@ function startSustainedNote(freq, waveType = 'triangle') {
         return null;
     }
 }
+function startHideUiToggle() {
+    if (document.getElementById('afcs-hide-ui-btn')) return;
+
+    const btn = document.createElement('button');
+    btn.id = 'afcs-hide-ui-btn';
+    btn.type = 'button';
+    btn.title = 'Toggle Clean View / Hide HUD Overlays [H]';
+    btn.textContent = '👁️ Hide UI';
+    document.body.appendChild(btn);
+
+    function setHidden(hidden) {
+        document.body.classList.toggle('afcs-ui-hidden', hidden);
+        btn.textContent = hidden ? '👁️ Show UI' : '👁️ Hide UI';
+    }
+
+    btn.onclick = () => {
+        const next = !document.body.classList.contains('afcs-ui-hidden');
+        setHidden(next);
+        if (typeof playBeep === 'function') playBeep(next ? 420 : 620, 0.06, 'sine', 0.035);
+    };
+
+    window.addEventListener('keydown', (e) => {
+        if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) return;
+        if (e.code === 'KeyH' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+            btn.click();
+        }
+    });
+}
 
 function startAudioControls() {
     const toggleBtn = document.createElement('button');

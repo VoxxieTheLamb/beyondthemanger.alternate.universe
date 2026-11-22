@@ -244,6 +244,7 @@ document.addEventListener('DOMContentLoaded', () => {
         start2048Data();
         start2048Engine();
         start2048UI();
+        startHideUiToggle();
         
     }
     startAll();

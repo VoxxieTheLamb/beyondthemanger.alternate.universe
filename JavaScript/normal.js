@@ -327,7 +327,7 @@ function lebronJames() {
         
         const wrapper = document.createElement('div');
         wrapper.id = config.wrapperId;
-        wrapper.className = 'PersonWrapper reveal-on-scroll is-visible';
+        wrapper.className = 'PersonWrapper';
         
         const card = document.createElement('div');
         card.className = `PeoplePics ${config.cardClass}`;
@@ -519,7 +519,7 @@ function startLeonhardEuler() {
         
         const wrapper = document.createElement('div');
         wrapper.id = 'eulerSecretWrapper';
-        wrapper.className = 'PersonWrapper reveal-on-scroll is-visible';
+        wrapper.className = 'PersonWrapper';
         
         const card = document.createElement('div');
         card.className = 'PeoplePics is-euler-card';
@@ -733,7 +733,7 @@ function startCurryGuest() {
         
         const wrapper = document.createElement('div');
         wrapper.id = 'currySecretWrapper';
-        wrapper.className = 'PersonWrapper reveal-on-scroll is-visible';
+        wrapper.className = 'PersonWrapper';
         
         const card = document.createElement('div');
         card.className = 'PeoplePics is-curry-card';
@@ -903,7 +903,7 @@ function startHamiltonGuest() {
         
         const wrapper = document.createElement('div');
         wrapper.id = 'hamiltonSecretWrapper';
-        wrapper.className = 'PersonWrapper reveal-on-scroll is-visible';
+        wrapper.className = 'PersonWrapper';
         
         const card = document.createElement('div');
         card.className = 'PeoplePics is-hamilton-card';
@@ -1073,7 +1073,7 @@ function startEinsteinGuest() {
         
         const wrapper = document.createElement('div');
         wrapper.id = 'einsteinSecretWrapper';
-        wrapper.className = 'PersonWrapper reveal-on-scroll is-visible';
+        wrapper.className = 'PersonWrapper';
         
         const card = document.createElement('div');
         card.className = 'PeoplePics is-einstein-card';
@@ -1245,7 +1245,11 @@ function startNGuest() {
         
         const wrapper = document.createElement('div');
         wrapper.id = 'nDroneSecretWrapper';
-        wrapper.className = 'PersonWrapper reveal-on-scroll is-visible';
+        wrapper.dataset.noReveal = 'true';
+        wrapper.style.position = 'relative';
+        wrapper.style.zIndex = '25';
+        wrapper.style.opacity = '1';
+        wrapper.className = 'PersonWrapper';
         
         const card = document.createElement('div');
         card.className = 'PeoplePics is-n-drone-card';
@@ -1259,6 +1263,9 @@ function startNGuest() {
         img.src = 'otherPics/NDrone.jpg';
         img.alt = 'Designation N, Serial';
         img.className = 'is-guest-alter-pfp';
+        img.loading = 'eager';
+        img.style.opacity = '1';
+        img.style.visibility = 'visible';
         
         const label = document.createElement('p');
         label.className = 'overlay-text';

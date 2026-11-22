@@ -878,3 +878,61 @@ body:not(.theme-hamilton):not(.theme-epic):not(.theme-doomsday):not(.theme-faith
     background: radial-gradient(circle at center, rgba(186, 230, 253, 0.72) 0%, rgba(56, 189, 248, 0.32) 55%, rgba(56, 189, 248, 0) 100%);
     animation: guidingFlashFade 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+
+body.afcs-ui-hidden .settings-hub-btn,
+body.afcs-ui-hidden .settings-hub-popover,
+body.afcs-ui-hidden .theme-dropdown-wrap,
+body.afcs-ui-hidden .theme-mode-pill,
+body.afcs-ui-hidden .burj-elevator-hud,
+body.afcs-ui-hidden #afcs-quick-dock,
+body.afcs-ui-hidden #afcs-equipped-title-pill,
+body.afcs-ui-hidden .codex-tracker-btn,
+body.afcs-ui-hidden .freedom-tracker,
+body.afcs-ui-hidden #shortcutHelpBtn,
+body.afcs-ui-hidden #backToTopBtn,
+body.afcs-ui-hidden .back-to-top,
+body.afcs-ui-hidden .site-navbar {
+    opacity: 0 !important;
+    pointer-events: none !important;
+    visibility: hidden !important;
+    transition: opacity 0.2s ease !important;
+}
+
+#afcs-hide-ui-btn {
+    position: fixed;
+    right: 16px;
+    bottom: 16px;
+    z-index: 10002;
+    background: rgba(15, 23, 42, 0.88);
+    color: #e2e8f0;
+    border: 1.5px solid #38bdf8;
+    border-radius: 999px;
+    padding: 7px 13px;
+    font-size: 12.5px;
+    font-weight: 800;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.55);
+    transition: opacity 0.2s ease, background 0.15s ease, transform 0.15s ease;
+}
+
+#afcs-hide-ui-btn:hover {
+    background: #083344;
+    transform: scale(1.04);
+}
+
+body.afcs-ui-hidden #afcs-hide-ui-btn {
+    opacity: 0.35;
+}
+
+body.afcs-ui-hidden #afcs-hide-ui-btn:hover {
+    opacity: 1;
+}
+
+#nDroneSecretWrapper.reveal-on-scroll .PeoplePics,
+#nDroneSecretWrapper.reveal-on-scroll .portrait-role-pip,
+.PersonWrapper[data-no-reveal="true"].reveal-on-scroll .PeoplePics,
+.PersonWrapper[data-no-reveal="true"].reveal-on-scroll .portrait-role-pip {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
+}
