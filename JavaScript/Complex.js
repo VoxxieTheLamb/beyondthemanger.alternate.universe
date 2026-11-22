@@ -246,6 +246,9 @@ document.addEventListener('DOMContentLoaded', () => {
     start2048Engine();
     start2048UI();
     startHideUiToggle();
+    startBlackjackData();
+    startBlackjackEngine();
+    startBlackjackUI();
     
   }
   startAll();

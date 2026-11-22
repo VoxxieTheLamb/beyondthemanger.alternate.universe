@@ -357,18 +357,18 @@ function startTradingCardBinderUI() {
             c19: 'san andres',
             c20: 'gapasin'
         };
-
+        
         const clean = card.name.replace(/\(.*?\)/g, '').trim().split(/\s+/);
         const initials = ((clean.at(0)?.charAt(0) || '') + (clean.at(-1)?.charAt(0) || '')).toUpperCase();
         const fallbackHtml = `<div class="monogram-avatar" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">${initials}</div>`;
-
+        
         const key = rosterMatchKeys[card.id];
         if (key) {
             const match = Array.from(document.querySelectorAll('.PeoplePics')).find(el => {
                 const txt = (el.querySelector('.overlay-text')?.textContent || '').toLowerCase();
                 return txt.includes(key);
             });
-
+            
             if (match) {
                 const domImg = match.querySelector('img');
                 const isMissing = match.classList.contains('is-missing-photo') || !domImg || domImg.style.display === 'none';
@@ -381,7 +381,7 @@ function startTradingCardBinderUI() {
             }
             return fallbackHtml;
         }
-
+        
         return `<img src="${card.img}" alt="${card.name}" onerror="this.outerHTML='${fallbackHtml.replace(/"/g, '&quot;')}'">`;
     }
     const modal = document.createElement('div');
@@ -7472,11 +7472,11 @@ function startAfcsShopEffects() {
     
     window.SHOP_RUNTIME.trackedAudios = new Set();
     
-     window.shopHookAudioPlay = function () {
+    window.shopHookAudioPlay = function () {
         const rt = window.SHOP_RUNTIME;
         if (rt.playHooked) return;
         rt.playHooked = true;
-
+        
         const origPlay = HTMLAudioElement.prototype.play;
         HTMLAudioElement.prototype.play = function (...args) {
             const src = String(this.currentSrc || this.src || '').toLowerCase();
@@ -7493,7 +7493,7 @@ function startAfcsShopEffects() {
             }
             return origPlay.apply(this, args);
         };
-
+        
         document.addEventListener('play', (e) => {
             const target = e.target;
             if (!(target instanceof HTMLAudioElement)) return;
@@ -7508,7 +7508,7 @@ function startAfcsShopEffects() {
             }
         }, true);
     };
-
+    
     window.shopToggleDefaultBgm = function (shouldPlay) {
         const candidates = Array.from(document.querySelectorAll('audio'));
         if (window.SHOP_RUNTIME.defaultBgmRef && !candidates.includes(window.SHOP_RUNTIME.defaultBgmRef)) {
@@ -7518,7 +7518,7 @@ function startAfcsShopEffects() {
             const stateAudio = STATE.bgm || STATE.musicAudio || STATE.audio || STATE.praiseAudio;
             if (stateAudio && !candidates.includes(stateAudio)) candidates.push(stateAudio);
         }
-
+        
         candidates.forEach(a => {
             if (!a || a === window.SHOP_RUNTIME.htmlAudio) return;
             if (shouldPlay) {
@@ -8424,3 +8424,484 @@ function start2048UI() {
         });
     }
 }
+function startBlackjackData() {
+    window.BJ_CFG = {
+        triggers: Array.of('blackjack', '21', 'gamble', 'casino', 'cards 21'),
+        suits: Array.of(
+            { sym: '♠', color: '#e2e8f0' },
+            { sym: '♥', color: '#f87171' },
+            { sym: '♦', color: '#fb7185' },
+            { sym: '♣', color: '#cbd5e1' }
+        ),
+        ranks: Array.of('A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'),
+        quickBets: Array.of(10, 25, 50, 100, 250)
+    };
+    
+    window.BJ_STATE = {
+        active: false,
+        deck: Array.of(),
+        playerHand: Array.of(),
+        dealerHand: Array.of(),
+        bet: 25,
+        phase: 'betting',
+        hideHole: true,
+        audioCtx: null,
+        listeners: Array.of()
+    };
+    
+    window.bjGetCoins = function () {
+        return Math.max(0, parseInt(localStorage.getItem('afcs_coins') || '150', 10) || 0);
+    };
+    
+    window.bjSetCoins = function (nextVal) {
+        const clean = Math.max(0, Math.floor(Number(nextVal) || 0));
+        localStorage.setItem('afcs_coins', String(clean));
+        const badge = document.getElementById('afcs-coin-display');
+        if (badge) badge.textContent = clean + ' 🪙';
+        return clean;
+    };
+    
+    window.bjSfx = function (kind) {
+        const st = window.BJ_STATE;
+        try {
+            if (!st.audioCtx) {
+                const Ctx = window.AudioContext || window.webkitAudioContext;
+                if (Ctx) st.audioCtx = new Ctx();
+            }
+            if (!st.audioCtx) return;
+            if (st.audioCtx.state === 'suspended') st.audioCtx.resume();
+            const now = st.audioCtx.currentTime;
+            const osc = st.audioCtx.createOscillator();
+            const gain = st.audioCtx.createGain();
+            if (kind === 'win') {
+                osc.type = 'triangle';
+                osc.frequency.setValueAtTime(523.25, now);
+                osc.frequency.setValueAtTime(659.25, now + 0.08);
+                osc.frequency.setValueAtTime(783.99, now + 0.16);
+                gain.gain.setValueAtTime(0.07, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.32);
+            } else if (kind === 'lose') {
+                osc.type = 'sawtooth';
+                osc.frequency.setValueAtTime(180, now);
+                osc.frequency.exponentialRampToValueAtTime(95, now + 0.25);
+                gain.gain.setValueAtTime(0.06, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.26);
+            } else {
+                osc.type = 'sine';
+                osc.frequency.setValueAtTime(680, now);
+                osc.frequency.exponentialRampToValueAtTime(340, now + 0.06);
+                gain.gain.setValueAtTime(0.04, now);
+                gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.07);
+            }
+            osc.connect(gain);
+            gain.connect(st.audioCtx.destination);
+            osc.start(now);
+            osc.stop(now + 0.34);
+        } catch (e) {}
+    };
+    
+    if (typeof window.arcadeRegisterGame === 'function') {
+        window.arcadeRegisterGame({
+            id: 'blackjack',
+            title: 'Blackjack: Burj Sky Casino',
+            icon: '🎰',
+            reward: 'Up to 2.5× Bet',
+            hint: 'Let\'s go gambling! Hit 21 against the Dealer...',
+            triggers: window.BJ_CFG.triggers,
+            launch: () => window.launchBlackjackGame()
+        });
+    }
+}
+function startBlackjackEngine() {
+    window.bjBuildDeck = function () {
+        const deck = Array.of();
+        for (let d = 0; d < 2; d++) {
+            for (const s of window.BJ_CFG.suits) {
+                for (const r of window.BJ_CFG.ranks) {
+                    deck.push({ rank: r, sym: s.sym, color: s.color });
+                }
+            }
+        }
+        for (let i = deck.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const tmp = deck.at(i);
+            deck[i] = deck.at(j);
+            deck[j] = tmp;
+        }
+        return deck;
+    };
+    
+    window.bjScoreHand = function (hand) {
+        let total = 0;
+        let aces = 0;
+        for (const card of hand) {
+            if (card.rank === 'A') {
+                aces++;
+                total += 11;
+            } else if (card.rank === 'K' || card.rank === 'Q' || card.rank === 'J') {
+                total += 10;
+            } else {
+                total += parseInt(card.rank, 10);
+            }
+        }
+        while (total > 21 && aces > 0) {
+            total -= 10;
+            aces--;
+        }
+        return total;
+    };
+    
+    window.bjDrawCard = function () {
+        const st = window.BJ_STATE;
+        if (st.deck.length < 12) st.deck = window.bjBuildDeck();
+        window.bjSfx('card');
+        return st.deck.pop();
+    };
+    
+    window.bjDealHand = function () {
+        const st = window.BJ_STATE;
+        const coins = window.bjGetCoins();
+        if (coins <= 0) {
+            window.bjSetCoins(25);
+            window.bjRender('🎁 House rescue! You received 25 🪙 to stay at the table.', '#38bdf8');
+            return;
+        }
+        if (st.bet > coins) st.bet = coins;
+        if (st.bet < 5) st.bet = Math.min(5, coins);
+        
+        window.bjSetCoins(coins - st.bet);
+        st.playerHand = Array.of(window.bjDrawCard(), window.bjDrawCard());
+        st.dealerHand = Array.of(window.bjDrawCard(), window.bjDrawCard());
+        st.hideHole = true;
+        st.phase = 'playing';
+        
+        const pScore = window.bjScoreHand(st.playerHand);
+        const dScore = window.bjScoreHand(st.dealerHand);
+        
+        if (pScore === 21 || dScore === 21) {
+            st.hideHole = false;
+            st.phase = 'done';
+            if (pScore === 21 && dScore === 21) {
+                window.bjSetCoins(window.bjGetCoins() + st.bet);
+                window.bjRender('🤝 Double Blackjack! Push — your ' + st.bet + ' 🪙 bet was returned.', '#fde047');
+            } else if (pScore === 21) {
+                const payout = Math.floor(st.bet * 2.5);
+                const bal = window.bjSetCoins(window.bjGetCoins() + payout);
+                window.bjSfx('win');
+                window.bjRender('🃏 NATURAL BLACKJACK! Won +' + payout + ' 🪙 (Balance: ' + bal + ' 🪙)!', '#4ade80');
+            } else {
+                window.bjSfx('lose');
+                window.bjRender('💀 Dealer flipped Natural Blackjack! Lost ' + st.bet + ' 🪙.', '#f87171');
+            }
+            return;
+        }
+        
+        window.bjRender('Your hand: ' + pScore + ' — Hit, Stand, or Double Down?', '#e2e8f0');
+    };
+    
+    window.bjHit = function () {
+        const st = window.BJ_STATE;
+        if (st.phase !== 'playing') return;
+        st.playerHand.push(window.bjDrawCard());
+        const pScore = window.bjScoreHand(st.playerHand);
+        
+        if (pScore > 21) {
+            st.hideHole = false;
+            st.phase = 'done';
+            window.bjSfx('lose');
+            window.bjRender('💥 BUST (' + pScore + ')! Aw dang it — lost ' + st.bet + ' 🪙.', '#f87171');
+            return;
+        }
+        if (pScore === 21) {
+            window.bjStand();
+            return;
+        }
+        window.bjRender('Your hand: ' + pScore + ' — Hit or Stand?', '#e2e8f0');
+    };
+    
+    window.bjDoubleDown = function () {
+        const st = window.BJ_STATE;
+        if (st.phase !== 'playing' || st.playerHand.length !== 2) return;
+        const coins = window.bjGetCoins();
+        if (coins < st.bet) return;
+        
+        window.bjSetCoins(coins - st.bet);
+        st.bet *= 2;
+        st.playerHand.push(window.bjDrawCard());
+        const pScore = window.bjScoreHand(st.playerHand);
+        
+        if (pScore > 21) {
+            st.hideHole = false;
+            st.phase = 'done';
+            window.bjSfx('lose');
+            window.bjRender('💥 DOUBLE DOWN BUST (' + pScore + ')! Lost ' + st.bet + ' 🪙.', '#f87171');
+            st.bet = Math.max(10, Math.floor(st.bet / 2));
+            return;
+        }
+        window.bjStand(true);
+    };
+    
+    window.bjStand = function (wasDoubled) {
+        const st = window.BJ_STATE;
+        if (st.phase !== 'playing') return;
+        st.hideHole = false;
+        st.phase = 'done';
+        
+        while (window.bjScoreHand(st.dealerHand) < 17) {
+            st.dealerHand.push(window.bjDrawCard());
+        }
+        
+        const pScore = window.bjScoreHand(st.playerHand);
+        const dScore = window.bjScoreHand(st.dealerHand);
+        
+        if (dScore > 21 || pScore > dScore) {
+            const payout = st.bet * 2;
+            const bal = window.bjSetCoins(window.bjGetCoins() + payout);
+            window.bjSfx('win');
+            const label = dScore > 21 ? 'Dealer BUSTS (' + dScore + ')' : pScore + ' beats ' + dScore;
+            window.bjRender('🏆 ' + label + '! Won +' + payout + ' 🪙 (Balance: ' + bal + ' 🪙)!', '#4ade80');
+        } else if (pScore === dScore) {
+            const bal = window.bjSetCoins(window.bjGetCoins() + st.bet);
+            window.bjRender('🤝 PUSH (' + pScore + ' vs ' + dScore + ')! Bet returned (Balance: ' + bal + ' 🪙).', '#fde047');
+        } else {
+            window.bjSfx('lose');
+            window.bjRender('💀 Dealer wins (' + dScore + ' vs ' + pScore + ')! Aw dang it — lost ' + st.bet + ' 🪙.', '#f87171');
+        }
+        
+        if (wasDoubled) {
+            st.bet = Math.max(10, Math.floor(st.bet / 2));
+        }
+    };
+}
+function startBlackjackUI() {
+    window.bjBuildModal = function () {
+        const old = document.getElementById('afcs-blackjack-modal');
+        if (old) old.remove();
+        
+        const modal = document.createElement('div');
+        modal.id = 'afcs-blackjack-modal';
+        modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:radial-gradient(circle at top,#064e3b 0%,#020617 100%);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;justify-content:space-between;padding:16px;user-select:none;';
+        
+        modal.innerHTML = `
+            <div style="width:100%;max-width:760px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid rgba(52,211,153,0.3);padding-bottom:10px;">
+                <div style="display:flex;gap:12px;align-items:center;">
+                    <span style="font-size:1.2rem;font-weight:900;color:#fde047;letter-spacing:1px;">🎰 BURJ SKY BLACKJACK</span>
+                    <span id="bj-coin-badge" style="background:#052e16;border:1px solid #4ade80;color:#bbf7d0;padding:4px 12px;border-radius:8px;font-size:0.85rem;font-weight:bold;">
+                        Balance: ${window.bjGetCoins()} 🪙
+                    </span>
+                </div>
+                <button id="bj-exit-btn" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:6px 12px;border-radius:8px;cursor:pointer;font-weight:bold;">✕ CASH OUT</button>
+            </div>
+        
+            <div id="bj-banner" style="font-size:1rem;font-weight:bold;color:#fde047;text-align:center;min-height:26px;">
+                Place your wager and hit DEAL!
+            </div>
+        
+            <div id="bj-table-area" style="width:100%;max-width:760px;flex:1;margin:10px 0;background:radial-gradient(circle,#065f46 0%,#022c22 100%);border:3px solid #eab308;border-radius:18px;padding:18px;display:flex;flex-direction:column;justify-content:space-between;box-shadow:inset 0 0 60px rgba(0,0,0,0.75);"></div>
+        
+            <div style="width:100%;max-width:760px;display:flex;justify-content:space-between;font-size:0.8rem;color:#a7f3d0;">
+                <span>Blackjack pays 2.5× • Dealer stands on all 17s</span>
+                <span>Hotkeys: [H] Hit • [S] Stand • [D] Double • [Space] Deal</span>
+            </div>
+        `;
+        
+        document.body.appendChild(modal);
+        document.getElementById('bj-exit-btn').onclick = window.bjCloseGame;
+        
+        const keyHandler = function (e) {
+            const st = window.BJ_STATE;
+            if (!st.active) return;
+            if (e.code === 'Escape') {
+                window.bjCloseGame();
+                return;
+            }
+            if (st.phase === 'playing') {
+                if (e.code === 'KeyH') window.bjHit();
+                if (e.code === 'KeyS') window.bjStand(false);
+                if (e.code === 'KeyD') window.bjDoubleDown();
+            } else if (e.code === 'Space' || e.code === 'Enter') {
+                e.preventDefault();
+                window.bjDealHand();
+            }
+        };
+        
+        window.addEventListener('keydown', keyHandler);
+        window.BJ_STATE.listeners.push(Array.of(window, 'keydown', keyHandler));
+    };
+    
+    window.bjRenderCardHtml = function (card, hidden) {
+        if (hidden) {
+            return `<div style="width:68px;height:96px;border-radius:10px;background:repeating-linear-gradient(45deg,#1e3a8a,#1e3a8a 6px,#172554 6px,#172554 12px);border:2px solid #eab308;display:flex;align-items:center;justify-content:center;font-size:1.5rem;box-shadow:0 6px 16px rgba(0,0,0,0.6);">👑</div>`;
+        }
+        return `
+            <div style="width:68px;height:96px;border-radius:10px;background:#f8fafc;color:${card.color === '#e2e8f0' || card.color === '#cbd5e1' ? '#0f172a' : '#dc2626'};border:2px solid #cbd5e1;padding:6px;display:flex;flex-direction:column;justify-content:space-between;font-weight:900;box-shadow:0 6px 16px rgba(0,0,0,0.6);">
+                <div style="font-size:0.95rem;line-height:1;text-align:left;">${card.rank}${card.sym}</div>
+                <div style="font-size:1.65rem;line-height:1;text-align:center;">${card.sym}</div>
+                <div style="font-size:0.95rem;line-height:1;text-align:right;transform:rotate(180deg);">${card.rank}${card.sym}</div>
+            </div>
+        `;
+    };
+    
+    window.bjRender = function (bannerText, bannerColor) {
+        const st = window.BJ_STATE;
+        const area = document.getElementById('bj-table-area');
+        const banner = document.getElementById('bj-banner');
+        const coinBadge = document.getElementById('bj-coin-badge');
+        if (!area) return;
+        
+        const coins = window.bjGetCoins();
+        if (coinBadge) coinBadge.textContent = 'Balance: ' + coins + ' 🪙';
+        if (banner && bannerText) {
+            banner.textContent = bannerText;
+            banner.style.color = bannerColor || '#fde047';
+        }
+        
+        const dealerShownCards = st.hideHole ? st.dealerHand.slice(0, 1) : st.dealerHand;
+        const dealerScoreTxt = st.dealerHand.length === 0 ? '-' : (st.hideHole ? window.bjScoreHand(dealerShownCards) + ' + ?' : window.bjScoreHand(st.dealerHand));
+        const playerScoreTxt = st.playerHand.length === 0 ? '-' : window.bjScoreHand(st.playerHand);
+        const canDouble = st.phase === 'playing' && st.playerHand.length === 2 && coins >= st.bet;
+        
+        area.innerHTML = `
+            <div style="text-align:center;">
+                <div style="font-size:0.78rem;font-weight:800;letter-spacing:1px;color:#a7f3d0;margin-bottom:8px;">
+                    DEALER HAND (${dealerScoreTxt})
+                </div>
+                <div style="display:flex;justify-content:center;gap:10px;min-height:96px;flex-wrap:wrap;">
+                    ${st.dealerHand.map((c, i) => window.bjRenderCardHtml(c, st.hideHole && i === 1)).join('') || '<div style="color:#6ee7b7;font-size:0.85rem;margin:auto;">Waiting for deal...</div>'}
+                </div>
+            </div>
+        
+            <div style="display:flex;flex-direction:column;align-items:center;gap:10px;margin:10px 0;">
+                ${st.phase === 'playing' ? `
+                    <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+                        <button id="bj-hit-btn" style="background:#0284c7;color:#fff;border:2px solid #38bdf8;padding:10px 22px;border-radius:10px;font-weight:900;cursor:pointer;">🃏 HIT [H]</button>
+                        <button id="bj-stand-btn" style="background:#dc2626;color:#fff;border:2px solid #f87171;padding:10px 22px;border-radius:10px;font-weight:900;cursor:pointer;">✋ STAND [S]</button>
+                        <button id="bj-double-btn" ${canDouble ? '' : 'disabled'} style="background:${canDouble ? '#ca8a04' : '#1e293b'};color:${canDouble ? '#fff' : '#64748b'};border:2px solid ${canDouble ? '#fde047' : '#334155'};padding:10px 18px;border-radius:10px;font-weight:900;cursor:${canDouble ? 'pointer' : 'not-allowed'};">⚡ 2× DOUBLE [D]</button>
+                    </div>
+                 ` : `
+                    <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;justify-content:center;">
+                        <span style="font-size:0.82rem;font-weight:bold;color:#fde047;">WAGER:</span>
+                        ${window.BJ_CFG.quickBets.map(amt => `
+                            <button class="bj-chip-btn" data-amt="${amt}" style="padding:6px 11px;border-radius:999px;font-weight:900;font-size:0.8rem;cursor:pointer;border:1.5px solid ${st.bet === amt ? '#fde047' : '#34d399'};background:${st.bet === amt ? '#854d0e' : '#064e3b'};color:#fff;">
+                                ${amt} 🪙
+                            </button>
+                        `).join('')}
+                        <button id="bj-half-btn" style="padding:6px 11px;border-radius:999px;font-weight:900;font-size:0.8rem;cursor:pointer;border:1.5px solid #38bdf8;background:#0c4a6e;color:#bae6fd;">
+                            ½ HALF IN
+                        </button>
+                        <button id="bj-allin-btn" style="padding:6px 11px;border-radius:999px;font-weight:900;font-size:0.8rem;cursor:pointer;border:1.5px solid #f43f5e;background:#881337;color:#fecdd3;">
+                            🔥 ALL IN (${coins})
+                        </button>
+                    </div>
+                    <div style="display:flex;align-items:center;gap:6px;justify-content:center;">
+                        <input id="bj-custom-input" type="number" min="10" step="10" placeholder="Custom (ceil 10)..." style="width:145px;padding:6px 10px;border-radius:8px;border:1.5px solid #34d399;background:#022c22;color:#fff;font-weight:bold;font-size:0.82rem;text-align:center;outline:none;">
+                        <button id="bj-custom-set-btn" style="padding:6px 12px;border-radius:8px;border:1.5px solid #eab308;background:#713f12;color:#fef08a;font-weight:900;font-size:0.8rem;cursor:pointer;">
+                            SET
+                        </button>
+                    </div>
+                    <button id="bj-deal-btn" style="background:linear-gradient(135deg,#eab308,#f59e0b);color:#09090b;border:2px solid #fef08a;padding:11px 32px;border-radius:999px;font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 0 22px rgba(250,204,21,0.55);">
+                        🎰 DEAL HAND (${st.bet} 🪙)
+                    </button>
+                `}
+            </div>
+        
+            <div style="text-align:center;">
+                <div style="display:flex;justify-content:center;gap:10px;min-height:96px;flex-wrap:wrap;margin-bottom:8px;">
+                    ${st.playerHand.map(c => window.bjRenderCardHtml(c, false)).join('') || '<div style="color:#6ee7b7;font-size:0.85rem;margin:auto;">Pick a chip amount above!</div>'}
+                </div>
+                <div style="font-size:0.78rem;font-weight:800;letter-spacing:1px;color:#fde047;">
+                    YOUR HAND (${playerScoreTxt}) • CURRENT BET: ${st.bet} 🪙
+                </div>
+            </div>
+        `;
+        
+        const dealBtn = document.getElementById('bj-deal-btn');
+        const hitBtn = document.getElementById('bj-hit-btn');
+        const standBtn = document.getElementById('bj-stand-btn');
+        const doubleBtn = document.getElementById('bj-double-btn');
+        const halfBtn = document.getElementById('bj-half-btn');
+        const allInBtn = document.getElementById('bj-allin-btn');
+        const customInput = document.getElementById('bj-custom-input');
+        const customSetBtn = document.getElementById('bj-custom-set-btn');
+
+        const ceilToTen = val => Math.ceil(val / 10) * 10;
+
+        if (dealBtn) dealBtn.onclick = window.bjDealHand;
+        if (hitBtn) hitBtn.onclick = window.bjHit;
+        if (standBtn) standBtn.onclick = () => window.bjStand(false);
+        if (doubleBtn) doubleBtn.onclick = window.bjDoubleDown;
+
+        if (halfBtn) {
+            halfBtn.onclick = () => {
+                const cur = window.bjGetCoins();
+                const half = Math.min(cur, Math.max(10, ceilToTen(Math.floor(cur / 2))));
+                st.bet = half;
+                window.bjRender('Half-in wager set to ' + st.bet + ' 🪙!', '#38bdf8');
+            };
+        }
+
+        if (allInBtn) {
+            allInBtn.onclick = () => {
+                const cur = window.bjGetCoins();
+                st.bet = Math.max(5, cur);
+                window.bjRender('🔥 ALL IN! Wager set to ' + st.bet + ' 🪙!', '#f43f5e');
+            };
+        }
+
+        const applyCustomBet = () => {
+            if (!customInput) return;
+            const raw = parseFloat(customInput.value);
+            if (isNaN(raw) || raw <= 0) return;
+            const cur = window.bjGetCoins();
+            const ceiled = ceilToTen(raw);
+            st.bet = cur > 0 ? Math.min(cur, Math.max(10, ceiled)) : 10;
+            window.bjRender('Custom wager (ceiled to 10): ' + st.bet + ' 🪙!', '#fde047');
+        };
+
+        if (customSetBtn) customSetBtn.onclick = applyCustomBet;
+        if (customInput) {
+            customInput.onkeydown = e => {
+                e.stopPropagation();
+                if (e.key === 'Enter') applyCustomBet();
+            };
+        }
+        area.querySelectorAll('.bj-chip-btn').forEach(btn => {
+            btn.onclick = () => {
+                const amt = parseInt(btn.getAttribute('data-amt'), 10);
+                st.bet = Math.max(5, Math.min(amt, window.bjGetCoins() || amt));
+                window.bjRender('Wager set to ' + st.bet + ' 🪙 — hit DEAL!', '#fde047');
+            };
+        });
+    };
+    window.bjCloseGame = function () {
+        const st = window.BJ_STATE;
+        st.active = false;
+        st.listeners.forEach(([el, ev, fn]) => el.removeEventListener(ev, fn));
+        st.listeners = Array.of();
+        const modal = document.getElementById('afcs-blackjack-modal');
+        if (modal) modal.remove();
+    };
+    window.launchBlackjackGame = function () {
+        if (!window.BJ_CFG) startBlackjackData();
+        if (!window.bjBuildDeck) startBlackjackEngine();
+        window.bjCloseGame();
+        if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('blackjack');
+        const st = window.BJ_STATE;
+        st.active = true;
+        st.deck = window.bjBuildDeck();
+        st.playerHand = Array.of();
+        st.dealerHand = Array.of();
+        st.phase = 'betting';
+        st.bet = Math.min(25, Math.max(5, window.bjGetCoins()));
+        window.bjBuildModal();
+        window.bjRender('Let\'s go gambling! Select your wager and hit DEAL.', '#fde047');
+        };
+        if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
+            STATE.onSearchInput.push(function (query) {
+                const clean = String(query || '').trim().toLowerCase();
+                if (window.BJ_CFG.triggers.includes(clean)) {
+                    window.launchBlackjackGame();
+                }
+            });
+        }
+    }
