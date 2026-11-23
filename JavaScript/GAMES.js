@@ -7290,7 +7290,7 @@ function startAfcsShopData() {
             name: 'Song - Memories by Maroon 5',
             price: 120,
             desc: 'A nostalgic track that brings back fond memories.',
-            src: 'music/carol.mp3'
+            src: 'music/memories.mp3'
         },
         {
             id: 'music_dubai',
