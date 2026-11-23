@@ -159,7 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
     startSurviveSolverData();
     startSurviveSolverEngine();
     startSurviveSolverUI();
-    
+    startDoggieGuest();
+    startTeslaGuest();
   }
   startAll();
   //#endregion

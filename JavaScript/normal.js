@@ -1348,3 +1348,210 @@ function startNGuest() {
         }
     });
 }
+function startDoggieGuest() {
+    const peopleContainer = document.querySelector('.People');
+    if (!peopleContainer) return;
+    
+    const doggieProfile = {
+        name: 'Doggie',
+        imgSrc: 'otherPics/Doggie.jpg',
+        role: 'Guest Legend',
+        character: 'Verifier of Grief • Wave Legend',
+        bio: 'Legendary Geometry Dash top player, streamer, and the relentless verifier of the Top 1 Extreme Demon "Grief" (reaching 80%+ progress).',
+        funFact: 'Famous for his razor-sharp 4× speed wave control and over 100,000+ attempts poured into verifying Grief!',
+        quotes: [
+            '80% on Grief?! We are SO close—lock in, Grade 7 – Psalms!',
+            '4× speed wave corridor incoming—keep your clicks steady!',
+            'Never give up on a hard level—whether it’s Grief or December 17 showtime!',
+            'GG! New best! The Burj Khalifa stage is officially verified!',
+            'Triple-click my portrait if you want to summon the #1 Demonlist king...'
+        ]
+    };
+    
+    const zoinkProfile = {
+        name: 'Zoink',
+        imgSrc: 'otherPics/zoink.jpg',
+        role: 'Guest Legend',
+        character: '#1 Demonlist Conqueror • Tidal Wave Verifier',
+        bio: 'Widely regarded as the greatest Geometry Dash player of all time, verifier of Tidal Wave, Avernus, Nullscapes, and countless Top 1 Extreme Demons.',
+        funFact: 'Verified Tidal Wave—one of the hardest levels in Geometry Dash history—and held #1 on the Demonlist simultaneously across dozens of extremes!',
+        quotes: [
+            '>>> TIDAL WAVE >>> 100% VERIFIED! Easy GG, Grade 7 – Psalms!',
+            '16 CPS wave spam activated! Nobody beats Psalms on December 17!',
+            'Beat Avernus, beat Tidal Wave, now conquering Beyond The Manger!',
+            'Just another warm-up run in the Burj Khalifa—GG!',
+            'Triple-click again to tag Doggie back in for Grief!'
+        ]
+    };
+    
+    let isZoink = false;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'PersonWrapper is-vip-revealed';
+    wrapper.id = 'doggieSecretWrapper';
+    wrapper.style.display = localStorage.getItem('afcs_doggie_unlocked') === 'true' ? '' : 'none';
+    
+    wrapper.innerHTML = `
+        <div class="PeoplePics doggie-secret-card"
+             data-role="${doggieProfile.role}"
+             data-character="${doggieProfile.character}"
+             data-bio="${doggieProfile.bio}"
+             data-funfact="${doggieProfile.funFact}">
+            <img src="${doggieProfile.imgSrc}" alt="${doggieProfile.name}">
+            <div class="overlay-text">${doggieProfile.name}</div>
+        </div>
+        <span class="portrait-role-pip pip-doggie" title="Verifier of Grief">🔥</span>
+    `;
+    peopleContainer.appendChild(wrapper);
+    
+    const card = wrapper.querySelector('.PeoplePics');
+    const pip = wrapper.querySelector('.portrait-role-pip');
+    
+    window.unlockDoggieGuest = function () {
+        localStorage.setItem('afcs_doggie_unlocked', 'true');
+        wrapper.style.display = '';
+        card.classList.remove('is-filtered-out');
+        if (typeof filterCards === 'function') filterCards();
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const r = card.getBoundingClientRect();
+        spawnBurst(r.left + r.width / 2, r.top + r.height / 2, ['#ff00dd', '#ffae42', '#fff04d'], 36);
+        if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+        playBeep(523.25, 0.12, 'sawtooth', 0.05);
+        setTimeout(() => playBeep(783.99, 0.18, 'triangle', 0.05), 80);
+    };
+    
+    card.addEventListener('click', (e) => {
+        if (e._isTripleTap || e.detail === 3) {
+            isZoink = !isZoink;
+            const active = isZoink ? zoinkProfile : doggieProfile;
+            card.classList.toggle('is-zoink-mode', isZoink);
+            card.dataset.character = active.character;
+            card.dataset.bio = active.bio;
+            card.dataset.funfact = active.funFact;
+            card.querySelector('.overlay-text').textContent = active.name;
+            const img = card.querySelector('img');
+            if (img) { img.src = active.imgSrc; img.alt = active.name; }
+            if (pip) {
+                pip.className = `portrait-role-pip ${isZoink ? 'pip-zoink' : 'pip-doggie'}`;
+                pip.textContent = isZoink ? '🌊' : '🔥';
+                pip.title = isZoink ? '#1 Demonlist King (Zoink)' : 'Verifier of Grief (Doggie)';
+            }
+            spawnBurst(e.clientX, e.clientY, isZoink ? ['#38bdf8', '#0284c7', '#ffffff'] : ['#ff00dd', '#fff04d', '#cc0000'], 28);
+            if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+            playBeep(isZoink ? 659.25 : 440, 0.12, 'triangle', 0.05);
+            if (DOM.panel?.classList.contains('active') && card.classList.contains('active')) openCard(card);
+            return;
+        }
+        const pool = isZoink ? zoinkProfile.quotes : doggieProfile.quotes;
+        const line = pool[Math.floor(Math.random() * pool.length)];
+        const banner = document.createElement('div');
+        banner.className = 'theme-announce-banner';
+        banner.style.borderColor = isZoink ? '#38bdf8' : '#ff00dd';
+        banner.textContent = `${isZoink ? '🌊 ZOINK' : '🔥 DOGGIE'}: "${line}"`;
+        document.body.appendChild(banner);
+        setTimeout(() => banner.remove(), 2600);
+    });
+}
+
+function startTeslaGuest() {
+    const peopleContainer = document.querySelector('.People');
+    if (!peopleContainer) return;
+    
+    const teslaProfile = {
+        name: 'Nikola Tesla',
+        imgSrc: 'otherPics/Tesla.jpg',
+        role: 'Guest Legend',
+        character: 'Master of Alternating Current • Inventor',
+        bio: 'Serbian-American inventor and electrical engineer who pioneered alternating-current (AC) electricity, the Tesla coil, and wireless power transmission.',
+        funFact: 'Held around 300 patents worldwide and envisioned wireless global energy transmission from Wardenclyffe Tower!',
+        quotes: [
+            'The present is theirs; the future, for which I really worked, is mine!',
+            'If you want to find the secrets of the universe, think in terms of energy, frequency, and vibration!',
+            '3, 6, 9 — the key to the universe and Grade 7 – Psalms’ December 17 showcase!',
+            'Alternating current is lighting up the entire Burj Khalifa tonight!',
+            'Triple-click my portrait to summon the Prince of Mathematicians...'
+        ]
+    };
+    
+    const gaussProfile = {
+        name: 'Carl Friedrich Gauss',
+        imgSrc: 'otherPics/Gauss.jpg',
+        role: 'Guest Legend',
+        character: 'Prince of Mathematicians • Number Theorist',
+        bio: 'German mathematician and physicist who made foundational breakthroughs in number theory, statistics, modular arithmetic, magnetism, and astronomy.',
+        funFact: 'At age 7, he stunned his schoolteacher by instantly summing 1 + 2 + ... + 100 = 5,050 using n(n + 1)/2!',
+        quotes: [
+            'Mathematics is the queen of the sciences—and number theory is the queen of mathematics!',
+            '1 + 2 + 3 + ... + 100 = 5,050! Even a Burj Khalifa countdown is trivial arithmetic!',
+            'Pauca sed matura — Few, but ripe! Make every scene on December 17 count!',
+            'From Gaussian distributions to magnetic flux—everything follows pure symmetry!',
+            'Triple-click again to return to Nikola Tesla’s alternating current!'
+        ]
+    };
+    
+    let isGauss = false;
+    const wrapper = document.createElement('div');
+    wrapper.className = 'PersonWrapper is-vip-revealed';
+    wrapper.id = 'teslaSecretWrapper';
+    wrapper.style.display = localStorage.getItem('afcs_tesla_unlocked') === 'true' ? '' : 'none';
+    
+    wrapper.innerHTML = `
+        <div class="PeoplePics tesla-secret-card"
+             data-role="${teslaProfile.role}"
+             data-character="${teslaProfile.character}"
+             data-bio="${teslaProfile.bio}"
+             data-funfact="${teslaProfile.funFact}">
+            <img src="${teslaProfile.imgSrc}" alt="${teslaProfile.name}">
+            <div class="overlay-text">${teslaProfile.name}</div>
+        </div>
+        <span class="portrait-role-pip pip-tesla" title="Master of AC Electricity">⚡</span>
+    `;
+    peopleContainer.appendChild(wrapper);
+    
+    const card = wrapper.querySelector('.PeoplePics');
+    const pip = wrapper.querySelector('.portrait-role-pip');
+    
+    window.unlockTeslaGuest = function () {
+        localStorage.setItem('afcs_tesla_unlocked', 'true');
+        wrapper.style.display = '';
+        card.classList.remove('is-filtered-out');
+        if (typeof filterCards === 'function') filterCards();
+        wrapper.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        const r = card.getBoundingClientRect();
+        spawnBurst(r.left + r.width / 2, r.top + r.height / 2, ['#38bdf8', '#a855f7', '#ffffff'], 36);
+        if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+        playBeep(587.33, 0.12, 'sawtooth', 0.05);
+        setTimeout(() => playBeep(880, 0.18, 'triangle', 0.05), 80);
+    };
+    
+    card.addEventListener('click', (e) => {
+        if (e._isTripleTap || e.detail === 3) {
+            isGauss = !isGauss;
+            const active = isGauss ? gaussProfile : teslaProfile;
+            card.classList.toggle('is-gauss-mode', isGauss);
+            card.dataset.character = active.character;
+            card.dataset.bio = active.bio;
+            card.dataset.funfact = active.funFact;
+            card.querySelector('.overlay-text').textContent = active.name;
+            const img = card.querySelector('img');
+            if (img) { img.src = active.imgSrc; img.alt = active.name; }
+            if (pip) {
+                pip.className = `portrait-role-pip ${isGauss ? 'pip-gauss' : 'pip-tesla'}`;
+                pip.textContent = isGauss ? '📐' : '⚡';
+                pip.title = isGauss ? 'Prince of Mathematicians (Gauss)' : 'Master of AC Electricity (Tesla)';
+            }
+            spawnBurst(e.clientX, e.clientY, isGauss ? ['#facc15', '#10b981', '#ffffff'] : ['#38bdf8', '#a855f7', '#ffffff'], 28);
+            if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+            playBeep(isGauss ? 523.25 : 659.25, 0.12, 'triangle', 0.05);
+            if (DOM.panel?.classList.contains('active') && card.classList.contains('active')) openCard(card);
+            return;
+        }
+        const pool = isGauss ? gaussProfile.quotes : teslaProfile.quotes;
+        const line = pool[Math.floor(Math.random() * pool.length)];
+        const banner = document.createElement('div');
+        banner.className = 'theme-announce-banner';
+        banner.style.borderColor = isGauss ? '#facc15' : '#38bdf8';
+        banner.textContent = `${isGauss ? '📐 GAUSS' : '⚡ TESLA'}: "${line}"`;
+        document.body.appendChild(banner);
+        setTimeout(() => banner.remove(), 2600);
+    });
+}

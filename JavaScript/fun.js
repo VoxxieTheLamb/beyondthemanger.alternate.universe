@@ -792,6 +792,16 @@ function startSearchSecrets() {
             });
             DOM.searchInput.value = '';
             filterCards();
+        } else if (val === 'doggie' || val === 'zoink' || val === 'tidal wave') {
+            DOM.searchInput.value = '';
+            filterCards();
+            if (typeof window.unlockDoggieGuest === 'function') window.unlockDoggieGuest();
+            return true;
+        } else if (val === 'tesla' || val === 'nikola tesla' || val === 'gauss' || val === '369') {
+            DOM.searchInput.value = '';
+            filterCards();
+            if (typeof window.unlockTeslaGuest === 'function') window.unlockTeslaGuest();
+            return true;
         }
         if (val === 'factory reset') {
             lastTriggered = '';
@@ -1139,6 +1149,20 @@ function startSecretCodex() {
             title: 'VIP Guest: Serial Designation N',
             hint: 'Offer a warm baked treat to a cheerful disassembly drone.',
             check: () => localStorage.getItem('afcs_ndrone_unlocked') === 'true'
+        },
+        {
+            id: 'guest_doggie',
+            icon: '🔥',
+            title: 'VIP Guest: Doggie (→ Zoink)',
+            hint: 'Meet the man behind the legendary 2 year verification to his top 1.',
+            check: () => localStorage.getItem('afcs_doggie_unlocked') === 'true'
+        },
+        {
+            id: 'guest_tesla',
+            icon: '⚡',
+            title: 'VIP Guest: Nikola Tesla (→ Gauss)',
+            hint: 'Find the eccentric genius who electrified the world with alternating current, yet was never fully appreciated in his lifetime.',
+            check: () => localStorage.getItem('afcs_tesla_unlocked') === 'true'
         },
         {
             id: 'alter_egos',

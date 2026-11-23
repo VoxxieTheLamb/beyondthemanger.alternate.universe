@@ -1077,3 +1077,56 @@ body.afcs-ui-hidden #afcs-hide-ui-btn:hover {
     transform: none !important;
     transition: box-shadow 0.3s ease, border-color 0.3s ease !important;
 }
+
+
+/* === VIP Guest #8: Doggie -> Zoink === */
+.doggie-secret-card {
+    border-color: #ff00dd !important;
+    box-shadow: 0 0 22px rgba(255, 0, 221, 0.78), 0 0 38px rgba(255, 174, 66, 0.45) !important;
+}
+.doggie-secret-card:hover {
+    border-color: #fff04d !important;
+    box-shadow: 0 0 30px rgba(255, 0, 221, 0.95), 0 0 48px rgba(255, 240, 77, 0.7) !important;
+}
+.doggie-secret-card.is-zoink-mode {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 26px rgba(56, 189, 248, 0.92), 0 0 44px rgba(14, 165, 233, 0.55) !important;
+}
+.pip-doggie {
+    background: linear-gradient(135deg, #ff00dd, #ffae42) !important;
+    color: #09090b !important;
+    border-color: #fff04d !important;
+    box-shadow: 0 0 12px rgba(255, 0, 221, 0.9) !important;
+}
+.pip-zoink {
+    background: linear-gradient(135deg, #0284c7, #38bdf8) !important;
+    color: #ffffff !important;
+    border-color: #bae6fd !important;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.95) !important;
+}
+
+/* === VIP Guest #9: Nikola Tesla -> Carl Friedrich Gauss === */
+.tesla-secret-card {
+    border-color: #38bdf8 !important;
+    box-shadow: 0 0 22px rgba(56, 189, 248, 0.78), 0 0 38px rgba(168, 85, 247, 0.42) !important;
+}
+.tesla-secret-card:hover {
+    border-color: #c084fc !important;
+    box-shadow: 0 0 30px rgba(56, 189, 248, 0.95), 0 0 48px rgba(192, 132, 252, 0.7) !important;
+}
+.tesla-secret-card.is-gauss-mode {
+    border-color: #facc15 !important;
+    box-shadow: 0 0 26px rgba(250, 204, 21, 0.9), 0 0 44px rgba(16, 185, 129, 0.52) !important;
+}
+.pip-tesla {
+    background: linear-gradient(135deg, #0284c7, #a855f7) !important;
+    color: #ffffff !important;
+    border-color: #7dd3fc !important;
+    box-shadow: 0 0 12px rgba(56, 189, 248, 0.9) !important;
+}
+.pip-gauss {
+    background: linear-gradient(135deg, #059669, #facc15) !important;
+    color: #09090b !important;
+    border-color: #fef08a !important;
+    box-shadow: 0 0 12px rgba(250, 204, 21, 0.95) !important;
+}
