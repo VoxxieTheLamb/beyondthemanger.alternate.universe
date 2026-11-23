@@ -40,7 +40,7 @@ function startSupabaseBackend() {
             return;
         }
         const s = document.createElement('script');
-        s.src = 'https://jsdelivr.net';
+        s.src = 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js';
         s.onload = cb;
         document.head.appendChild(s);
     }

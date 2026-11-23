@@ -698,12 +698,6 @@
         grid-template-columns: 1fr;
     }
 }
-@media print {
-    .faq-section,
-    .feedback-section {
-        display: none !important;
-    }
-}
 /*
 SIR BEFORE YOU FLAME ME FOR TS
 THEY CONSENTED TO THIS
@@ -794,9 +788,16 @@ I'LL REMOVE IT
     body.panel-is-open[data-panel-dock="right"] .site-navbar,
     body.panel-is-open[data-panel-dock="left"] .site-navbar {
         top: 10px;
-        left: 50%;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
         width: calc(100% - 20px);
         padding: 8px 14px;
+    }
+    
+    .burj-elevator-hud {
+        top: 114px !important;
+        left: 12px !important;
+        z-index: 89 !important; /* Keeps it behind .settings-hub-popover (z-index: 105) */
     }
     .nav-links {
         display: none;
@@ -823,9 +824,9 @@ I'LL REMOVE IT
         padding: 0 12px !important;
         font-size: 11.5px !important;
     }
-    .burj-elevator-hud {
-        top: 112px !important;
-        left: 12px !important;
+    .faq-section,
+    .feedback-section {
+        display: none !important;
     }
 }
 @media (max-width: 640px) {

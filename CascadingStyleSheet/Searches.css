@@ -2758,7 +2758,7 @@ body.faithian-psalms-rally .PeoplePics:not([data-role="Teacher"]) {
 }
 body.theme-hamilton {
     background: linear-gradient(180deg, rgba(12, 10, 9, 0.58) 0%, rgba(12, 10, 9, 0.78) 100%),
-    url('otherPics/hamilton.jfif') center center / cover no-repeat fixed,
+    url('../otherPics/hamilton.jfif') center center / cover no-repeat fixed,
     #0c0a09 !important;
     box-shadow: inset 0 0 140px rgba(234, 179, 8, 0.25);
 }
@@ -2829,7 +2829,7 @@ body:not(.theme-red):not(.party-mode):not(.theme-doomsday):not(.theme-faithian):
 }
 body.theme-epic {
     background: linear-gradient(180deg, rgba(4, 18, 34, 0.62) 0%, rgba(10, 6, 18, 0.82) 100%),
-    url('otherPics/epic.jfif') center center / cover no-repeat fixed,
+    url('../otherPics/epic.jfif') center center / cover no-repeat fixed,
     radial-gradient(circle at 50% 15%, rgba(14, 165, 233, 0.34) 0%, rgba(153, 27, 27, 0.24) 45%, rgba(3, 7, 18, 1) 78%),
     #030712 !important;
     box-shadow: inset 0 0 150px rgba(56, 189, 248, 0.3), inset 0 0 70px rgba(250, 204, 21, 0.18);

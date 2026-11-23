@@ -36,12 +36,12 @@ function startCompareModal() {
     
     function buildColumnHTML(card) {
         const name = card.querySelector('.overlay-text').textContent.trim();
-        const imgSrc = card.querySelector('img').src;
+        const imgEl = card.querySelector('img');
+        const imgSrc = imgEl ? imgEl.src : '';
         const monoEl = card.querySelector('.monogram-avatar');
         const avatarHTML = monoEl
         ? `<div class="compare-avatar monogram-avatar" style="font-size:34px;">${monoEl.textContent}</div>`
         : `<img class="compare-avatar" src="${imgSrc}" alt="${name}">`;
-        
         const role = card.dataset.displayRole || card.dataset.role || 'Student';
         const team = card.dataset.team ? ` • ${card.dataset.team}` : '';
         const character = card.dataset.character || 'Behind-the-Scenes Crew';

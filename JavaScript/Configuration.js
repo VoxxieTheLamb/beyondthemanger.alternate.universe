@@ -376,41 +376,41 @@ const CONFIG = {
         ]
     },
     faqs: [
-            {
-                q: "When and where is the live performance?",
-                a: "The live stage premiere is on December 17, 2026 at the AFCS Stage in the Covered Court."
-            },
-            {
-                q: "What is the play about?",
-                a: "At a meet and greet, something happens that shifts someone's worldview..."
-            },
-            {
-                q: "What language is the play performed in?",
-                a: "Beyond The Manger is a 6-part Taglish stage play blending action-thriller mystery with drama."
-            },
-            {
-                q: "Who is presenting this production?",
-                a: "Presented by Grade 7 – Psalms (S.Y. 2026–2027) of Antipolo Faith Christian School Inc. for Paskong AFCS 2026."
-            },
-            {
-                q: "How did you make this?",
-                a: "I created the baseline and the functions, and used Artificial Intelligence to sharpen my work."
-            },
-            {
-                q: "Is there a price for attending?",
-                a: "Currently, no, there is not a price for the Show. We will keep you informed."
-            },
-            {
-                q: "What time is the performance?",
-                a: "At 6pm on December 17."
-            },
-            {
-                q: "Where can I request features?",
-                a: "Request your features below."
-            }
-        ],
-        web3formsKey: "e5782444-af9b-4d75-818a-d50163048ed9"
-
+        {
+            q: "When and where is the live performance?",
+            a: "The live stage premiere is on December 17, 2026 at the AFCS Stage in the Covered Court."
+        },
+        {
+            q: "What is the play about?",
+            a: "At a meet and greet, something happens that shifts someone's worldview..."
+        },
+        {
+            q: "What language is the play performed in?",
+            a: "Beyond The Manger is a 6-part Taglish stage play blending action-thriller mystery with drama."
+        },
+        {
+            q: "Who is presenting this production?",
+            a: "Presented by Grade 7 – Psalms (S.Y. 2026–2027) of Antipolo Faith Christian School Inc. for Paskong AFCS 2026."
+        },
+        {
+            q: "How did you make this?",
+            a: "I created the baseline and the functions, and used Artificial Intelligence to sharpen my work."
+        },
+        {
+            q: "Is there a price for attending?",
+            a: "Currently, no, there is not a price for the Show. We will keep you informed."
+        },
+        {
+            q: "What time is the performance?",
+            a: "At 6pm on December 17."
+        },
+        {
+            q: "Where can I request features?",
+            a: "Request your features below."
+        }
+    ],
+    web3formsKey: "e5782444-af9b-4d75-818a-d50163048ed9"
+    
 }; // Configuration Studd
 const STATE = {
     masterMuted: localStorage.getItem('afcsMasterMuted') === 'true',
@@ -686,6 +686,7 @@ function startCynDesktopPet() {
     let dragOffY = 0;
     let lastDragX = 0;
     let lastDragY = 0;
+    let canWarpFromFall = true;
     let mode = 'wander';
     let modeTimer = 0;
     let pointerX = -9999;
@@ -884,6 +885,7 @@ function startCynDesktopPet() {
         petEl.style.pointerEvents = 'auto';
         petEl.innerHTML = '<div class="cyn-pet-bubble" id="cynPetBubble"></div>' +
         '<img class="cyn-pet-sprite" src="otherPics/CynPet.jpg" alt="Cyn Pet" draggable="false">' +
+        '<button type="button" class="cyn-pet-dismiss" title="Dismiss Cyn">&times;</button>' +
         '<div class="cyn-pet-solver-form" aria-hidden="true">' +
         '<svg viewBox="0 0 140 140" width="140" height="140">' +
         '<circle cx="70" cy="70" r="60" fill="rgba(9,7,2,0.88)" stroke="#facc15" stroke-width="2.5" stroke-dasharray="8 6"/>' +
@@ -932,14 +934,16 @@ function startCynDesktopPet() {
             closePetMenu();
             const menu = document.createElement('div');
             menu.className = 'cyn-pet-context-menu';
-            menu.innerHTML = '⬡ CYN.EXE // COMPANION[NULL]' +
-'🥭 Feed MangoSnack' +
-'🧗 Climb Nearest WallWall' +
-'⚡ Pounce at CursorLeap' +
-'⬡ Trigger Solver Warp[NULL]' +
-'' +
-'⬇️ Drop to FloorFall' +
-'✕ Dismiss CynClose';
+            menu.innerHTML = `
+            <div class="cyn-ctx-header"><span>⬡ CYN.EXE // COMPANION</span><span>[NULL]</span></div>
+            <div class="cyn-ctx-item" data-act="mango"><span>🥭 Feed Mango</span><span class="cyn-ctx-key">Snack</span></div>
+            <div class="cyn-ctx-item" data-act="climb"><span>🧗 Climb Nearest Wall</span><span class="cyn-ctx-key">Wall</span></div>
+            <div class="cyn-ctx-item" data-act="pounce"><span>⚡ Pounce at Cursor</span><span class="cyn-ctx-key">Leap</span></div>
+            <div class="cyn-ctx-item" data-act="warp"><span>⬡ Trigger Solver Warp</span><span class="cyn-ctx-key">[NULL]</span></div>
+            <div class="cyn-ctx-sep"></div>
+            <div class="cyn-ctx-item" data-act="drop"><span>⬇️ Drop to Floor</span><span class="cyn-ctx-key">Fall</span></div>
+            <div class="cyn-ctx-item" data-act="dismiss"><span>✕ Dismiss Cyn</span><span class="cyn-ctx-key">Close</span></div>
+            `;
             document.body.appendChild(menu);
             petMenu = menu;
             const mRect = menu.getBoundingClientRect();

@@ -20,100 +20,6 @@ function startFormalPortal() {
     return false;
   });
 }
-function startSupabaseBackend() {
-  if (!window.supabase) return;
-  const sb = window.supabase.createClient(
-    'https://gpdlfljkcgnlcysmhjfj.supabase.co',
-    'sb_publishable_eeCV9rkKJ7lIwkVNHst93g_AyXlOLm9'
-  );
-  window.AFCS_SUPABASE = sb;
-  
-  window.openFissionLeaderboardModal = async function () {
-    const old = document.getElementById('fission-lb-modal');
-    if (old) old.remove();
-    
-    const { data } = await sb
-    .from('fission_leaderboard')
-    .select('operator_name, energy, days_survived, cause_of_meltdown, coins_awarded')
-    .order('days_survived', { ascending: false })
-    .order('energy', { ascending: false })
-    .limit(15);
-    
-    const rowsHtml = (data || []).map((r, idx) => `
-      <div style="display:flex;justify-content:space-between;align-items:center;padding:8px 12px;border-radius:8px;background:#090d16;border:1px solid ${idx === 0 ? '#facc15' : '#1e293b'};margin-bottom:6px;">
-        <div>
-          <strong style="color:${idx === 0 ? '#fde047' : '#38bdf8'};">#${idx + 1} ${r.operator_name}</strong>
-          <div style="font-size:0.75rem;color:#94a3b8;">Cause: ${r.cause_of_meltdown}</div>
-        </div>
-        <div style="text-align:right;">
-          <div style="font-weight:bold;color:#4ade80;">Day ${r.days_survived} • ${Number(r.energy).toLocaleString()} MW</div>
-          <div style="font-size:0.75rem;color:#fde047;">+${r.coins_awarded} 🪙</div>
-        </div>
-      </div>
-    `).join('') || '<p style="color:#94a3b8;text-align:center;">No reactor runs logged yet.</p>';
-    
-    const modal = document.createElement('div');
-    modal.id = 'fission-lb-modal';
-    modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(2,6,23,0.92);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;padding:16px;color:#f8fafc;font-family:system-ui,sans-serif;';
-    modal.innerHTML = `
-      <div style="width:100%;max-width:540px;max-height:85vh;overflow-y:auto;background:#0f172a;border:2px solid #00ff66;border-radius:16px;padding:20px;box-shadow:0 0 40px rgba(0,255,102,0.25);">
-        <div style="display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #1e293b;padding-bottom:10px;margin-bottom:12px;">
-          <span style="font-size:1.15rem;font-weight:900;color:#00ff66;">☢️ FISSION MAN1A! LEADERBOARD</span>
-          <button id="flb-close" style="background:#450a0a;color:#fecaca;border:1px solid #991b1b;padding:5px 10px;border-radius:6px;cursor:pointer;font-weight:bold;">✕</button>
-        </div>
-        <div style="display:flex;gap:8px;margin-bottom:10px;">
-          <input id="flb-code-input" type="text" placeholder="Enter Claim Code (FM-XXXXXX)" maxlength="10" style="flex:1;padding:8px 12px;border-radius:8px;border:1px solid #38bdf8;background:#090d16;color:#fff;font-family:monospace;text-transform:uppercase;">
-          <button id="flb-claim-btn" style="background:#16a34a;color:#fff;border:1px solid #4ade80;padding:8px 14px;border-radius:8px;font-weight:bold;cursor:pointer;">Claim 🪙</button>
-        </div>
-        <div id="flb-claim-msg" style="font-size:0.8rem;min-height:18px;margin-bottom:10px;color:#fde047;">
-          Win Days 2+ in Fission Mania! for +300 🪙 per day survived.
-        </div>
-        ${rowsHtml}
-      </div>
-    `;
-    document.body.appendChild(modal);
-    
-    document.getElementById('flb-close').onclick = () => modal.remove();
-    modal.onclick = (e) => { if (e.target === modal) modal.remove(); };
-    
-    document.getElementById('flb-claim-btn').onclick = async () => {
-      const codeInput = document.getElementById('flb-code-input');
-      const msgEl = document.getElementById('flb-claim-msg');
-      const code = codeInput.value.trim();
-      if (!code) return;
-      
-      const { data: res, error } = await sb.rpc('claim_fission_coins', { p_code: code });
-      if (error || !res || !res.success) {
-        msgEl.style.color = '#f87171';
-        msgEl.textContent = (res && res.error) || 'Failed to claim code.';
-        return;
-      }
-      
-      const cur = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
-      const next = cur + res.coins_awarded;
-      if (typeof window.afcsSyncCoins === 'function') {
-        window.afcsSyncCoins(next);
-      } else {
-        localStorage.setItem('afcs_coins', String(next));
-      }
-      
-      codeInput.value = '';
-      msgEl.style.color = '#4ade80';
-      msgEl.textContent = `Claimed +${res.coins_awarded} 🪙 from ${res.operator_name} (Day ${res.days_survived})!`;
-    };
-  };
-  
-  if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
-    STATE.onSearchInput.push((val) => {
-      if (val === 'fission' || val === 'fission mania' || val === 'leaderboard') {
-        DOM.searchInput.value = '';
-        filterCards();
-        window.openFissionLeaderboardModal();
-        return true;
-      }
-    });
-  }
-}
 
 document.addEventListener('DOMContentLoaded', () => {
   //#region START Everything
@@ -170,7 +76,8 @@ document.addEventListener('DOMContentLoaded', () => {
     startCompareModal();
     startPlaybillModal();
     startDoomsdayCursor();
-    startDoomsdayRift();
+    startDoggieWaveCursor();
+    startGriefContextMenu();
     startFaithianCursorAndRally();
     startFaithianContextMenu();
     startDoomsdayContextMenu();

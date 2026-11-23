@@ -45,13 +45,14 @@ function startWeatherWidget() {
         const hour = getCityHour(city);
         const isNight = hour >= 18 || hour < 6;
         
-        if (lower.includes('thunder')) return '';
-        if (lower.includes('rain') || lower.includes('drizzle') || lower.includes('shower')) return '';
-        if (lower.includes('fog') || lower.includes('mist') || lower.includes('haze')) return '';
-        if (lower.includes('overcast') || lower.includes('cloudy')) return '';
-        if (lower.includes('partly')) return isNight ? '' : '';
-        return isNight ? '' : '';
+        if (lower.includes('thunder')) return '⛈️';
+        if (lower.includes('rain') || lower.includes('drizzle') || lower.includes('shower')) return '🌧️';
+        if (lower.includes('fog') || lower.includes('mist') || lower.includes('haze')) return '🌫️';
+        if (lower.includes('overcast') || lower.includes('cloudy')) return '☁️';
+        if (lower.includes('partly')) return isNight ? '☁️' : '⛅';
+        return isNight ? '🌙' : '☀️';
     }
+    
     function decodeWmoCode(code) {
         if (code === 0) return 'Clear Sky';
         if (code <= 3) return 'Partly Cloudy';
@@ -167,9 +168,8 @@ function startCalendarExport() {
             'PRODID:-//AFCS Grade 7 Psalms//Paskong AFCS 2026//EN',
             'BEGIN:VEVENT',
             'UID:beyond-the-manger-afcs-2026@afcs.edu.ph',
-            'DTSTAMP:20261114T110000Z',
-            'DTSTART:20261215T100000Z',
-            'DTEND:20261215T110000Z',
+            'DTSTART:20261217T100000Z',
+            'DTEND:20261217T113000Z',
             'SUMMARY:Beyond The Manger: When Faith Becomes the Key (Paskong AFCS 2026)',
             'DESCRIPTION:Grade 7 - Psalms Stage Play Presentation. Core Theme: We rise because Jesus Christ is our Cornerstone.',
             'LOCATION:AFCS Stage in the Covered Court, Antipolo Faith Christian School Inc.',
@@ -370,7 +370,7 @@ function startCountdown() {
     const secsEl = document.getElementById('cd-secs');
     if (!wrapper || !daysEl) return;
     
-    const targetDate = new Date('2026-12-15T18:00:00').getTime();
+    const targetDate = new Date('2026-12-17T18:00:00').getTime();
     
     function updateTimer() {
         const diff = targetDate - Date.now();

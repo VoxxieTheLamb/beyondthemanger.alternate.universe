@@ -273,7 +273,7 @@ function lebronJames() {
                     
                     const fire = document.createElement('div');
                     fire.className = 'lebron-dunk-fire';
-                    fire.textContent = side === 'away' ? '' : '';
+                    fire.textContent = side === 'away' ? '❄️❄️' : '🔥🔥';
                     fire.style.left = `${rimX}px`;
                     fire.style.top = `${rimY}px`;
                     document.body.appendChild(fire);
@@ -388,6 +388,7 @@ function lebronJames() {
         imgSrc: 'otherPics/Lebron.jpg',
         character: 'Artist 6 - Basketball Legend',
         birthday: 'December 30, 1984',
+        side: 'home',
         bio: 'widely regarded as one of the greatest basketball players of all time, LeBron "King" James is a 4× NBA Champion, 4× NBA MVP, 3× Olympic Gold Medalist, and the first player in NBA history to surpass 40,000 career points. Taking a break from rewriting the record books, he is making a surprise VIP guest appearance high above Dubai at the Burj Khalifa Christmas Meet & Greet for Paskong AFCS 2026 — bringing championship energy and festive cheer to Grade 7 – Psalms and guests!',
     };
     
@@ -1094,7 +1095,7 @@ function startEinsteinGuest() {
         
         const pip = document.createElement('span');
         pip.className = 'portrait-role-pip pip-einstein';
-        pip.textContent = '';
+        pip.textContent = '⚛️';
         pip.title = 'Albert Einstein (E = mc²)';
         
         card.appendChild(img);

@@ -39,15 +39,31 @@ function filterCards() {
     
     if (DOM.matchCountEl) {
         const teacherVisible = allCards.some(c => c.dataset.role === 'Teacher' && !c.classList.contains('is-filtered-out'));
-        const guestVisible = allCards.some(c => c.dataset.role === 'Guest Legend' && !c.classList.contains('is-filtered-out'));
+        const guestCards = allCards.filter(c => c.dataset.role === 'Guest Legend');
+        const guestTotal = guestCards.length;
+        const guestVisible = guestCards.filter(c => !c.classList.contains('is-filtered-out')).length;
         const studentTotal = allCards.filter(c => c.dataset.role !== 'Teacher' && c.dataset.role !== 'Guest Legend').length;
-        const studentVisible = visibleCount - (teacherVisible ? 1 : 0) - (guestVisible ? 1 : 0);
+        const studentVisible = visibleCount - (teacherVisible ? 1 : 0) - guestVisible;
         
-        if (visibleCount === 0) DOM.matchCountEl.textContent = `No members found out of ${studentTotal} students`;
-        else if (teacherVisible && studentVisible === studentTotal) DOM.matchCountEl.textContent = `Showing ${studentTotal} students & Class Adviser`;
-        else if (teacherVisible) DOM.matchCountEl.textContent = `Showing ${studentVisible} out of ${studentTotal} students + Class Adviser`;
-        else DOM.matchCountEl.textContent = `Showing ${studentVisible} out of ${studentTotal} students`;
+        if (visibleCount === 0) {
+            DOM.matchCountEl.textContent = `No members found out of ${studentTotal} students`;
+        } else {
+            const studentPart = studentVisible === studentTotal
+            ? `${studentTotal} students`
+            : `${studentVisible} out of ${studentTotal} students`;
+            
+            const parts = [studentPart];
+            if (teacherVisible) parts.push('Class Adviser');
+            if (guestTotal > 0) parts.push(`${guestVisible} out of ${guestTotal} guests`);
+            
+            const formatted = parts.length > 1
+            ? `${parts.slice(0, -1).join(', ')}, and ${parts.at(-1)}`
+            : parts[0];
+            
+            DOM.matchCountEl.textContent = `Showing ${formatted}`;
+        }
     }
+    
     
     STATE.onFilterCards.forEach(fn => fn());
 } // filters it in a lot of ways

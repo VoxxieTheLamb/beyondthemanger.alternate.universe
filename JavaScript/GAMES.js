@@ -878,7 +878,7 @@ function startOnlineBattleNet() {
         }
         const s = document.createElement('script');
         s.id = 'afcsPeerJsScript';
-        s.src = 'https://unpkg.com';
+        s.src = 'https://unpkg.com/peerjs@1.5.4/dist/peerjs.min.js';
         s.onload = () => callback();
         s.onerror = () => handlers.onStatus('Failed to load PeerJS. Check internet connection.');
         document.head.appendChild(s);
@@ -7756,54 +7756,6 @@ function startAfcsShopEffects() {
         }
     };
     
-    
-    window.shopApplyTheme = function (item) {
-        if (item && item.id === 'theme_griefer' && typeof window.applyTheme === 'function') {
-            window.applyTheme('griefer');
-        }
-        window.shopSyncGriefClasses();
-        
-        let styleEl = document.getElementById('afcs-shop-theme-style');
-        if (!styleEl) {
-            styleEl = document.createElement('style');
-            styleEl.id = 'afcs-shop-theme-style';
-            document.head.appendChild(styleEl);
-        }
-        styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
-        
-        if (!window.SHOP_RUNTIME.themeObserver) {
-            const obs = new MutationObserver(() => window.shopSyncGriefClasses());
-            obs.observe(document.body, { attributes: true, attributeFilter: Array.of('class') });
-            window.SHOP_RUNTIME.themeObserver = obs;
-        }
-    };
-    
-    window.shopApplyTheme = function (item) {
-        if (item && item.id === 'theme_griefer') {
-            const otherThemes = Array.of(
-                'theme-hamilton', 'theme-epic', 'theme-doomsday',
-                'theme-faithian', 'theme-murderdrones', 'theme-red',
-                'party-mode', 'search-fx-cornerstone'
-            );
-            otherThemes.forEach(cls => document.body.classList.remove(cls));
-        }
-        window.shopSyncGriefClasses();
-        
-        let styleEl = document.getElementById('afcs-shop-theme-style');
-        if (!styleEl) {
-            styleEl = document.createElement('style');
-            styleEl.id = 'afcs-shop-theme-style';
-            document.head.appendChild(styleEl);
-        }
-        styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
-        
-        if (!window.SHOP_RUNTIME.themeObserver) {
-            const obs = new MutationObserver(() => window.shopSyncGriefClasses());
-            obs.observe(document.body, { attributes: true, attributeFilter: Array.of('class') });
-            window.SHOP_RUNTIME.themeObserver = obs;
-        }
-    };
-    
     window.shopApplyTrail = function (item) {
         const rt = window.SHOP_RUNTIME;
         rt.trailColor = item ? item.trailColor : null;
@@ -9244,7 +9196,6 @@ function startSurviveSolverEngine() {
 }
 function startSurviveSolverUI() {
     window.solverFinishRun = function (survived) {
-        if (noHit) localStorage.setItem('afcs_codex_solver_pacifist', 'true');
         const st = window.SOLVER_GAME_STATE;
         const cfg = window.SOLVER_GAME_CFG;
         st.running = false;
@@ -9260,6 +9211,7 @@ function startSurviveSolverUI() {
             const noHit = st.hp === cfg.maxHp;
             const totalCoins = cfg.baseReward + (noHit ? cfg.noHitBonus : 0);
             const bal = window.solverAwardCoins(totalCoins);
+            if (noHit) localStorage.setItem('afcs_codex_solver_pacifist', 'true');
             ov.innerHTML = `
                 <div style="font-size:1.55rem;font-weight:900;color:#4ade80;margin-bottom:6px;">
                     ${noHit ? '👑 PACIFIST NO-HIT CLEAR!' : '❤️ YOU SURVIVED THE SOLVER!'}

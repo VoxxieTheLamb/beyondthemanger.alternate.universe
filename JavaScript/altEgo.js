@@ -66,20 +66,16 @@ function startNewtonAlterEgo() {
         'A man may imagine things that are false, but he can only understand things that are true. ',
         'To myself I am only a child playing on the beach, while vast oceans of truth lie undiscovered before me. '
     ];
-    
     let isNewton = false;
     let newtonIdx = -1;
     let savedEulerState = null;
-    
     function bindPanelNewtonClick() {
         if (!isNewton || !DOM.panelImageContainer) return;
         const drawerImg = DOM.panelImageContainer.querySelector('img');
         if (!drawerImg || drawerImg.dataset.newtonBound === 'true') return;
-        
         drawerImg.dataset.newtonBound = 'true';
         drawerImg.style.cursor = 'pointer';
         drawerImg.title = 'Click Sir Isaac Newton for a Law or Fluxion!';
-        
         drawerImg.addEventListener('click', (e) => {
             e.stopPropagation();
             let nextIdx = Math.floor(Math.random() * newtonFormulas.length);
@@ -87,19 +83,16 @@ function startNewtonAlterEgo() {
                 nextIdx = (nextIdx + 1) % newtonFormulas.length;
             }
             newtonIdx = nextIdx;
-            
             let bubble = DOM.panelBody.querySelector('.panel-newton-quote');
             if (!bubble) {
                 bubble = document.createElement('div');
                 bubble.className = 'panel-newton-quote';
                 DOM.panelBody.prepend(bubble);
             }
-            
             bubble.textContent = newtonFormulas[newtonIdx];
             bubble.classList.remove('is-pop');
             void bubble.offsetWidth;
-            bubble.classList.add('is-pop');
-            
+            bubble.classList.add('is-pop'); 
             const rect = DOM.panelImageContainer.getBoundingClientRect();
             spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, ['#ef4444', '#22c55e', '#facc15'], 18);
             if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
@@ -107,36 +100,30 @@ function startNewtonAlterEgo() {
             setTimeout(() => playBeep(587.33, 0.14, 'triangle', 0.045), 70);
         });
     }
-    
     STATE.onOpenCard.push((openedCard) => {
         if (isNewton && openedCard && openedCard.closest('#eulerSecretWrapper')) {
             requestAnimationFrame(bindPanelNewtonClick);
         }
         return false;
     });
-    
     document.addEventListener('click', (e) => {
         const wrapper = e.target.closest('#eulerSecretWrapper');
         if (!wrapper) return;
         const card = wrapper.querySelector('.PeoplePics');
         if (!card) return;
-        
         if (e.detail === 3) {
             isNewton = !isNewton;
-            
             const img = card.querySelector('img');
             const label = card.querySelector('.overlay-text');
             const pip = wrapper.querySelector('.portrait-role-pip');
             const rings = wrapper.querySelectorAll('.euler-orbit-ring');
             const satellite = wrapper.querySelector('.euler-unit-circle');
-            
             if (!savedEulerState && satellite) {
                 savedEulerState = {
                     satelliteHTML: satellite.innerHTML,
                     satelliteTitle: satellite.title
                 };
             }
-            
             card.animate([
                 { transform: 'perspective(600px) rotateY(0deg) scale(1.05)' },
                 { transform: 'perspective(600px) rotateY(90deg) scale(1.16)', offset: 0.35 },
@@ -146,7 +133,6 @@ function startNewtonAlterEgo() {
                 duration: 550,
                 easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
             });
-            
             setTimeout(() => {
                 if (isNewton) {
                     card.classList.remove('is-euler-card');
@@ -170,7 +156,7 @@ function startNewtonAlterEgo() {
                     if (satellite) {
                         satellite.classList.add('is-newton-apple');
                         satellite.title = 'Gravity Apple (g ≈ 9.81 m/s²)';
-                        satellite.innerHTML = '';
+                        satellite.innerHTML = '🍎';
                     }
                 } else {
                     card.classList.remove('is-newton-card');
@@ -197,13 +183,11 @@ function startNewtonAlterEgo() {
                         satellite.innerHTML = savedEulerState.satelliteHTML;
                     }
                 }
-                
                 if (DOM.panel && DOM.panel.classList.contains('active') && card.classList.contains('active')) {
                     openCard(card);
                     if (isNewton) bindPanelNewtonClick();
                 }
             }, 275);
-            
             const rect = card.getBoundingClientRect();
             spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, isNewton ? ['#ef4444', '#22c55e', '#facc15'] : ['#facc15', '#38bdf8', '#ffffff'], 28);
             if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
@@ -211,7 +195,6 @@ function startNewtonAlterEgo() {
             setTimeout(() => playBeep(isNewton ? 587.33 : 440.00, 0.14, 'triangle', 0.045), 75);
             return;
         }
-        
         if (isNewton) {
             setTimeout(() => {
                 const bubble = document.querySelector('.quirk-euler-bubble');
@@ -297,29 +280,24 @@ function startJordanAlterEgo() {
     ];
     let isJordan = false;
     let quoteIdx = -1;
-    
     document.addEventListener('click', (e) => {
         const wrapper = e.target.closest('#currySecretWrapper');
         if (!wrapper) return;
         const card = wrapper.querySelector('.PeoplePics');
         if (!card) return;
-        
         if (e.detail === 3) {
             e.stopPropagation();
             isJordan = !isJordan;
             quoteIdx = -1;
-            
             const img = card.querySelector('img');
             const label = card.querySelector('.overlay-text');
             const pip = wrapper.querySelector('.portrait-role-pip');
-            
             card.animate([
                 { transform: 'perspective(600px) rotateY(0deg) scale(1.05)' },
                 { transform: 'perspective(600px) rotateY(90deg) scale(1.16)', offset: 0.35 },
                 { transform: 'perspective(600px) rotateY(270deg) scale(1.16)', offset: 0.65 },
                 { transform: 'perspective(600px) rotateY(360deg) scale(1.05)' }
             ], { duration: 550, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
-            
             setTimeout(() => {
                 if (isJordan) {
                     card.classList.remove('is-curry-card');
@@ -335,7 +313,7 @@ function startJordanAlterEgo() {
                     if (label) label.textContent = 'Jordan, Michael';
                     if (pip) {
                         pip.className = 'portrait-role-pip pip-jordan';
-                        pip.textContent = '🏀f';
+                        pip.textContent = '🐐';
                         pip.title = 'His Airness (6× Champ)';
                     }
                 } else {
@@ -352,16 +330,14 @@ function startJordanAlterEgo() {
                     if (label) label.textContent = 'Curry, Stephen';
                     if (pip) {
                         pip.className = 'portrait-role-pip pip-curry';
-                        pip.textContent = '';
+                        pip.textContent = '🏀';
                         pip.title = 'Chef Curry (3PT King)';
                     }
                 }
-                
                 if (DOM.panel && DOM.panel.classList.contains('active') && card.classList.contains('active')) {
                     openCard(card);
                 }
             }, 275);
-            
             const rect = card.getBoundingClientRect();
             spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, isJordan ? ['#ef4444', '#ffffff', '#09090b'] : ['#38bdf8', '#facc15', '#ffffff'], 28);
             if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
@@ -369,18 +345,15 @@ function startJordanAlterEgo() {
             setTimeout(() => playBeep(isJordan ? 880.00 : 329.63, 0.14, 'triangle', 0.045), 75);
             return;
         }
-        
         if (isJordan && e.detail === 1) {
             let nextIdx = Math.floor(Math.random() * jordanQuotes.length);
             if (jordanQuotes.length > 1 && nextIdx === quoteIdx) {
                 nextIdx = (nextIdx + 1) % jordanQuotes.length;
             }
             quoteIdx = nextIdx;
-            
             const rect = card.getBoundingClientRect();
             const cx = rect.left + rect.width / 2;
             const cy = rect.top + rect.height / 2;
-            
             const badge = document.createElement('div');
             badge.className = 'quirk-guest-bubble';
             badge.textContent = jordanQuotes[quoteIdx];
@@ -389,7 +362,6 @@ function startJordanAlterEgo() {
             badge.style.top = `${cy}px`;
             document.body.appendChild(badge);
             setTimeout(() => badge.remove(), 3000);
-            
             spawnBurst(cx, cy, ['#ef4444', '#ffffff', '#09090b'], 20);
             if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
             playBeep(493.88, 0.07, 'triangle', 0.04);
@@ -855,7 +827,7 @@ function startGalileoAlterEgo() {
                     if (label) label.textContent = 'Galilei, Galileo';
                     if (pip) {
                         pip.className = 'portrait-role-pip pip-galileo';
-                        pip.textContent = '';
+                        pip.textContent = '🔭';
                         pip.title = 'Galileo Galilei';
                     }
                 } else {
@@ -872,7 +844,7 @@ function startGalileoAlterEgo() {
                     if (label) label.textContent = 'Einstein, Albert';
                     if (pip) {
                         pip.className = 'portrait-role-pip pip-einstein';
-                        pip.textContent = '';
+                        pip.textContent = '⚛️';
                         pip.title = 'Albert Einstein (E = mc²)';
                     }
                 }

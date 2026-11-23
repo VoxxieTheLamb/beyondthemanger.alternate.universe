@@ -770,8 +770,8 @@ body.party-mode * {
     opacity: 0.55;
     margin: 6px 0;
 }
-body:not(.theme-hamilton):not(.theme-epic):not(.theme-doomsday):not(.theme-faithian):not(.theme-red):not(.theme-reactor):not(.theme-yellow):not(.theme-curious):not(.search-fx-cornerstone):not(.theme-murderdrones):not(.party-mode),
-body:not(.theme-hamilton):not(.theme-epic):not(.theme-doomsday):not(.theme-faithian):not(.theme-red):not(.theme-reactor):not(.theme-yellow):not(.theme-curious):not(.search-fx-cornerstone):not(.theme-murderdrones):not(.party-mode) * {
+body:not(.theme-griefer):not(.theme-hamilton):not(.theme-epic):not(.theme-doomsday):not(.theme-faithian):not(.theme-red):not(.theme-reactor):not(.theme-yellow):not(.theme-curious):not(.search-fx-cornerstone):not(.theme-murderdrones):not(.party-mode),
+body:not(.theme-griefer):not(.theme-hamilton):not(.theme-epic):not(.theme-doomsday):not(.theme-faithian):not(.theme-red):not(.theme-reactor):not(.theme-yellow):not(.theme-curious):not(.search-fx-cornerstone):not(.theme-murderdrones):not(.party-mode) * {
     cursor: none !important;
 }
 
@@ -878,7 +878,149 @@ body:not(.theme-hamilton):not(.theme-epic):not(.theme-doomsday):not(.theme-faith
     background: radial-gradient(circle at center, rgba(186, 230, 253, 0.72) 0%, rgba(56, 189, 248, 0.32) 55%, rgba(56, 189, 248, 0) 100%);
     animation: guidingFlashFade 0.85s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
+body.theme-griefer,
+body.theme-griefer * {
+    cursor: none !important;
+}
 
+.doggie-wave-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 36px;
+    pointer-events: none;
+    z-index: 1000000;
+    opacity: 0;
+    transform-origin: 36px 18px;
+    filter: drop-shadow(0 0 8px rgba(255, 0, 204, 0.85)) drop-shadow(0 0 14px rgba(250, 204, 21, 0.7));
+    transition: opacity 0.15s ease;
+}
+
+.doggie-wave-cursor.is-visible {
+    opacity: 1;
+}
+
+.doggie-wave-cursor.is-dashing svg {
+    transform: scale(1.14) rotate(-8deg);
+    filter: drop-shadow(0 0 14px #facc15) drop-shadow(0 0 22px #ff00cc);
+    transition: transform 0.08s ease;
+}
+
+
+.doggie-wave-cursor {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 44px;
+    height: 36px;
+    pointer-events: none;
+    z-index: 1000000;
+    opacity: 0;
+    transform-origin: 40px 18px;
+    filter: drop-shadow(0 0 8px rgba(255, 0, 221, 0.9)) drop-shadow(0 0 14px rgba(255, 240, 77, 0.75));
+    transition: opacity 0.15s ease;
+}
+
+.doggie-wave-cursor.is-visible {
+    opacity: 1;
+}
+
+.doggie-wave-cursor.is-dashing svg {
+    transform: scale(1.16);
+    filter: drop-shadow(0 0 14px #fff04d) drop-shadow(0 0 22px #ff00dd);
+    transition: transform 0.08s ease;
+}
+
+.doggie-wave-trail-canvas {
+    position: fixed;
+    inset: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none;
+    z-index: 999999;
+}
+
+.griefer-context-menu {
+    position: fixed !important;
+    min-width: 265px;
+    padding: 12px 14px;
+    background: linear-gradient(165deg, rgba(14, 0, 0, 0.98) 0%, rgba(36, 0, 0, 0.97) 100%);
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    border-radius: 10px;
+    box-shadow:
+        0 18px 40px rgba(0, 0, 0, 0.95),
+        0 0 28px rgba(204, 0, 0, 0.75),
+        inset 0 0 18px rgba(255, 0, 221, 0.16);
+    backdrop-filter: blur(12px);
+    font-family: 'Consolas', 'Courier New', monospace;
+    z-index: 999999 !important;
+    animation: popIn 0.15s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.grief-ctx-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    font-weight: 900;
+    letter-spacing: 1px;
+    color: #ffffff;
+    border-bottom: 1.5px solid rgba(255, 255, 255, 0.35);
+    padding-bottom: 7px;
+    margin-bottom: 7px;
+}
+
+.grief-ctx-badge {
+    padding: 2px 7px;
+    border-radius: 4px;
+    background: linear-gradient(90deg, #ff00dd, #ffae42);
+    color: #09090b;
+    font-size: 10px;
+    font-weight: 900;
+}
+
+.grief-ctx-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 7px 9px;
+    border-radius: 6px;
+    font-size: 12.5px;
+    font-weight: 700;
+    color: #ffffff;
+    transition: background 0.14s ease, transform 0.14s ease, color 0.14s ease;
+}
+
+.grief-ctx-item:hover {
+    background: rgba(204, 0, 0, 0.38);
+    color: #fff04d;
+    transform: translateX(3px);
+}
+
+.grief-ctx-key {
+    font-size: 10px;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #ff4db8;
+}
+
+.grief-ctx-sep {
+    height: 1px;
+    background: linear-gradient(90deg, #cc0000, #ffffff, #ff00dd);
+    opacity: 0.55;
+    margin: 6px 0;
+}
+
+.griefer-wave-flash {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 99990;
+    background: radial-gradient(circle at center, rgba(255, 0, 221, 0.42) 0%, rgba(204, 0, 0, 0.55) 55%, rgba(0, 0, 0, 0) 100%);
+    animation: mischievousFlashFade 0.8s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
 body.afcs-ui-hidden .settings-hub-btn,
 body.afcs-ui-hidden .settings-hub-popover,
 body.afcs-ui-hidden .theme-dropdown-wrap,
@@ -889,15 +1031,14 @@ body.afcs-ui-hidden #afcs-equipped-title-pill,
 body.afcs-ui-hidden .codex-tracker-btn,
 body.afcs-ui-hidden .freedom-tracker,
 body.afcs-ui-hidden #shortcutHelpBtn,
-body.afcs-ui-hidden #backToTopBtn,
-body.afcs-ui-hidden .back-to-top,
+body.afcs-ui-hidden .back-to-top-btn,
+body.afcs-ui-hidden .pitch-bar,
 body.afcs-ui-hidden .site-navbar {
     opacity: 0 !important;
     pointer-events: none !important;
     visibility: hidden !important;
     transition: opacity 0.2s ease !important;
 }
-
 #afcs-hide-ui-btn {
     position: fixed;
     right: 16px;

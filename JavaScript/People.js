@@ -130,12 +130,12 @@ function startBadgeLegend() {
     const legend = document.createElement('div');
     legend.className = 'badge-legend-strip';
     legend.innerHTML = `
-                <span class="legend-item"> Class Adviser</span>
-                <span class="legend-item"> Class Officer</span>
-                <span class="legend-item"> Speaking Cast</span>
-                <span class="legend-item"> Production Crew</span>
-                <span class="legend-item"> Birthday Today</span>
-            `;
+        <span class="legend-item">🍎 Class Adviser</span>
+        <span class="legend-item">👑 Class Officer</span>
+        <span class="legend-item">🎭 Speaking Cast</span>
+        <span class="legend-item">🎥 Production Crew</span>
+        <span class="legend-item">🎂 Birthday Today</span>
+    `;
     DOM.container.insertAdjacentElement('beforebegin', legend);
 } // it's a legend gng
 function alphaBetaThing(){
@@ -178,10 +178,11 @@ function startImageFallback() {
         if (img.closest('.tcg-card-art')) return;
         const card = img.closest('.PeoplePics');
         const isDrawer = img.closest('#panelImageContainer');
-        if (img && img.dataset.src) {
+        if (card && img.dataset.src) {
+            if (card.querySelector('.monogram-avatar')) return;
             const rawName = card.querySelector('.overlay-text').textContent.trim();
-            const parts = rawName.split(' ');
-            const initials = ((parts.at(0)?.[0] || '') + (parts.at(-1)?.[0] || '')).toUpperCase();
+            const parts = rawName.replace(/,/g, '').split(/\s+/).filter(Boolean);
+            const initials = ((parts.at(0)?.[0] || '') + (parts.at(1)?.[0] || '')).toUpperCase();
             card.classList.add('is-missing-photo');
             img.style.display = 'none';
             const mono = document.createElement('div');

@@ -153,24 +153,6 @@ function startParticleCanvas() {
             requestAnimationFrame(renderLoop);
         }
     };
-    
-    window.addEventListener('pointerdown', (e) => {
-        const ringColor = STATE.partyModeOn ? '#00FF66' : '#38bdf8';
-        const colors = STATE.partyModeOn ? ['#00FF66', '#00BCFF'] : ['#38bdf8', '#facc15'];
-        
-        STATE.particles.push({
-            type: 'SHOCKWAVE',
-            x: e.clientX,
-            y: e.clientY,
-            radius: 4,
-            maxRadius: 28,
-            alpha: 1.0,
-            color: ringColor
-        });
-        
-        spawnBurst(e.clientX, e.clientY, colors, 16);
-        window.wakeParticleCanvas();
-    }, { passive: true });
 }
 function startCursorGlow() {
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
@@ -570,7 +552,6 @@ function startScrollEffects() {
             }
         }, { passive: true });
     }
-    document.querySelectorAll('.PersonWrapper:not([data-no-reveal="true"])')
 
     const progressBar = document.createElement('div');
     progressBar.className = 'scroll-progress-bar';

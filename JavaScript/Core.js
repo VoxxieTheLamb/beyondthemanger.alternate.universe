@@ -93,13 +93,11 @@ function updateSplitGridLayout() {
 }
 function startDynamicTabPanel() {
     if (!DOM.panel) return;
-    
     const snapPreview = document.createElement('div');
     snapPreview.className = 'dock-snap-preview';
     snapPreview.innerHTML = '<span class="dock-snap-label" id="dockSnapLabel">Hold 2s to Dock</span><div class="dock-snap-fill"></div>';
     document.body.appendChild(snapPreview);
-    const snapLabelEl = snapPreview.querySelector('#dockSnapLabel');
-    
+    const snapLabelEl = snapPreview.querySelector('#dockSnapLabel');  
     let isDragging = false;
     let offsetX = 0;
     let offsetY = 0;

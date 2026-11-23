@@ -7,7 +7,9 @@ function openCard(card) {
     }
     
     const name = card.querySelector('.overlay-text').textContent;
-    const imgSrc = card.querySelector('img').src;
+    const imgEl = card.querySelector('img');
+    const imgSrc = imgEl ? imgEl.src : '';
+    
     const bday = card.dataset.birthday || 'N/A';
     const baseRole = card.dataset.role || 'Student';
     const displayRole = card.dataset.displayRole || baseRole;

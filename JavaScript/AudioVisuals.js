@@ -359,7 +359,7 @@ function startAudioControls() {
     });
 }
 function playTeacherChord() {
-    if (STATE.soundMuted) return;
+    if (STATE.masterMuted || STATE.sfxMuted || STATE.masterVol === 0 || STATE.sfxVol === 0) return;
     const notes = [261.63, 329.63, 392.00, 523.25];
     notes.forEach((freq, idx) => {
         setTimeout(() => playBeep(freq, 0.8, 'triangle', 0.12), idx * 80);

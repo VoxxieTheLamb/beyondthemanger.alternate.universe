@@ -238,7 +238,7 @@ function startCharacterInteractions() {
         
         let isAlterEgo = false;
         let lastLineIdx = -1;
-        const originalEthanSrc = ethanImg ? ethanImg.getAttribute('src') : '';
+        const originalEthanSrc = ethanImg ? ethanImg.getAttribute('src') : '⭐';
         
         function getActivePersona() {
             if (STATE.partyModeOn) {
@@ -435,7 +435,7 @@ function startCharacterInteractions() {
             
             const bombEl = document.createElement('div');
             bombEl.className = 'quirk-bomb-icon';
-            bombEl.textContent = '';
+            bombEl.textContent = '💥';
             bombEl.style.left = `${cx}px`;
             bombEl.style.top = `${cy}px`;
             document.body.appendChild(bombEl);
@@ -721,7 +721,7 @@ function startCharacterInteractions() {
         
         hazelCard.addEventListener('click', (e) => {
             if (e.detail === 1 && !isCarl) {
-                spawnBadge(hazelCard, '', 'quirk-float-pop', 900);
+                spawnBadge(hazelCard, '🍜', 'quirk-float-pop', 900);
                 playBeep(659.25, 0.06, 'triangle', 0.035);
                 setTimeout(() => playBeep(880.00, 0.09, 'triangle', 0.035), 65);
             }
@@ -787,7 +787,7 @@ function startCharacterInteractions() {
     const jennCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('arles'));
     if (jennCard) {
         jennCard.addEventListener('click', () => {
-            spawnBadge(jennCard, '', 'quirk-star-glow', 1000);
+            spawnBadge(jennCard, '✨', 'quirk-star-glow', 1000);
             playBeep(523.25, 0.1, 'sine', 0.03);
             setTimeout(() => playBeep(659.25, 0.12, 'sine', 0.03), 80);
             setTimeout(() => playBeep(1046.50, 0.18, 'sine', 0.035), 160);
@@ -1250,6 +1250,137 @@ function startCharacterInteractions() {
             if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
             playBeep(isKobe ? 587.33 : 440.00, 0.08, 'triangle', 0.045);
             setTimeout(() => playBeep(isKobe ? 880.00 : 329.63, 0.14, 'triangle', 0.045), 75);
+        });
+    }
+
+    const jennahCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('mantal'));
+    if (jennahCard) {
+        const jennahImg = jennahCard.querySelector('img');
+        const crowbarSrc = 'otherPics/crowbar.jpg';
+        const crowbarLines = [
+            'I can open anything with this!'
+        ];
+
+        let isCrowbar = false;
+        let crowbarLineIdx = -1;
+        const originalJennahSrc = jennahImg ? jennahImg.getAttribute('src') : '';
+
+        function playCrowbarClang() {
+            playBeep(1180, 0.045, 'triangle', 0.05);
+            setTimeout(() => playBeep(1760, 0.07, 'sine', 0.045), 35);
+            setTimeout(() => playBeep(880, 0.11, 'triangle', 0.04), 75);
+        }
+
+        function bindPanelCrowbarClick() {
+            if (!isCrowbar || !DOM.panelImageContainer) return;
+            const drawerImg = DOM.panelImageContainer.querySelector('img');
+            if (!drawerImg || drawerImg.dataset.crowbarBound === 'true') return;
+
+            drawerImg.dataset.crowbarBound = 'true';
+            drawerImg.style.cursor = 'pointer';
+            drawerImg.title = 'Click the Crowbar!';
+
+            drawerImg.addEventListener('click', (e) => {
+                e.stopPropagation();
+                let nextIdx = Math.floor(Math.random() * crowbarLines.length);
+                if (crowbarLines.length > 1 && nextIdx === crowbarLineIdx) {
+                    nextIdx = (nextIdx + 1) % crowbarLines.length;
+                }
+                crowbarLineIdx = nextIdx;
+
+                let bubble = DOM.panelBody.querySelector('.panel-crowbar-quote');
+                if (!bubble) {
+                    bubble = document.createElement('div');
+                    bubble.className = 'panel-crowbar-quote';
+                    DOM.panelBody.prepend(bubble);
+                }
+
+                bubble.textContent = `🪛 ${crowbarLines[crowbarLineIdx]}`;
+                bubble.classList.remove('is-pop');
+                void bubble.offsetWidth;
+                bubble.classList.add('is-pop');
+
+                DOM.panelImageContainer.animate([
+                    { transform: 'scale(1) rotate(0deg)' },
+                    { transform: 'scale(1.09) rotate(-14deg)', offset: 0.35 },
+                    { transform: 'scale(1.04) rotate(8deg)', offset: 0.7 },
+                    { transform: 'scale(1) rotate(0deg)' }
+                ], { duration: 280, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
+
+                const rect = DOM.panelImageContainer.getBoundingClientRect();
+                spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, ['#f97316', '#facc15', '#ef4444', '#ffffff'], 20);
+                if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                playCrowbarClang();
+            });
+        }
+
+        STATE.onOpenCard.push((openedCard) => {
+            if (openedCard === jennahCard && isCrowbar) {
+                requestAnimationFrame(bindPanelCrowbarClick);
+            }
+            return false;
+        });
+
+        jennahCard.addEventListener('click', (e) => {
+            if (e.detail === 1 && !isCrowbar) {
+                spawnBadge(jennahCard, '🪛 *CLANG!*', 'quirk-star-glow', 950);
+                playCrowbarClang();
+            }
+
+            if (!e._isTripleTap && e.detail !== 3) return;
+            isCrowbar = !isCrowbar;
+
+            jennahCard.animate([
+                { transform: 'perspective(600px) rotateY(0deg) scale(1.05)' },
+                { transform: 'perspective(600px) rotateY(90deg) scale(1.16)', offset: 0.35 },
+                { transform: 'perspective(600px) rotateY(270deg) scale(1.16)', offset: 0.65 },
+                { transform: 'perspective(600px) rotateY(360deg) scale(1.05)' }
+            ], {
+                duration: 550,
+                easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
+            });
+
+            setTimeout(() => {
+                const monoEl = jennahCard.querySelector('.monogram-avatar');
+                if (isCrowbar) {
+                    if (monoEl) monoEl.style.display = 'none';
+                    if (jennahImg) {
+                        jennahImg.style.display = 'block';
+                        jennahImg.src = crowbarSrc;
+                        jennahImg.classList.add('is-crowbar-pfp');
+                    }
+                } else {
+                    if (jennahImg) {
+                        jennahImg.classList.remove('is-crowbar-pfp');
+                        if (monoEl) {
+                            jennahImg.style.display = 'none';
+                            monoEl.style.display = 'flex';
+                        } else {
+                            jennahImg.src = originalJennahSrc;
+                        }
+                    }
+                }
+
+                if (DOM.panel && DOM.panel.classList.contains('active') && jennahCard.classList.contains('active')) {
+                    if (isCrowbar) {
+                        DOM.panelImageContainer.innerHTML = `<img src="${crowbarSrc}" alt="Crowbar" class="is-crowbar-pfp">`;
+                        bindPanelCrowbarClick();
+                    } else {
+                        const existingQuote = DOM.panelBody.querySelector('.panel-crowbar-quote');
+                        if (existingQuote) existingQuote.remove();
+                        if (monoEl) {
+                            DOM.panelImageContainer.innerHTML = `<div class="panel-avatar monogram-avatar" style="width:100%;height:100%;font-size:64px;">${monoEl.textContent}</div>`;
+                        } else if (jennahImg) {
+                            DOM.panelImageContainer.innerHTML = `<img src="${originalJennahSrc}" alt="${jennahCard.querySelector('.overlay-text').textContent.trim()}">`;
+                        }
+                    }
+                }
+            }, 275);
+
+            const rect = jennahCard.getBoundingClientRect();
+            spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, ['#f97316', '#facc15', '#ef4444', '#ffffff'], 26);
+            if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+            playCrowbarClang();
         });
     }
     
@@ -1855,6 +1986,7 @@ function startCharacterInteractions() {
                     
                     if (!alreadyActive) {
                         cacebCard.classList.add('quirk-cyn-solver');
+                        lockCynHistory();
                         mainCardClickCount = 0;
                         
                         const lineObj = CONFIG.cynTripleClickLines[tripleIndex % CONFIG.cynTripleClickLines.length];
@@ -1916,7 +2048,7 @@ function startCharacterInteractions() {
                 
                 const heartPop = document.createElement('div');
                 heartPop.className = 'gxr-floating-heart';
-                heartPop.textContent = '';
+                heartPop.textContent = '💘';
                 heartPop.style.left = `${cx}px`;
                 heartPop.style.top = `${cy}px`;
                 document.body.appendChild(heartPop);
@@ -1937,7 +2069,7 @@ function startCharacterInteractions() {
             });
             
             function triggerGxRHearts() {
-                const heartSymbols = ['', '', '', '', ''];
+                const heartSymbols = ['💖', '💕', '💗', '💓', '✨'];
                 const pair = [giechelleCard, reccaCard];
                 
                 pair.forEach((card, cardIdx) => {
@@ -4508,18 +4640,19 @@ function startCharacterInteractions() {
     function startGuidingLightCursor() {
         function isGuidingLightActive() {
             const b = document.body.classList;
-            return !b.contains('theme-hamilton')
-            && !b.contains('theme-epic')
-            && !b.contains('theme-doomsday')
-            && !b.contains('theme-faithian')
-            && !b.contains('theme-red')
-            && !b.contains('theme-reactor')
-            && !b.contains('theme-yellow')
-            && !b.contains('theme-curious')
-            && !b.contains('search-fx-cornerstone')
-            && !b.contains('theme-murderdrones')
-            && !b.contains('party-mode');
-        }
+            return !b.contains('theme-griefer')
+            && !b.contains('theme-hamilton') &&
+            !b.classList.contains('theme-epic') &&
+            !b.classList.contains('theme-doomsday') &&
+            !b.classList.contains('theme-faithian') &&
+            !b.classList.contains('theme-red') &&
+            !b.classList.contains('theme-reactor') &&
+            !b.classList.contains('theme-yellow') &&
+            !b.classList.contains('theme-curious') &&
+            !b.classList.contains('search-fx-cornerstone') &&
+            !b.classList.contains('theme-murderdrones') &&
+            !b.classList.contains('party-mode');
+        };
         
         const guideCursor = document.createElement('div');
         guideCursor.className = 'guiding-light-cursor';
@@ -4579,7 +4712,8 @@ function startCharacterInteractions() {
         
         function isGuidingLightActive() {
             const b = document.body.classList;
-            return !b.contains('theme-hamilton')
+            return !b.contains('theme-griefer') &&
+            !b.contains('theme-hamilton')
             && !b.contains('theme-epic')
             && !b.contains('theme-doomsday')
             && !b.contains('theme-faithian')
@@ -4737,6 +4871,307 @@ function startCharacterInteractions() {
             });
         }, true);
     }
+    function startDoggieWaveCursor() {
+        if (document.getElementById('doggieWaveCursor')) return;
+        
+        const trailCanvas = document.createElement('canvas');
+        trailCanvas.id = 'doggieWaveTrailCanvas';
+        trailCanvas.className = 'doggie-wave-trail-canvas';
+        trailCanvas.width = window.innerWidth;
+        trailCanvas.height = window.innerHeight;
+        document.body.appendChild(trailCanvas);
+        const tCtx = trailCanvas.getContext('2d');
+        
+        window.addEventListener('resize', () => {
+            trailCanvas.width = window.innerWidth;
+            trailCanvas.height = window.innerHeight;
+        }, { passive: true });
+        
+        const cursorEl = document.createElement('div');
+        cursorEl.id = 'doggieWaveCursor';
+        cursorEl.className = 'doggie-wave-cursor';
+        cursorEl.innerHTML = `<svg viewBox="0 0 56 44" width="44" height="36" fill="none" xmlns="http://w3.org">
+            <defs>
+                <linearGradient id="doggieWaveGrad" x1="4" y1="22" x2="50" y2="22" gradientUnits="userSpaceOnUse">
+                    <stop offset="0%" stop-color="#ff00dd"/>
+                    <stop offset="52%" stop-color="#ff4db8"/>
+                    <stop offset="78%" stop-color="#ffae42"/>
+                    <stop offset="100%" stop-color="#fff04d"/>
+                </linearGradient>
+            </defs>
+            <path d="M51 22 C51 11 40 7 29 8 L17 5 L22 12 L9 11 L18 17 L4 22 L18 27 L9 33 L22 32 L17 39 L29 36 C40 37 51 33 51 22 Z"
+                  fill="url(#doggieWaveGrad)" stroke="#09090b" stroke-width="3.2" stroke-linejoin="round"/>
+        </svg>`;
+        document.body.appendChild(cursorEl);
+        if (typeof startGriefContextMenu === 'function') startGriefContextMenu();
+        
+        let lastX = null;
+        let lastY = null;
+        let currentAngle = 0;
+        const trailPoints = [];
+        let trailLoopActive = false;
+        
+        const isGrieferActive = () => document.body.classList.contains('theme-griefer');
+        
+        function renderTrail() {
+            tCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+            const now = performance.now();
+            
+            while (trailPoints.length && now - trailPoints[0].t > 380) {
+                trailPoints.shift();
+            }
+            
+            if (trailPoints.length > 1 && isGrieferActive() && !STATE.ldmActive) {
+                for (let i = 1; i < trailPoints.length; i++) {
+                    const p0 = trailPoints[i - 1];
+                    const p1 = trailPoints[i];
+                    const life = 1 - (now - p1.t) / 380;
+                    if (life <= 0) continue;
+                    
+                    tCtx.save();
+                    tCtx.lineCap = 'round';
+                    tCtx.lineJoin = 'round';
+                    
+                    tCtx.strokeStyle = `rgba(255, 0, 221, ${life * 0.45})`;
+                    tCtx.lineWidth = Math.max(2, life * 16);
+                    tCtx.beginPath();
+                    tCtx.moveTo(p0.x, p0.y);
+                    tCtx.lineTo(p1.x, p1.y);
+                    tCtx.stroke();
+                    
+                    tCtx.strokeStyle = `rgba(255, 240, 77, ${life * 0.92})`;
+                    tCtx.lineWidth = Math.max(1.5, life * 7);
+                    tCtx.beginPath();
+                    tCtx.moveTo(p0.x, p0.y);
+                    tCtx.lineTo(p1.x, p1.y);
+                    tCtx.stroke();
+                    tCtx.restore();
+                }
+            }
+            
+            if (trailPoints.length > 0) {
+                requestAnimationFrame(renderTrail);
+            } else {
+                trailLoopActive = false;
+            }
+        }
+        
+        document.addEventListener('pointermove', (e) => {
+            if (!isGrieferActive()) {
+                cursorEl.classList.remove('is-visible');
+                lastX = null;
+                lastY = null;
+                return;
+            }
+            
+            if (lastX !== null && lastY !== null) {
+                const dx = e.clientX - lastX;
+                const dy = e.clientY - lastY;
+                if (Math.hypot(dx, dy) > 1.5) {
+                    currentAngle = Math.atan2(dy, dx) * (180 / Math.PI);
+                }
+            }
+            lastX = e.clientX;
+            lastY = e.clientY;
+            
+            cursorEl.classList.add('is-visible');
+            cursorEl.style.transform = `translate3d(${e.clientX - 40}px, ${e.clientY - 18}px, 0) rotate(${currentAngle.toFixed(1)}deg)`;
+            
+            trailPoints.push({ x: e.clientX, y: e.clientY, t: performance.now() });
+            if (trailPoints.length > 45) trailPoints.shift();
+            if (!trailLoopActive) {
+                trailLoopActive = true;
+                requestAnimationFrame(renderTrail);
+            }
+        }, { passive: true });
+        
+        document.addEventListener('pointerdown', (e) => {
+            if (!isGrieferActive()) return;
+            cursorEl.classList.add('is-dashing');
+            setTimeout(() => cursorEl.classList.remove('is-dashing'), 140);
+            if (e.button === 0 && !e.target.closest('button, input, .PeoplePics, .griefer-context-menu')) {
+                spawnBurst(e.clientX, e.clientY, ['#ff00dd', '#ffae42', '#fff04d', '#ffffff'], 16);
+                if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                playBeep(146.83, 0.08, 'sawtooth', 0.032);
+            }
+        }, { passive: true });
+        
+        document.addEventListener('pointerleave', () => {
+            cursorEl.classList.remove('is-visible');
+            lastX = null;
+            lastY = null;
+        });
+        
+        new MutationObserver(() => {
+            if (!isGrieferActive()) {
+                cursorEl.classList.remove('is-visible');
+                trailPoints.length = 0;
+                tCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
+            }
+        }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+    
+    let griefMenuInitialized = false;
+    function startGriefContextMenu() {
+        if (griefMenuInitialized) return;
+        griefMenuInitialized = true;
+        
+        let griefMenu = null;
+        function closeGriefMenu() {
+            if (griefMenu) {
+                griefMenu.remove();
+                griefMenu = null;
+            }
+        }
+        
+        window.addEventListener('pointerdown', (e) => {
+            if (griefMenu && !e.target.closest('.griefer-context-menu')) closeGriefMenu();
+        }, { passive: true });
+        
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeGriefMenu();
+        });
+        window.addEventListener('scroll', closeGriefMenu, { passive: true });
+        
+        document.addEventListener('contextmenu', (e) => {
+            if (!document.body.classList.contains('theme-griefer')) return;
+            e.preventDefault();
+            e.stopPropagation();
+            closeGriefMenu();
+            
+            const isBordersOn = document.body.classList.contains('grief-highlights-active');
+            
+            const menu = document.createElement('div');
+            menu.className = 'griefer-context-menu';
+            menu.innerHTML = `
+            <div class="grief-ctx-header">
+                <span>🔥 GRIEF.EXE // DOGGIE WAVE</span>
+                <span class="grief-ctx-badge">80%</span>
+            </div>
+            <div class="grief-ctx-item" data-act="roster">
+                <span>🎭 Jump to Cast & Crew</span>
+                <span class="grief-ctx-key">Roster</span>
+            </div>
+            <div class="grief-ctx-item" data-act="codex">
+                <span>📖 Open Secret Codex</span>
+                <span class="grief-ctx-key">Vault</span>
+            </div>
+            <div class="grief-ctx-item" data-act="print">
+                <span>🎟️ Export Playbill</span>
+                <span class="grief-ctx-key">Ctrl+P</span>
+            </div>
+            <div class="grief-ctx-sep"></div>
+            <div class="grief-ctx-item" data-act="pulse">
+                <span>⚡ Trigger Wave Pulse</span>
+                <span class="grief-ctx-key">4×</span>
+            </div>
+            <div class="grief-ctx-item" data-act="verify">
+                <span>🏆 Verify Grief (100%)</span>
+                <span class="grief-ctx-key">GG</span>
+            </div>
+            <div class="grief-ctx-item" data-act="highlights">
+                <span>⬜ ${isBordersOn ? 'Disable' : 'Enable'} Grief Borders</span>
+                <span class="grief-ctx-key">UI</span>
+            </div>
+            <div class="grief-ctx-item" data-act="deadlocked">
+                <span>🟦 Launch Deadlocked</span>
+                <span class="grief-ctx-key">GD</span>
+            </div>
+            <div class="grief-ctx-sep"></div>
+            <div class="grief-ctx-item" data-act="guiding">
+                <span>🌙 Return to Guiding Light</span>
+                <span class="grief-ctx-key">Reset</span>
+            </div>
+        `;
+            
+            document.body.appendChild(menu);
+            griefMenu = menu;
+            
+            const rect = menu.getBoundingClientRect();
+            const safeX = Math.max(10, Math.min(window.innerWidth - rect.width - 10, e.clientX));
+            const safeY = Math.max(10, Math.min(window.innerHeight - rect.height - 10, e.clientY));
+            menu.style.left = `${safeX}px`;
+            menu.style.top = `${safeY}px`;
+            
+            if (typeof playBeep === 'function') playBeep(110, 0.09, 'sawtooth', 0.042);
+            
+            menu.querySelectorAll('.grief-ctx-item').forEach(item => {
+                item.addEventListener('click', (ev) => {
+                    ev.stopPropagation();
+                    const act = item.dataset.act;
+                    closeGriefMenu();
+                    
+                    if (act === 'roster') {
+                        document.querySelector('.People')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        if (typeof playBeep === 'function') playBeep(440, 0.1, 'triangle', 0.04);
+                    } else if (act === 'codex') {
+                        const codexTrigger = Array.from(document.querySelectorAll('button, [role="button"], div, span')).find(el =>
+                            el.textContent.trim().toLowerCase().includes('secrets:')
+                        );
+                        if (codexTrigger) codexTrigger.click();
+                    } else if (act === 'print') {
+                        setTimeout(() => window.print(), 100);
+                    } else if (act === 'pulse') {
+                        const flash = document.createElement('div');
+                        flash.className = 'griefer-wave-flash';
+                        document.body.appendChild(flash);
+                        setTimeout(() => flash.remove(), 850);
+                        if (typeof STATE !== 'undefined' && Array.isArray(STATE.particles)) {
+                            STATE.particles.push({
+                                type: 'SHOCKWAVE',
+                                x: safeX + 80,
+                                y: safeY + 60,
+                                radius: 10,
+                                maxRadius: Math.max(window.innerWidth, window.innerHeight) * 0.85,
+                                alpha: 1.0,
+                                color: '#ff00dd'
+                            });
+                        }
+                        if (typeof spawnBurst === 'function') {
+                            spawnBurst(safeX + 80, safeY + 60, ['#ff00dd', '#ffae42', '#fff04d', '#cc0000'], 48);
+                        }
+                        if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                        if (typeof playBeep === 'function') {
+                            playBeep(110, 0.25, 'sawtooth', 0.14);
+                            setTimeout(() => playBeep(82.41, 0.45, 'sawtooth', 0.16), 90);
+                        }
+                    } else if (act === 'verify') {
+                        if (typeof triggerScreenGlitch === 'function') triggerScreenGlitch(160);
+                        const banner = document.createElement('div');
+                        banner.className = 'theme-announce-banner';
+                        banner.style.borderColor = '#fff04d';
+                        banner.style.background = 'linear-gradient(135deg, rgba(20, 0, 0, 0.97), rgba(75, 0, 45, 0.95))';
+                        banner.style.color = '#fff04d';
+                        banner.style.boxShadow = '0 0 32px rgba(255, 0, 221, 0.85), 0 0 48px rgba(255, 240, 77, 0.55)';
+                        banner.textContent = '🔥 NEW BEST! 80% ➔ 100% // GRIEF VERIFIED BY DOGGIE!';
+                        document.body.appendChild(banner);
+                        setTimeout(() => banner.remove(), 3000);
+                        
+                        if (typeof spawnBurst === 'function') {
+                            spawnBurst(window.innerWidth / 2, window.innerHeight * 0.45, ['#ff00dd', '#fff04d', '#ffffff', '#cc0000'], 60);
+                        }
+                        if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                        if (typeof playBeep === 'function') {
+                            [523.25, 659.25, 783.99, 1046.50].forEach((f, i) => {
+                                setTimeout(() => playBeep(f, 0.18, 'triangle', 0.055), i * 80);
+                            });
+                        }
+                    } else if (act === 'highlights') {
+                        document.body.classList.toggle('grief-highlights-active');
+                    } else if (act === 'deadlocked') {
+                        const input = document.getElementById('searchInput');
+                        if (input) {
+                            input.value = 'deadlocked';
+                            input.dispatchEvent(new Event('input', { bubbles: true }));
+                        }
+                    } else if (act === 'guiding') {
+                        if (typeof window.applyTheme === 'function') window.applyTheme('blue');
+                    }
+                });
+            });
+        }, true);
+    }
+    
     let cynHistoryTrapped = false;
     
     function lockCynHistory() {
@@ -4746,11 +5181,10 @@ function startCharacterInteractions() {
     }
     
     window.addEventListener('popstate', () => {
-        if (!cacebCard.classList.contains('quirk-cyn-solver')) {
+        if (!cacebCard || !cacebCard.classList.contains('quirk-cyn-solver')) {
             cynHistoryTrapped = false;
             return;
         }
-        
         history.pushState({ cynSolverTrap: true }, '', window.location.href);
         
         const trapLine = 'Giggle. Did you really think the Back button would save you?';
