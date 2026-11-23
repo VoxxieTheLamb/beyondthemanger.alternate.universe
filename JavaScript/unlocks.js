@@ -4639,21 +4639,21 @@ function startCharacterInteractions() {
     }
     function startGuidingLightCursor() {
         function isGuidingLightActive() {
-            const b = document.body.classList;
-            return !b.contains('theme-griefer')
-            && !b.contains('theme-hamilton')
-            && !b.contains('theme-epic')
-            && !b.contains('theme-doomsday')
-            && !b.contains('theme-faithian')
-            && !b.contains('theme-red')
-            && !b.contains('theme-reactor')
-            && !b.contains('theme-yellow')
-            && !b.contains('theme-curious')
-            && !b.contains('search-fx-cornerstone')
-            && !b.contains('theme-murderdrones')
-            && !b.contains('party-mode');
-        }
-        
+    const b = document.body.classList;
+    return !b.contains('theme-griefer')
+        && !b.contains('theme-hamilton')
+        && !b.contains('theme-epic')
+        && !b.contains('theme-doomsday')
+        && !b.contains('theme-faithian')
+        && !b.contains('theme-red')
+        && !b.contains('theme-reactor')
+        && !b.contains('theme-yellow')
+        && !b.contains('theme-curious')
+        && !b.contains('search-fx-cornerstone')
+        && !b.contains('theme-murderdrones')
+        && !b.contains('party-mode');
+}
+
         
         const guideCursor = document.createElement('div');
         guideCursor.className = 'guiding-light-cursor';
@@ -5346,14 +5346,15 @@ function startCharacterInteractions() {
             { match: 'del rosario',  altClass: 'is-carl-pfp',     altSrc: 'otherPics/CarlGrimes.jfif' },
             { match: 'suzon',        altClass: 'is-cortis-pfp',   altSrc: 'otherPics/CortisGroup.jpg' },
             { match: 'dela cruz',    altClass: 'is-kobe-pfp',     altSrc: 'otherPics/Kobe.jpg' },
-            { match: 'mantal',       altClass: 'is-crowbar-pfp',  altSrc: 'otherPics/Crowbar.jpg' },
+            { match: 'mantal',       altClass: 'is-crowbar-pfp',  altSrc: 'otherPics/crowbar.jpg' },
             { match: 'abrena',       altCardClass: 'quirk-cyn-solver', altSrc: 'otherPics/Cyn.jpg' },
-            { match: 'lebron',       altCardClass: 'is-kawhi-mode',  altSrc: 'otherPics/Kawhi.jpg',   origName: 'LeBron James',      altName: 'Kawhi Leonard' },
+            { match: 'lebron',       altCardClass: 'is-kawhi-mode',  altSrc: 'otherPics/kawhi.jpg',   origName: 'LeBron James',      altName: 'Kawhi Leonard' },
+            { match: 'kawhi',       altCardClass: 'is-lebron-mode',  altSrc: 'otherPics/lebron.jpg',   origName: 'Leonard, Kawhi',      altName: 'James, LeBron' },
             { match: 'euler',        altCardClass: 'is-newton-mode', altSrc: 'otherPics/Newton.jpg',  origName: 'Leonhard Euler',    altName: 'Sir Isaac Newton' },
             { match: 'curry',        altCardClass: 'is-jordan-mode', altSrc: 'otherPics/Jordan.jpg',  origName: 'Stephen Curry',     altName: 'Michael Jordan' },
             { match: 'einstein',     altCardClass: 'is-galileo-mode', altSrc: 'otherPics/Galileo.jpg', origName: 'Albert Einstein',   altName: 'Galileo Galilei' },
-            { match: 'doggie',       altCardClass: 'is-zoink-mode',  altSrc: 'otherPics/Zoink.jpg',   origName: 'Doggie',            altName: 'Zoink' },
-            { match: 'tesla',        altCardClass: 'is-gauss-mode',  altSrc: 'otherPics/Gauss.jpg',   origName: 'Nikola Tesla',      altName: 'Carl Friedrich Gauss' }
+            { match: 'doggie',       altCardClass: 'is-zoink-mode',  altSrc: 'otherPics/zoink.jpg',   origName: 'Doggie',            altName: 'Zoink' },
+            { match: 'tesla',        altCardClass: 'is-gauss-mode',  altSrc: 'otherPics/gauss.jpg',   origName: 'Nikola Tesla',      altName: 'Carl Friedrich Gauss' }
         ];
         
         track.addEventListener('click', (e) => {
