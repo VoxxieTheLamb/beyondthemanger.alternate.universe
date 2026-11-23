@@ -5349,7 +5349,7 @@ function startCharacterInteractions() {
             { match: 'mantal',       altClass: 'is-crowbar-pfp',  altSrc: 'otherPics/crowbar.jpg' },
             { match: 'abrena',       altCardClass: 'quirk-cyn-solver', altSrc: 'otherPics/Cyn.jpg' },
             { match: 'lebron',       altCardClass: 'is-kawhi-mode',  altSrc: 'otherPics/kawhi.jpg',   origName: 'LeBron James',      altName: 'Kawhi Leonard' },
-            { match: 'kawhi',       altCardClass: 'is-lebron-mode',  altSrc: 'otherPics/lebron.jpg',   origName: 'Leonard, Kawhi',      altName: 'James, LeBron' },
+            { match: 'kawhi',       altCardClass: 'is-lebron-mode',  altSrc: 'otherPics/Lebron.jpg',   origName: 'Leonard, Kawhi',      altName: 'James, LeBron' },
             { match: 'euler',        altCardClass: 'is-newton-mode', altSrc: 'otherPics/Newton.jpg',  origName: 'Leonhard Euler',    altName: 'Sir Isaac Newton' },
             { match: 'curry',        altCardClass: 'is-jordan-mode', altSrc: 'otherPics/Jordan.jpg',  origName: 'Stephen Curry',     altName: 'Michael Jordan' },
             { match: 'einstein',     altCardClass: 'is-galileo-mode', altSrc: 'otherPics/Galileo.jpg', origName: 'Albert Einstein',   altName: 'Galileo Galilei' },
