@@ -23,6 +23,16 @@ function spawnBurst(x, y, colors, count = 20) {
     }
 } // mouse click
 function updateSplitGridLayout() {
+    if (document.body.classList.contains('is-compact-view')) {
+    if (DOM.peopleGrid) {
+        DOM.peopleGrid.style.removeProperty('grid-template-columns');
+        DOM.peopleGrid.style.removeProperty('width');
+        DOM.peopleGrid.style.removeProperty('margin-left');
+        DOM.peopleGrid.style.removeProperty('margin-right');
+    }
+    return;
+}
+
     const dock = document.body.dataset.panelDock;
     const wrappers = Array.from(document.querySelectorAll('.People > .PersonWrapper'));
     if (!wrappers.length) return;

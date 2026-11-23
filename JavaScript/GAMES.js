@@ -274,17 +274,35 @@ function startTradingCardData() {
         { id: 'c19', num: '019', name: 'Officer Ryo (Ezekiel)', rarity: 'Common', role: 'Police Officer 1 • Shadow', img: 'mainPics/SanAndres.jpg', quote: 'Lockdown protocol initiated.' },
         { id: 'c20', num: '020', name: 'Officer Theo (Roberto)', rarity: 'Common', role: 'Police Officer 2 • Choreo', img: 'mainPics/Gapasin.jpg', quote: 'Keep the crowd moving safely!' },
         { id: 'c21', num: '021', name: 'Absolute Solver: Cyn', rarity: 'Mythic', role: 'Secret Anomaly • [NULL]', img: 'otherPics/Cyn.jpg', quote: 'Giggle. Did you think you could collect me?' },
-        { id: 'c22', num: '022', name: 'Leonhard Euler', rarity: 'Mythic', role: 'VIP Math Legend • e^(iπ)+1=0', img: 'otherPics/euler.jpg', quote: 'Mathematics is the queen of the sciences.' }
+        { id: 'c22', num: '022', name: 'Leonhard Euler', rarity: 'Mythic', role: 'VIP Math Legend • e^(iπ)+1=0', img: 'otherPics/euler.jpg', quote: 'Mathematics is the queen of the sciences.' },
+        { id: 'c23', num: '023', name: 'Johanna Mitchel De Guzman', rarity: 'Rare', role: 'Grade 7 – Psalms • Cast & Crew', img: 'mainPics/DeGuzman.jpg', quote: 'Standing strong together in faith!' },
+        { id: 'c24', num: '024', name: 'Carlaine Missha Kaera Mallari', rarity: 'Rare', role: 'Grade 7 – Psalms • Choreo & Cast', img: 'mainPics/Mallari.jpg', quote: 'Every step synchronized for December 17!' },
+        { id: 'c25', num: '025', name: 'Shekinah Chloe San Agustin', rarity: 'Rare', role: 'Grade 7 – Psalms • Choir & Cast', img: 'mainPics/SanAgustin.jpg', quote: 'Lifting our voices above the skyline!' },
+        { id: 'c26', num: '026', name: 'Precious Jade Tridanio', rarity: 'Rare', role: 'Grade 7 – Psalms • Stage Crew', img: 'mainPics/Tridanio.jpg', quote: 'Behind every scene is a prayer and a plan.' },
+        { id: 'c27', num: '027', name: 'Psalmist Shadow & Tech Unit', rarity: 'Common', role: 'Backstage • Sound & Rigging', img: 'mainPics/AFCS.jpg', quote: 'Cues primed, mics hot, lights ready!' },
+        { id: 'c28', num: '028', name: 'Psalmist Ensemble Chorus', rarity: 'Common', role: 'Grade 7 – Psalms • Full Cast', img: 'mainPics/AFCS.jpg', quote: 'Twenty-six voices, one Cornerstone!' },
+        { id: 'c29', num: '029', name: 'LeBron James', rarity: 'Mythic', role: 'VIP Guest • 4× NBA Champion', img: 'otherPics/Lebron.jpg', quote: 'Strive for greatness, Grade 7 – Psalms!' },
+        { id: 'c30', num: '030', name: 'Kawhi Leonard', rarity: 'Epic', role: 'VIP Alter-Ego • The Klaw', img: 'otherPics/Kawhi.jpg', quote: 'Board man gets paid. Lockdown defense!' },
+        { id: 'c31', num: '031', name: 'Stephen Curry', rarity: 'Mythic', role: 'VIP Guest • All-Time 3PT King', img: 'otherPics/Curry.jpg', quote: 'From the Burj Khalifa logo... BANG!' },
+        { id: 'c32', num: '032', name: 'Michael Jordan', rarity: 'Mythic', role: 'VIP Alter-Ego • His Airness (6×)', img: 'otherPics/Jordan.jpg', quote: 'Limits, like fears, are often just an illusion.' },
+        { id: 'c33', num: '033', name: 'Albert Einstein', rarity: 'Mythic', role: 'VIP Guest • E = mc²', img: 'otherPics/Einstein.jpg', quote: 'Imagination is more important than knowledge.' },
+        { id: 'c34', num: '034', name: 'Alexander Hamilton', rarity: 'Epic', role: 'VIP Guest • Founding Father', img: 'otherPics/Hamilton.jpg', quote: 'I am not throwing away my shot!' },
+        { id: 'c35', num: '035', name: 'Serial Designation N', rarity: 'Epic', role: 'VIP Guest • Disassembly Drone', img: 'otherPics/N.jpg', quote: 'I love doing anything—especially biscuits!' },
+        { id: 'c36', num: '036', name: 'Doggie & Zoink', rarity: 'Mythic', role: 'VIP Legends • Grief & Tidal Wave', img: 'otherPics/Doggie.jpg', quote: '4× wave speed locked in—GG!' },
+        { id: 'c37', num: '037', name: 'Nikola Tesla & Gauss', rarity: 'Mythic', role: 'VIP Legends • 3-6-9 & Symmetry', img: 'otherPics/Tesla.jpg', quote: 'Energy, frequency, and vibration!' },
+        { id: 'c38', num: '038', name: 'Sir Isaac Newton', rarity: 'Epic', role: 'VIP Alter-Ego • Gravity Apple', img: 'otherPics/Newton.jpg', quote: 'Every action has an equal and opposite reaction.' },
+        { id: 'c39', num: '039', name: 'Jennah’s Steel Crowbar', rarity: 'Epic', role: 'Secret Relic • HEV Mark IV', img: 'otherPics/Crowbar.jpg', quote: '*CLANG!* Zero words, 100% problem solving.' },
+        { id: 'c40', num: '040', name: 'The Cornerstone Key', rarity: 'Mythic', role: 'Psalms 118:22 • Floor 163 Relic', img: 'mainPics/AFCS.jpg', quote: 'The stone the builders rejected has become the cornerstone.' }
     ];
     
     const RARITY_CONFIG = {
-        Common: { weight: 50, color: '#94a3b8', dupCoins: 10 },
-        Rare:   { weight: 30, color: '#38bdf8', dupCoins: 20 },
-        Epic:   { weight: 15, color: '#c084fc', dupCoins: 35 },
-        Mythic: { weight: 5,  color: '#facc15', dupCoins: 60 }
+        Common: { weight: 60, color: '#94a3b8', dupCoins: 25 },
+        Rare:   { weight: 28, color: '#38bdf8', dupCoins: 50 },
+        Epic:   { weight: 10, color: '#c084fc', dupCoins: 100 },
+        Mythic: { weight: 2,  color: '#facc15', dupCoins: 250 }
     };
     
-    const PACK_COST = 50;
+    const PACK_COST = 400;
     
     if (localStorage.getItem('afcs_coins') === null) {
         localStorage.setItem('afcs_coins', '150');
@@ -320,6 +338,33 @@ function startTradingCardData() {
         return CARD_CATALOG[0];
     }
     
+    function addCards(...newEntries) {
+        newEntries.flat().forEach(entry => {
+            if (!entry || !entry.name) return;
+            const cleanName = String(entry.name).trim();
+            if (CARD_CATALOG.some(c => c.name.toLowerCase() === cleanName.toLowerCase())) return;
+            
+            const nextIdx = CARD_CATALOG.length + 1;
+            const rawRarity = String(entry.rarity || 'Rare').trim().toLowerCase();
+            const rarity = rawRarity === 'mythic' ? 'Mythic'
+            : rawRarity === 'epic' ? 'Epic'
+            : rawRarity === 'common' ? 'Common'
+            : 'Rare';
+            
+            CARD_CATALOG.push({
+                id: entry.id || `c${String(nextIdx).padStart(3, '0')}`,
+                num: entry.num || String(nextIdx).padStart(3, '0'),
+                name: cleanName,
+                rarity,
+                role: entry.role || 'Grade 7 – Psalms • Special Edition',
+                img: entry.img || 'mainPics/AFCS.jpg',
+                quote: entry.quote || 'We rise because Jesus Christ is our Cornerstone.'
+            });
+        });
+    }
+    
+    window.addTradingCards = addCards;
+    
     window.AFCS_TCG = {
         catalog: CARD_CATALOG,
         rarities: RARITY_CONFIG,
@@ -328,7 +373,8 @@ function startTradingCardData() {
         setCoins,
         getOwnedMap,
         saveOwnedMap,
-        pickRandomCard
+        pickRandomCard,
+        addCards
     };
 }
 function startTradingCardBinderUI() {
@@ -355,7 +401,11 @@ function startTradingCardBinderUI() {
             c17: 'opera',
             c18: 'sevilla',
             c19: 'san andres',
-            c20: 'gapasin'
+            c20: 'gapasin',
+            c23: 'de guzman',
+            c24: 'mallari',
+            c25: 'san agustin',
+            c26: 'tridanio'
         };
         
         const clean = card.name.replace(/\(.*?\)/g, '').trim().split(/\s+/);
@@ -5758,7 +5808,7 @@ function startArcadeHubData() {
             id: 'cards',
             title: 'Holographic Card Binder',
             icon: '🃏',
-            reward: '50 🪙 / Pack',
+            reward: '400 🪙 / Pack',
             hint: 'Search what you collect in a TCG...',
             triggers: Array.of('cards', 'binder', 'tcg'),
             launch: () => {
@@ -7209,9 +7259,10 @@ if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
     });
 }
 }
-function startAfcsShopData() { 
+function startAfcsShopData() {
     window.SHOP_STORAGE_OWNED = 'afcs_shop_owned';
     window.SHOP_STORAGE_EQUIPPED = 'afcs_shop_equipped';
+    window.SHOP_STORAGE_CUSTOM_EQ = 'afcs_shop_custom_eq';
     
     window.SHOP_CATALOG = Array.of(
         {
@@ -7230,7 +7281,16 @@ function startAfcsShopData() {
             name: 'Song - Lofi Browsing',
             price: 80,
             desc: 'A chill ambient track, for when you don\'t want anything harsh in your music, but prefer some ambience to your browsing experience.',
-            src: "music/lofi.mp3"
+            src: 'music/lofi.mp3'
+        },
+        {
+            id: 'music_memories',
+            category: 'music',
+            icon: '🎵',
+            name: 'Song - Memories by Maroon 5',
+            price: 120,
+            desc: 'A nostalgic track that brings back fond memories.',
+            src: 'music/carol.mp3'
         },
         {
             id: 'music_dubai',
@@ -7239,16 +7299,7 @@ function startAfcsShopData() {
             name: 'Song - Dubai Midnight',
             price: 140,
             desc: 'Sleek futuristic arpeggio inspired by Dubai at night.',
-            src: "music/dubaiLofi.mp3"
-        },
-        {
-            id: 'music_undertale',
-            category: 'music',
-            icon: '🦴',
-            name: 'Song - Save the World (Undertale)',
-            price: 180,
-            desc: 'The theme that plays when the God of Hyperdeath is at their final form. A song of hope and determination.',
-            src: "music/StW.mp3"
+            src: 'music/dubaiLofi.mp3'
         },
         {
             id: 'music_grief',
@@ -7257,7 +7308,16 @@ function startAfcsShopData() {
             name: 'Song - Grief\'s Return',
             price: 140,
             desc: 'Listen to the song that once plagued a streamer for over 2 years. A song that caused grief, but now returns to bring peace.',
-            src: "music/grief.mp3"
+            src: 'music/grief.mp3'
+        },
+        {
+            id: 'music_undertale',
+            category: 'music',
+            icon: '🦴',
+            name: 'Song - Save the World (Undertale)',
+            price: 180,
+            desc: 'The theme that plays when the God of Hyperdeath is at their final form. A song of hope and determination.',
+            src: 'music/StW.mp3'
         },
         {
             id: 'music_CMMM',
@@ -7266,7 +7326,7 @@ function startAfcsShopData() {
             name: 'Song - Cutie Mew Mew Magic',
             price: 190,
             desc: 'Mew! This the song that Mad Mew Mew listens to whenever she\'s happy or joyful. It\'s also Japanese, Mew!',
-            src: "music/CMMM.mp3"
+            src: 'music/CMMM.mp3'
         },
         {
             id: 'music_Nullscapes',
@@ -7275,7 +7335,7 @@ function startAfcsShopData() {
             name: 'Song - Flow by Creo',
             price: 190,
             desc: 'Listen to the song that accompanies the unholy Robot timings of the level Nullscapes. A song that brings chill vibes, even if it\'s accompanied by unholy timings.',
-            src: "music/Nullscapes.mp3"
+            src: 'music/Nullscapes.mp3'
         },
         {
             id: 'music_solver',
@@ -7284,10 +7344,35 @@ function startAfcsShopData() {
             name: 'Song - Absolute Solver',
             price: 200,
             desc: 'The Music that the Absolute Solver uses to bring power and [NULL] to the world. A song that brings power and peace to [NULL].',
-            src: "music/solver.mp3"
+            src: 'music/solver.mp3'
         },
-        
-        
+        {
+            id: 'music_hamilton',
+            category: 'music',
+            icon: '🪶',
+            name: 'Song - Non-Stop (Broadway)',
+            price: 210,
+            desc: 'Relentless orchestral hustle for writing like you\'re running out of time.',
+            src: 'music/hamilton.mp3'
+        },
+        {
+            id: 'music_epic',
+            category: 'music',
+            icon: '🔱',
+            name: 'Song - Storm of Ithaca (EPIC)',
+            price: 210,
+            desc: 'Thunderous ocean-voyage anthem worthy of 600 men.',
+            src: 'music/epic.mp3'
+        },
+        {
+            id: 'music_deadlocked',
+            category: 'music',
+            icon: '⚡',
+            name: 'Song - Deadlocked (F-777)',
+            price: 220,
+            desc: 'High-voltage 3x wave bassline straight from RobTop\'s iconic demon.',
+            src: 'music/deadlocked.mp3'
+        },
         {
             id: 'theme_default',
             category: 'theme',
@@ -7316,6 +7401,42 @@ function startAfcsShopData() {
             cssVars: 'body { background-color: #030b14 !important; color: #cffafe !important; } button, input { border-color: #22d3ee !important; }'
         },
         {
+            id: 'theme_emerald',
+            category: 'theme',
+            icon: '🌿',
+            name: 'Theme - Emerald Skyline',
+            price: 160,
+            desc: 'Deep forest-emerald atmosphere with crisp mint accents.',
+            cssVars: 'body { background-color: #03120c !important; color: #d1fae5 !important; } button, input { border-color: #10b981 !important; }'
+        },
+        {
+            id: 'theme_frost',
+            category: 'theme',
+            icon: '❄️',
+            name: 'Theme - Bethlehem Winter Frost',
+            price: 180,
+            desc: 'Crisp starlight silver and glacial ice-blue glow.',
+            cssVars: 'body { background-color: #06101d !important; color: #e0f2fe !important; } button, input { border-color: #7dd3fc !important; }'
+        },
+        {
+            id: 'theme_sunset',
+            category: 'theme',
+            icon: '🌇',
+            name: 'Theme - Dubai Sunset Mirage',
+            price: 190,
+            desc: 'Warm desert amber and coral dusk over the Burj Khalifa.',
+            cssVars: 'body { background-color: #140805 !important; color: #ffedd5 !important; } button, input { border-color: #f97316 !important; }'
+        },
+        {
+            id: 'theme_rose',
+            category: 'theme',
+            icon: '🎭',
+            name: 'Theme - Velvet Curtain Encore',
+            price: 210,
+            desc: 'Grand theater-stage burgundy and champagne rose borders.',
+            cssVars: 'body { background-color: #14050c !important; color: #ffe4e6 !important; } button, input { border-color: #fb7185 !important; }'
+        },
+        {
             id: 'theme_crimson',
             category: 'theme',
             icon: '🩸',
@@ -7323,15 +7444,6 @@ function startAfcsShopData() {
             price: 220,
             desc: 'High-contrast crimson & void black Solver aesthetic.',
             cssVars: 'body { background-color: #0c0306 !important; color: #ffe4e6 !important; } button, input { border-color: #f43f5e !important; }'
-        },
-        {
-            id: 'theme_griefer',
-            category: 'theme',
-            icon: '👑',
-            name: 'Grief\'s Return',
-            price: 250,
-            desc: 'A red, black, and white theme to showcase GRIEF\'s aesthetic, without the frame perfect clicks..',
-            cssVars: ''
         },
         {
             id: 'theme_midnight_purple',
@@ -7342,9 +7454,24 @@ function startAfcsShopData() {
             desc: 'Deep violet glow inspired by Copper-9.',
             cssVars: 'body { background-color: #0b0514 !important; color: #f3e8ff !important; } button, input { border-color: #a855f7 !important; }'
         },
-        
-        
-        
+        {
+            id: 'theme_matrix',
+            category: 'theme',
+            icon: '📟',
+            name: 'Theme - Terminal Override (01)',
+            price: 240,
+            desc: 'Retro phosphor-green mainframe terminal aesthetic.',
+            cssVars: 'body { background-color: #020a04 !important; color: #bbf7d0 !important; } button, input { border-color: #22c55e !important; }'
+        },
+        {
+            id: 'theme_griefer',
+            category: 'theme',
+            icon: '👑',
+            name: 'Grief\'s Return',
+            price: 250,
+            desc: 'A red, black, and white theme to showcase GRIEF\'s aesthetic, without the frame perfect clicks..',
+            cssVars: ''
+        },
         {
             id: 'trail_none',
             category: 'trail',
@@ -7364,6 +7491,24 @@ function startAfcsShopData() {
             trailColor: '#22d3ee'
         },
         {
+            id: 'trail_emerald',
+            category: 'trail',
+            icon: '🍀',
+            name: 'Emerald Spark Trail',
+            price: 130,
+            desc: 'Leaves vibrant emerald-green embers behind your pointer.',
+            trailColor: '#34d399'
+        },
+        {
+            id: 'trail_ice',
+            category: 'trail',
+            icon: '❄️',
+            name: 'Winter Frost Trail',
+            price: 140,
+            desc: 'Leaves frosty ice-crystal motes as you glide across the screen.',
+            trailColor: '#bae6fd'
+        },
+        {
             id: 'trail_gold',
             category: 'trail',
             icon: '⭐',
@@ -7371,6 +7516,24 @@ function startAfcsShopData() {
             price: 160,
             desc: 'Leaves golden starlight particles behind your cursor.',
             trailColor: '#fde047'
+        },
+        {
+            id: 'trail_orange',
+            category: 'trail',
+            icon: '🪛',
+            name: 'HEV Hazard Orange Trail',
+            price: 170,
+            desc: 'Leaves Black Mesa hazard-orange sparks in your wake.',
+            trailColor: '#f97316'
+        },
+        {
+            id: 'trail_purple',
+            category: 'trail',
+            icon: '💜',
+            name: 'Absolute Solver Violet Trail',
+            price: 180,
+            desc: 'Leaves Copper-9 violet energy sparks behind your cursor.',
+            trailColor: '#c084fc'
         },
         {
             id: 'trail_Red',
@@ -7382,6 +7545,15 @@ function startAfcsShopData() {
             trailColor: '#f43f5e'
         },
         {
+            id: 'trail_pink',
+            category: 'trail',
+            icon: '🔥',
+            name: 'Doggie Wave Magenta Trail',
+            price: 220,
+            desc: 'Leaves 4x speed neon-magenta wave sparks wherever you aim.',
+            trailColor: '#ff00dd'
+        },
+        {
             id: 'trail_Cyn',
             category: 'trail',
             icon: '⬡',
@@ -7390,9 +7562,60 @@ function startAfcsShopData() {
             desc: 'Leaves the blood of innocent Worker Drones wherever your mouse moves..',
             trailColor: '#000000'
         },
-        
-        
-        
+        {
+            id: 'fx_frost_clicks',
+            category: 'effect',
+            icon: '❄️',
+            name: 'Bethlehem Starlight Clicks',
+            price: 260,
+            desc: 'Equippable cosmetic effect: every click bursts in glacial cyan & silver stars.',
+            multiToggle: true
+        },
+        {
+            id: 'fx_midas_clicks',
+            category: 'effect',
+            icon: '🪙',
+            name: 'Golden Midas Click Burst',
+            price: 300,
+            desc: 'Equippable cosmetic effect: every click erupts in 24K gold coins & chimes.',
+            multiToggle: true
+        },
+        {
+            id: 'fx_solver_clicks',
+            category: 'effect',
+            icon: '⬡',
+            name: 'Solver Glitch Click Burst',
+            price: 340,
+            desc: 'Equippable cosmetic effect: every click detonates purple-gold [NULL] sparks.',
+            multiToggle: true
+        },
+        {
+            id: 'tcg_booster_3',
+            category: 'TCG',
+            icon: '🃏',
+            name: 'TCG Booster Pack (3 Cards)',
+            price: 400,
+            desc: 'Repeatable pack! Pull 3 random Cast & Crew cards straight into your TCG Binder.',
+            repeatable: true
+        },
+        {
+            id: 'tcg_prismatic_pack',
+            category: 'TCG',
+            icon: '💎',
+            name: 'Prismatic Foil TCG Pack',
+            price: 750,
+            desc: 'Repeatable premium pack! Pull 3 cards with a guaranteed Mythic/Epic card.',
+            repeatable: true
+        },
+        {
+            id: 'tcg_foil_sleeves',
+            category: 'TCG',
+            icon: '✨',
+            name: 'Holographic TCG Binder Sleeves',
+            price: 280,
+            desc: 'Equippable cosmetic: wraps every card in your TCG Binder in iridescent foil.',
+            multiToggle: true
+        },
         {
             id: 'badge_none',
             category: 'badge',
@@ -7401,6 +7624,15 @@ function startAfcsShopData() {
             price: 0,
             desc: 'Hide equipped title tag.',
             badgeText: ''
+        },
+        {
+            id: 'badge_psalms',
+            category: 'badge',
+            icon: '📖',
+            name: 'Grade 7 – Psalms',
+            price: 75,
+            desc: 'Displays [📖 Grade 7 – Psalms] proudly on your HUD.',
+            badgeText: '📖 Grade 7 – Psalms'
         },
         {
             id: 'badge_cornerstone',
@@ -7412,6 +7644,69 @@ function startAfcsShopData() {
             badgeText: '⛪ Cornerstone'
         },
         {
+            id: 'badge_burj',
+            category: 'badge',
+            icon: '🏙️',
+            name: 'Floor 163 Survivor',
+            price: 140,
+            desc: 'Awarded to brave climbers who conquered the Burj Khalifa lockdown.',
+            badgeText: '🏙️ Floor 163 Survivor'
+        },
+        {
+            id: 'badge_collector',
+            category: 'badge',
+            icon: '🃏',
+            name: 'TCG Master Collector',
+            price: 220,
+            desc: 'Shows off your dedication to completing the 40-card Psalms Binder.',
+            badgeText: '🃏 TCG Collector'
+        },
+        {
+            id: 'badge_grandmaster',
+            category: 'badge',
+            icon: '♟️',
+            name: '2823 Grandmaster',
+            price: 260,
+            desc: 'Tactical title inspired by Kei Boberx and the Chess.com Bot Gauntlet.',
+            badgeText: '♟️ 2823 Grandmaster'
+        },
+        {
+            id: 'badge_griefer',
+            category: 'badge',
+            icon: '🔥',
+            name: 'Grief Verifier (80%)',
+            price: 280,
+            desc: 'Honors the relentless 2-year verification grind.',
+            badgeText: '🔥 Grief Verifier'
+        },
+        {
+            id: 'badge_pacifist',
+            category: 'badge',
+            icon: '❤️',
+            name: 'Determined SOUL',
+            price: 300,
+            desc: 'For players who faced Cyn\'s [NULL] barrage and refused to yield.',
+            badgeText: '❤️ Determined SOUL'
+        },
+        {
+            id: 'badge_architect',
+            category: 'badge',
+            icon: '📐',
+            name: 'Three Architects',
+            price: 320,
+            desc: 'Prestigious title honoring Euler, Gauss, and the Three Architects.',
+            badgeText: '📐 Three Architects'
+        },
+        {
+            id: 'badge_solver',
+            category: 'badge',
+            icon: '⬡',
+            name: 'Title: Absolute Solver Host',
+            price: 350,
+            desc: 'Equippable purple-gold glitched title badge from Copper 9.',
+            badgeText: '⬡ Solver Host'
+        },
+        {
             id: 'badge_king',
             category: 'badge',
             icon: '🏆',
@@ -7419,9 +7714,17 @@ function startAfcsShopData() {
             price: 350,
             desc: 'Prestigious badge for leaderboard champions.',
             badgeText: '🏆 Undisputed King'
+        },
+        {
+            id: 'badge_billionaire',
+            category: 'badge',
+            icon: '💎',
+            name: 'AFCS Coin Mogul',
+            price: 500,
+            desc: 'Ultimate flex badge for high rollers of the Burj Sky Casino.',
+            badgeText: '💎 AFCS Mogul'
         }
     );
-    
     window.shopGetOwned = function () {
         try {
             const raw = JSON.parse(localStorage.getItem(window.SHOP_STORAGE_OWNED) || '[]');
@@ -7435,7 +7738,6 @@ function startAfcsShopData() {
             return Array.of('music_default', 'theme_default', 'trail_none', 'badge_none');
         }
     };
-    
     window.shopGetEquipped = function () {
         try {
             const raw = JSON.parse(localStorage.getItem(window.SHOP_STORAGE_EQUIPPED) || '{}');
@@ -7449,7 +7751,14 @@ function startAfcsShopData() {
             return { music: 'music_default', theme: 'theme_default', trail: 'trail_none', badge: 'badge_none' };
         }
     };
-    
+    window.shopGetCustomEquipped = function () {
+        try {
+            const raw = JSON.parse(localStorage.getItem(window.SHOP_STORAGE_CUSTOM_EQ) || '[]');
+            return Array.isArray(raw) ? raw : Array.of();
+        } catch (e) {
+            return Array.of();
+        }
+    };
     window.registerShopItem = function (item) {
         if (!item || !item.id || !item.category) return;
         const idx = window.SHOP_CATALOG.findIndex(x => x.id === item.id);
@@ -7467,10 +7776,27 @@ function startAfcsShopEffects() {
         noteIdx: 0,
         trailBound: false,
         trailColor: null,
-        lastSpark: 0
+        lastSpark: 0,
+        trackedAudios: new Set(),
+        previewAudio: null,
+        previewTimer: null,
+        previewId: null,
+        midasBound: false
     };
     
-    window.SHOP_RUNTIME.trackedAudios = new Set();
+    window.shopSyncCustomCosmetics = function () {
+        const list = typeof window.shopGetCustomEquipped === 'function' ? window.shopGetCustomEquipped() : [];
+        document.body.classList.toggle('shop-tcg-foil-sleeves', list.includes('tcg_foil_sleeves'));
+    };
+    
+    window.shopToggleCustomCosmetic = function (itemId) {
+        const list = typeof window.shopGetCustomEquipped === 'function' ? window.shopGetCustomEquipped() : [];
+        const idx = list.indexOf(itemId);
+        if (idx >= 0) list.splice(idx, 1);
+        else list.push(itemId);
+        localStorage.setItem(window.SHOP_STORAGE_CUSTOM_EQ || 'afcs_shop_custom_eq', JSON.stringify(list));
+        window.shopSyncCustomCosmetics();
+    };
     
     window.shopHookAudioPlay = function () {
         const rt = window.SHOP_RUNTIME;
@@ -7508,30 +7834,6 @@ function startAfcsShopEffects() {
             }
         }, true);
     };
-    
-    window.shopToggleDefaultBgm = function (shouldPlay) {
-        const candidates = Array.from(document.querySelectorAll('audio'));
-        if (window.SHOP_RUNTIME.defaultBgmRef && !candidates.includes(window.SHOP_RUNTIME.defaultBgmRef)) {
-            candidates.push(window.SHOP_RUNTIME.defaultBgmRef);
-        }
-        if (typeof STATE !== 'undefined') {
-            const stateAudio = STATE.bgm || STATE.musicAudio || STATE.audio || STATE.praiseAudio;
-            if (stateAudio && !candidates.includes(stateAudio)) candidates.push(stateAudio);
-        }
-        
-        candidates.forEach(a => {
-            if (!a || a === window.SHOP_RUNTIME.htmlAudio) return;
-            if (shouldPlay) {
-                a.muted = false;
-                a.volume = window.shopGetMusicVolume();
-                a.play().catch(() => {});
-            } else {
-                a.pause();
-                a.muted = true;
-            }
-        });
-    };
-    window.shopHookAudioPlay();
     
     window.shopToggleDefaultBgm = function (shouldPlay) {
         const rt = window.SHOP_RUNTIME;
@@ -7587,9 +7889,6 @@ function startAfcsShopEffects() {
             rt.htmlAudio = null;
         }
     };
-    window.SHOP_RUNTIME.previewAudio = null;
-    window.SHOP_RUNTIME.previewTimer = null;
-    window.SHOP_RUNTIME.previewId = null;
     
     window.shopStopPreview = function (resumeEquipped = true) {
         const rt = window.SHOP_RUNTIME;
@@ -7639,6 +7938,7 @@ function startAfcsShopEffects() {
         
         if (document.getElementById('afcs-shop-modal')) window.openAfcsShop(window.SHOP_ACTIVE_TAB);
     };
+    
     window.shopSyncThemePill = function () {
         const pill = document.querySelector('.theme-mode-pill');
         if (!pill) return;
@@ -7653,6 +7953,7 @@ function startAfcsShopEffects() {
             pill.classList.remove('is-griefer');
         }
     };
+    
     window.shopApplyMusic = function (item) {
         window.shopHookAudioPlay();
         window.shopStopMusic();
@@ -7716,7 +8017,6 @@ function startAfcsShopEffects() {
         const isGriefEquipped = eq.theme === 'theme_griefer';
         
         document.body.classList.toggle('grief-highlights-active', isGriefEquipped);
-        
         if (!isGriefEquipped && document.body.classList.contains('theme-griefer')) {
             document.body.classList.remove('theme-griefer');
             if (typeof window.applyTheme === 'function') {
@@ -7725,7 +8025,6 @@ function startAfcsShopEffects() {
         }
         if (typeof window.syncThemePill === 'function') window.syncThemePill();
     };
-    
     window.shopApplyTheme = function (item) {
         if (item && item.id === 'theme_griefer') {
             if (typeof window.applyTheme === 'function') {
@@ -7737,7 +8036,6 @@ function startAfcsShopEffects() {
             }
         }
         window.shopSyncGriefClasses();
-        
         let styleEl = document.getElementById('afcs-shop-theme-style');
         if (!styleEl) {
             styleEl = document.createElement('style');
@@ -7745,7 +8043,6 @@ function startAfcsShopEffects() {
             document.head.appendChild(styleEl);
         }
         styleEl.textContent = (item && item.cssVars) ? item.cssVars : '';
-        
         if (!window.SHOP_RUNTIME.themeObserver) {
             const obs = new MutationObserver(() => {
                 const eq = window.shopGetEquipped();
@@ -7755,19 +8052,16 @@ function startAfcsShopEffects() {
             window.SHOP_RUNTIME.themeObserver = obs;
         }
     };
-    
     window.shopApplyTrail = function (item) {
         const rt = window.SHOP_RUNTIME;
         rt.trailColor = item ? item.trailColor : null;
         if (rt.trailBound) return;
         rt.trailBound = true;
-        
         window.addEventListener('mousemove', e => {
             if (!rt.trailColor) return;
             const now = performance.now();
             if (now - rt.lastSpark < 45) return;
             rt.lastSpark = now;
-            
             const dot = document.createElement('div');
             dot.style.cssText = 'position:fixed;left:' + e.clientX + 'px;top:' + e.clientY + 'px;width:7px;height:7px;border-radius:50%;background:' + rt.trailColor + ';box-shadow:0 0 8px ' + rt.trailColor + ';pointer-events:none;z-index:99997;transform:translate(-50%,-50%);transition:opacity 0.45s,transform 0.45s;';
             document.body.appendChild(dot);
@@ -7778,7 +8072,6 @@ function startAfcsShopEffects() {
             setTimeout(() => dot.remove(), 460);
         });
     };
-    
     window.shopApplyBadge = function (item) {
         let badgeEl = document.getElementById('afcs-equipped-title-pill');
         if (!item || !item.badgeText) {
@@ -7793,9 +8086,9 @@ function startAfcsShopEffects() {
         }
         badgeEl.textContent = item.badgeText;
     };
-    
     window.shopSyncAllEquipped = function () {
         window.shopHookAudioPlay();
+        window.shopSyncCustomCosmetics();
         const eq = window.shopGetEquipped();
         const findItem = id => window.SHOP_CATALOG.find(x => x.id === id);
         window.shopApplyMusic(findItem(eq.music));
@@ -7803,7 +8096,34 @@ function startAfcsShopEffects() {
         window.shopApplyTrail(findItem(eq.trail));
         window.shopApplyBadge(findItem(eq.badge));
     };
-    
+    if (!window.SHOP_RUNTIME.midasBound) {
+        window.SHOP_RUNTIME.midasBound = true;
+        window.addEventListener('pointerdown', (e) => {
+            if (e.button !== 0) return;
+            const list = typeof window.shopGetCustomEquipped === 'function' ? window.shopGetCustomEquipped() : [];
+            if (list.includes('fx_midas_clicks')) {
+                if (typeof spawnBurst === 'function') {
+                    spawnBurst(e.clientX, e.clientY, ['#facc15', '#fde047', '#f59e0b', '#ffffff'], 18);
+                }
+                if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                if (typeof playBeep === 'function') playBeep(1318.51, 0.06, 'sine', 0.03);
+            }
+            if (list.includes('fx_solver_clicks')) {
+                if (typeof spawnBurst === 'function') {
+                    spawnBurst(e.clientX, e.clientY, ['#c084fc', '#facc15', '#a855f7', '#ffffff'], 18);
+                }
+                if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                if (typeof playBeep === 'function') playBeep(880, 0.05, 'sawtooth', 0.025);
+            }
+            if (list.includes('fx_frost_clicks')) {
+                if (typeof spawnBurst === 'function') {
+                    spawnBurst(e.clientX, e.clientY, ['#bae6fd', '#38bdf8', '#e0f2fe', '#ffffff'], 18);
+                }
+                if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                if (typeof playBeep === 'function') playBeep(1567.98, 0.06, 'triangle', 0.025);
+            }
+        }, { passive: true });
+    }
     document.addEventListener('input', e => {
         if (e.target && e.target.type === 'range') {
             const eq = window.shopGetEquipped();
@@ -7818,14 +8138,16 @@ function startAfcsShopUI() {
     window.SHOP_ACTIVE_TAB = 'all';
     
     window.shopBuyOrEquip = function (itemId) {
-        window.shopStopPreview(false); 
+        window.shopStopPreview(false);
         const item = window.SHOP_CATALOG.find(x => x.id === itemId);
         if (!item) return;
         
         const owned = window.shopGetOwned();
         const equipped = window.shopGetEquipped();
+        const isRepeatable = Boolean(item.repeatable);
+        const isMultiToggle = Boolean(item.multiToggle);
         
-        if (!owned.includes(item.id)) {
+        if (!owned.includes(item.id) || isRepeatable) {
             const coins = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
             if (coins < item.price) {
                 const msg = document.getElementById('shop-status-msg');
@@ -7840,16 +8162,66 @@ function startAfcsShopUI() {
             const hudCoins = document.getElementById('afcs-coin-display');
             if (hudCoins) hudCoins.textContent = nextBal + ' 🪙';
             
-            owned.push(item.id);
-            localStorage.setItem(window.SHOP_STORAGE_OWNED, JSON.stringify(owned));
+            if (item.id === 'tcg_booster_3' || item.id === 'tcg_prismatic_pack') {
+                const tcg = window.AFCS_TCG;
+                if (tcg) {
+                    const ownedMap = tcg.getOwnedMap();
+                    const pulls = [];
+                    let dupCoins = 0;
+                    
+                    for (let i = 0; i < 3; i++) {
+                        let picked = null;
+                        if (item.id === 'tcg_prismatic_pack' && i === 0) {
+                            const highTier = tcg.catalog.filter(c => c.rarity === 'Mythic' || c.rarity === 'Epic');
+                            const unownedHigh = highTier.filter(c => !ownedMap[c.id]);
+                            const pool = unownedHigh.length ? unownedHigh : (highTier.length ? highTier : tcg.catalog);
+                            picked = pool[Math.floor(Math.random() * pool.length)];
+                        } else {
+                            picked = tcg.pickRandomCard();
+                        }
+                        const prev = ownedMap[picked.id] || 0;
+                        const isNew = prev === 0;
+                        ownedMap[picked.id] = prev + 1;
+                        if (!isNew) dupCoins += tcg.rarities[picked.rarity]?.dupCoins || 10;
+                        pulls.push(`${isNew ? '🆕' : '⭐'} [${picked.rarity}] ${picked.name}`);
+                    }
+                    
+                    tcg.saveOwnedMap(ownedMap);
+                    if (dupCoins > 0) tcg.setCoins(tcg.getCoins() + dupCoins);
+                    
+                    if (typeof spawnBurst === 'function') {
+                        spawnBurst(window.innerWidth / 2, window.innerHeight / 2, ['#38bdf8', '#facc15', '#a855f7', '#ffffff'], 42);
+                    }
+                    if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                    if (typeof playBeep === 'function') {
+                        [523.25, 659.25, 783.99, 1046.50].forEach((f, idx) => {
+                            setTimeout(() => playBeep(f, 0.14, 'triangle', 0.05), idx * 70);
+                        });
+                    }
+                    const unlockedTotal = tcg.catalog.filter(c => (ownedMap[c.id] || 0) > 0).length;
+                    alert(`🃏 ${item.name.toUpperCase()} OPENED!\n\n${pulls.join('\n')}${dupCoins > 0 ? `\n\n(+${dupCoins} 🪙 Duplicate Bonus)` : ''}\nBinder: ${unlockedTotal}/${tcg.catalog.length} Cards`);
+                }
+                window.openAfcsShop(window.SHOP_ACTIVE_TAB);
+                return;
+            }
+            
+            if (!owned.includes(item.id)) {
+                owned.push(item.id);
+                localStorage.setItem(window.SHOP_STORAGE_OWNED, JSON.stringify(owned));
+            }
         }
         
-        equipped[item.category] = item.id;
-        localStorage.setItem(window.SHOP_STORAGE_EQUIPPED, JSON.stringify(equipped));
-        window.shopSyncAllEquipped();
+        if (isMultiToggle) {
+            if (typeof window.shopToggleCustomCosmetic === 'function') {
+                window.shopToggleCustomCosmetic(item.id);
+            }
+        } else {
+            equipped[item.category] = item.id;
+            localStorage.setItem(window.SHOP_STORAGE_EQUIPPED, JSON.stringify(equipped));
+            window.shopSyncAllEquipped();
+        }
         window.openAfcsShop(window.SHOP_ACTIVE_TAB);
     };
-    
     window.openAfcsShop = function (tab) {
         window.SHOP_ACTIVE_TAB = tab || 'all';
         const old = document.getElementById('afcs-shop-modal');
@@ -7857,6 +8229,7 @@ function startAfcsShopUI() {
         
         const owned = window.shopGetOwned();
         const equipped = window.shopGetEquipped();
+        const customEq = typeof window.shopGetCustomEquipped === 'function' ? window.shopGetCustomEquipped() : [];
         const coins = parseInt(localStorage.getItem('afcs_coins') || '150', 10);
         
         const itemsToShow = window.SHOP_ACTIVE_TAB === 'all'
@@ -7868,7 +8241,9 @@ function startAfcsShopUI() {
             { id: 'music', label: '🎵 MUSIC' },
             { id: 'theme', label: '🎨 THEMES' },
             { id: 'trail', label: '✨ TRAILS' },
-            { id: 'badge', label: '🏅 BADGES' }
+            { id: 'badge', label: '🏅 BADGES' },
+            { id: 'TCG', label: '🃏 TCG' },
+            { id: 'effect', label: '⚡ EFFECTS' }
         );
         
         const modal = document.createElement('div');
@@ -7896,19 +8271,25 @@ function startAfcsShopUI() {
                             </button>`;
     }).join('')}
                     </div>
-                    <span id="shop-status-msg" style="font-size:0.8rem;color:#94a3b8;">Customize music, themes, trails & titles</span>
+                    <span id="shop-status-msg" style="font-size:0.8rem;color:#94a3b8;">Customize music, themes, trails, TCG & badges</span>
                 </div>
     
                 <div style="padding:18px 20px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(245px,1fr));gap:14px;">
                     ${itemsToShow.map(item => {
-    const isOwned = owned.includes(item.id);
-    const isEquipped = equipped[item.category] === item.id;
+    const isRepeatable = Boolean(item.repeatable);
+    const isMultiToggle = Boolean(item.multiToggle);
+    const isOwned = !isRepeatable && owned.includes(item.id);
+    const isEquipped = isMultiToggle ? customEq.includes(item.id) : (equipped[item.category] === item.id);
     let btnText = '🛒 BUY (' + item.price + ' 🪙)';
     let btnBg = '#0284c7';
     let btnBorder = '#38bdf8';
     
-    if (isEquipped) {
-        btnText = '✅ EQUIPPED';
+    if (isRepeatable) {
+        btnText = '🎁 OPEN PACK (' + item.price + ' 🪙)';
+        btnBg = '#6d28d9';
+        btnBorder = '#c084fc';
+    } else if (isEquipped) {
+        btnText = isMultiToggle ? '✅ ACTIVE (TOGGLE OFF)' : '✅ EQUIPPED';
         btnBg = '#14532d';
         btnBorder = '#4ade80';
     } else if (isOwned) {
@@ -7945,7 +8326,6 @@ function startAfcsShopUI() {
         </div>
     `;
 }).join('')}
-
                 </div>
             </div>
         `;

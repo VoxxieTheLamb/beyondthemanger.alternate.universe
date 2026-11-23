@@ -1252,7 +1252,7 @@ function startCharacterInteractions() {
             setTimeout(() => playBeep(isKobe ? 880.00 : 329.63, 0.14, 'triangle', 0.045), 75);
         });
     }
-
+    
     const jennahCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('mantal'));
     if (jennahCard) {
         const jennahImg = jennahCard.querySelector('img');
@@ -1260,26 +1260,26 @@ function startCharacterInteractions() {
         const crowbarLines = [
             'I can open anything with this!'
         ];
-
+        
         let isCrowbar = false;
         let crowbarLineIdx = -1;
         const originalJennahSrc = jennahImg ? jennahImg.getAttribute('src') : '';
-
+        
         function playCrowbarClang() {
             playBeep(1180, 0.045, 'triangle', 0.05);
             setTimeout(() => playBeep(1760, 0.07, 'sine', 0.045), 35);
             setTimeout(() => playBeep(880, 0.11, 'triangle', 0.04), 75);
         }
-
+        
         function bindPanelCrowbarClick() {
             if (!isCrowbar || !DOM.panelImageContainer) return;
             const drawerImg = DOM.panelImageContainer.querySelector('img');
             if (!drawerImg || drawerImg.dataset.crowbarBound === 'true') return;
-
+            
             drawerImg.dataset.crowbarBound = 'true';
             drawerImg.style.cursor = 'pointer';
             drawerImg.title = 'Click the Crowbar!';
-
+            
             drawerImg.addEventListener('click', (e) => {
                 e.stopPropagation();
                 let nextIdx = Math.floor(Math.random() * crowbarLines.length);
@@ -1287,49 +1287,49 @@ function startCharacterInteractions() {
                     nextIdx = (nextIdx + 1) % crowbarLines.length;
                 }
                 crowbarLineIdx = nextIdx;
-
+                
                 let bubble = DOM.panelBody.querySelector('.panel-crowbar-quote');
                 if (!bubble) {
                     bubble = document.createElement('div');
                     bubble.className = 'panel-crowbar-quote';
                     DOM.panelBody.prepend(bubble);
                 }
-
+                
                 bubble.textContent = `🪛 ${crowbarLines[crowbarLineIdx]}`;
                 bubble.classList.remove('is-pop');
                 void bubble.offsetWidth;
                 bubble.classList.add('is-pop');
-
+                
                 DOM.panelImageContainer.animate([
                     { transform: 'scale(1) rotate(0deg)' },
                     { transform: 'scale(1.09) rotate(-14deg)', offset: 0.35 },
                     { transform: 'scale(1.04) rotate(8deg)', offset: 0.7 },
                     { transform: 'scale(1) rotate(0deg)' }
                 ], { duration: 280, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
-
+                
                 const rect = DOM.panelImageContainer.getBoundingClientRect();
                 spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, ['#f97316', '#facc15', '#ef4444', '#ffffff'], 20);
                 if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
                 playCrowbarClang();
             });
         }
-
+        
         STATE.onOpenCard.push((openedCard) => {
             if (openedCard === jennahCard && isCrowbar) {
                 requestAnimationFrame(bindPanelCrowbarClick);
             }
             return false;
         });
-
+        
         jennahCard.addEventListener('click', (e) => {
             if (e.detail === 1 && !isCrowbar) {
                 spawnBadge(jennahCard, '🪛 *CLANG!*', 'quirk-star-glow', 950);
                 playCrowbarClang();
             }
-
+            
             if (!e._isTripleTap && e.detail !== 3) return;
             isCrowbar = !isCrowbar;
-
+            
             jennahCard.animate([
                 { transform: 'perspective(600px) rotateY(0deg) scale(1.05)' },
                 { transform: 'perspective(600px) rotateY(90deg) scale(1.16)', offset: 0.35 },
@@ -1339,7 +1339,7 @@ function startCharacterInteractions() {
                 duration: 550,
                 easing: 'cubic-bezier(0.22, 1, 0.36, 1)'
             });
-
+            
             setTimeout(() => {
                 const monoEl = jennahCard.querySelector('.monogram-avatar');
                 if (isCrowbar) {
@@ -1360,7 +1360,7 @@ function startCharacterInteractions() {
                         }
                     }
                 }
-
+                
                 if (DOM.panel && DOM.panel.classList.contains('active') && jennahCard.classList.contains('active')) {
                     if (isCrowbar) {
                         DOM.panelImageContainer.innerHTML = `<img src="${crowbarSrc}" alt="Crowbar" class="is-crowbar-pfp">`;
@@ -1376,7 +1376,7 @@ function startCharacterInteractions() {
                     }
                 }
             }, 275);
-
+            
             const rect = jennahCard.getBoundingClientRect();
             spawnBurst(rect.left + rect.width / 2, rect.top + rect.height / 2, ['#f97316', '#facc15', '#ef4444', '#ffffff'], 26);
             if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
@@ -3493,7 +3493,7 @@ function startCharacterInteractions() {
         const doomCursor = document.createElement('div');
         doomCursor.className = 'doomsday-gauntlet-cursor';
         doomCursor.innerHTML = `
-        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://w3.org">
+        <svg width="38" height="38" viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg">
             <polygon points="4,4 22,10 15,16 32,33 27,36 12,19 7,25" fill="#1e293b" stroke="#10b981" stroke-width="1.8" stroke-linejoin="round"/>
             <polygon points="6,6 18,11 13,15" fill="#a7f3d0"/>
             <circle cx="16" cy="17" r="3.2" fill="#10b981" stroke="#ecfdf5" stroke-width="1.2"/>
@@ -4641,23 +4641,24 @@ function startCharacterInteractions() {
         function isGuidingLightActive() {
             const b = document.body.classList;
             return !b.contains('theme-griefer')
-            && !b.contains('theme-hamilton') &&
-            !b.classList.contains('theme-epic') &&
-            !b.classList.contains('theme-doomsday') &&
-            !b.classList.contains('theme-faithian') &&
-            !b.classList.contains('theme-red') &&
-            !b.classList.contains('theme-reactor') &&
-            !b.classList.contains('theme-yellow') &&
-            !b.classList.contains('theme-curious') &&
-            !b.classList.contains('search-fx-cornerstone') &&
-            !b.classList.contains('theme-murderdrones') &&
-            !b.classList.contains('party-mode');
-        };
+            && !b.contains('theme-hamilton')
+            && !b.contains('theme-epic')
+            && !b.contains('theme-doomsday')
+            && !b.contains('theme-faithian')
+            && !b.contains('theme-red')
+            && !b.contains('theme-reactor')
+            && !b.contains('theme-yellow')
+            && !b.contains('theme-curious')
+            && !b.contains('search-fx-cornerstone')
+            && !b.contains('theme-murderdrones')
+            && !b.contains('party-mode');
+        }
+        
         
         const guideCursor = document.createElement('div');
         guideCursor.className = 'guiding-light-cursor';
         guideCursor.innerHTML = `
-        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://w3.org">
+        <svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
             <polygon points="4,4 26,13 16,17 12,27" fill="#bae6fd" stroke="#38bdf8" stroke-width="1.6" stroke-linejoin="round"/>
             <path d="M29 19C24.5 19 21 22.5 21 27C21 31.5 24.5 35 29 35C31.5 35 33.7 33.9 35.1 32.1C33.8 32.6 32.3 32.8 30.8 32.4C26.9 31.4 24.6 27.4 25.6 23.5C26.1 21.6 27.4 20 29 19Z" fill="#ffffff" stroke="#7dd3fc" stroke-width="1.1"/>
             <path d="M33 17L34.1 20.9L38 22L34.1 23.1L33 27L31.9 23.1L28 22L31.9 20.9L33 17Z" fill="#e0f2fe"/>
@@ -4890,7 +4891,7 @@ function startCharacterInteractions() {
         const cursorEl = document.createElement('div');
         cursorEl.id = 'doggieWaveCursor';
         cursorEl.className = 'doggie-wave-cursor';
-        cursorEl.innerHTML = `<svg viewBox="0 0 56 44" width="44" height="36" fill="none" xmlns="http://w3.org">
+        cursorEl.innerHTML = `<svg viewBox="0 0 56 44" width="44" height="36" fill="none" xmlns="http://www.w3.org/2000/svg">
             <defs>
                 <linearGradient id="doggieWaveGrad" x1="4" y1="22" x2="50" y2="22" gradientUnits="userSpaceOnUse">
                     <stop offset="0%" stop-color="#ff00dd"/>
@@ -4904,6 +4905,12 @@ function startCharacterInteractions() {
         </svg>`;
         document.body.appendChild(cursorEl);
         if (typeof startGriefContextMenu === 'function') startGriefContextMenu();
+        if (typeof startDoggieUfoJumper === 'function') startDoggieUfoJumper();
+        if (typeof startDoggieCubeJumper === 'function') startDoggieCubeJumper();
+        if (typeof startDoggieSpiderToggle === 'function') startDoggieSpiderToggle();
+        if (typeof startDoggieShipScrollRider === 'function') startDoggieShipScrollRider();
+        if (typeof startDoggieRobotSpotlight === 'function') startDoggieRobotSpotlight();
+        if (typeof startDoggieSwingViewToggle === 'function') startDoggieSwingViewToggle();
         
         let lastX = null;
         let lastY = null;
@@ -4921,7 +4928,7 @@ function startCharacterInteractions() {
                 trailPoints.shift();
             }
             
-            if (trailPoints.length > 1 && isGrieferActive() && !STATE.ldmActive) {
+            if (trailPoints.length > 1 && isGrieferActive() && !STATE.ldmActive && !isHoldingBall) {
                 for (let i = 1; i < trailPoints.length; i++) {
                     const p0 = trailPoints[i - 1];
                     const p1 = trailPoints[i];
@@ -4985,16 +4992,32 @@ function startCharacterInteractions() {
             }
         }, { passive: true });
         
+        let isHoldingBall = false;
+        
         document.addEventListener('pointerdown', (e) => {
             if (!isGrieferActive()) return;
-            cursorEl.classList.add('is-dashing');
-            setTimeout(() => cursorEl.classList.remove('is-dashing'), 140);
-            if (e.button === 0 && !e.target.closest('button, input, .PeoplePics, .griefer-context-menu')) {
-                spawnBurst(e.clientX, e.clientY, ['#ff00dd', '#ffae42', '#fff04d', '#ffffff'], 16);
+            if (e.target && e.target.matches('input[type="range"]')) {
+                isHoldingBall = true;
+                cursorEl.classList.add('is-holding-ball');
+                spawnBurst(e.clientX, e.clientY, ['#ff00dd', '#fff04d', '#ffffff'], 14);
                 if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
-                playBeep(146.83, 0.08, 'sawtooth', 0.032);
+                if (typeof playBeep === 'function') playBeep(523.25, 0.06, 'triangle', 0.04);
             }
-        }, { passive: true });
+        }, true);
+        
+        const releaseBallHold = (e) => {
+            if (!isHoldingBall) return;
+            isHoldingBall = false;
+            cursorEl.classList.remove('is-holding-ball');
+            if (isGrieferActive() && e && typeof e.clientX === 'number') {
+                spawnBurst(e.clientX, e.clientY, ['#ff00dd', '#ffae42', '#fff04d'], 14);
+                if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                if (typeof playBeep === 'function') playBeep(659.25, 0.06, 'triangle', 0.04);
+            }
+        };
+        
+        window.addEventListener('pointerup', releaseBallHold, true);
+        window.addEventListener('pointercancel', releaseBallHold, true);
         
         document.addEventListener('pointerleave', () => {
             cursorEl.classList.remove('is-visible');
@@ -5009,8 +5032,83 @@ function startCharacterInteractions() {
                 tCtx.clearRect(0, 0, trailCanvas.width, trailCanvas.height);
             }
         }).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+        document.addEventListener('input', (e) => {
+            if (!isGrieferActive()) return;
+            const slider = e.target;
+            if (slider && slider.matches('input[type="range"]')) {
+                const val = parseFloat(slider.value) || 0;
+                slider.style.setProperty('--doggie-ball-rot', `${(val * 7.2).toFixed(1)}deg`);
+            }
+        }, { passive: true });
+        
     }
-    
+    function startDoggieUfoJumper() {
+        if (document.getElementById('doggieUfoJumper')) return;
+        
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'doggieUfoJumper';
+        btn.className = 'doggie-ufo-jumper';
+        btn.title = 'Click to UFO-hop to the next section!';
+        btn.innerHTML = `
+        <span class="doggie-ufo-icon-wrap"></span>
+        <span class="doggie-ufo-label">Jump to Cast &amp; Crew</span>
+    `;
+        document.body.appendChild(btn);
+        
+        const labelEl = btn.querySelector('.doggie-ufo-label');
+        
+        function getSections() {
+            const list = [
+                { label: 'Top (Title)', action: () => window.scrollTo({ top: 0, behavior: 'smooth' }) }
+            ];
+            const synopsis = document.querySelector('#synopsis, .synopsis-card, .about-section');
+            if (synopsis) list.push({ label: 'Synopsis', action: () => synopsis.scrollIntoView({ behavior: 'smooth', block: 'center' }) });
+            
+            const cast = document.querySelector('.People');
+            if (cast) list.push({ label: 'Cast & Crew', action: () => cast.scrollIntoView({ behavior: 'smooth', block: 'start' }) });
+            
+            const floorplan = document.querySelector('#floorplan, .floorplan-card');
+            if (floorplan) list.push({ label: 'Venue Floorplan', action: () => floorplan.scrollIntoView({ behavior: 'smooth', block: 'center' }) });
+            
+            const scripture = document.querySelector('.scripture-card, #scripture');
+            if (scripture) list.push({ label: 'Scripture & FAQ', action: () => scripture.scrollIntoView({ behavior: 'smooth', block: 'center' }) });
+            
+            return list;
+        }
+        
+        let stepIdx = 1;
+        function syncNextLabel() {
+            const sections = getSections();
+            const next = sections[stepIdx % sections.length];
+            labelEl.textContent = `Jump to ${next.label}`;
+        }
+        
+        syncNextLabel();
+        
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const sections = getSections();
+            const target = sections[stepIdx % sections.length];
+            stepIdx = (stepIdx + 1) % sections.length;
+            btn.classList.remove('is-hopping');
+            void btn.offsetWidth;
+            btn.classList.add('is-hopping');
+            
+            const rect = btn.getBoundingClientRect();
+            if (typeof spawnBurst === 'function') {
+                spawnBurst(rect.left + 25, rect.top + 20, ['#ff00dd', '#fff04d', '#ffae42', '#ffffff'], 18);
+            }
+            if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+            if (typeof playBeep === 'function') {
+                playBeep(392.00, 0.06, 'sawtooth', 0.045);
+                setTimeout(() => playBeep(587.33, 0.09, 'triangle', 0.045), 45);
+            }
+            
+            target.action();
+            syncNextLabel();
+        });
+    }
     let griefMenuInitialized = false;
     function startGriefContextMenu() {
         if (griefMenuInitialized) return;
@@ -5171,9 +5269,387 @@ function startCharacterInteractions() {
             });
         }, true);
     }
+    function startDoggieCubeJumper() {
+        if (document.getElementById('doggieCubeJumper')) return;
+        
+        const cards = Array.from(document.querySelectorAll('.PeoplePics'));
+        if (!cards.length) return;
+        
+        const homeCard = cards.find(c => {
+            const txt = c.querySelector('.overlay-text')?.textContent.toLowerCase() || '';
+            return txt.includes('abrena') || txt.includes('caleb');
+        }) || cards[0];
+        
+        const homeWrapper = homeCard.closest('.PersonWrapper') || homeCard;
+        if (getComputedStyle(homeWrapper).position === 'static') {
+            homeWrapper.style.position = 'relative';
+        }
+        
+        const cubeEl = document.createElement('div');
+        cubeEl.id = 'doggieCubeJumper';
+        cubeEl.className = 'doggie-cube-jumper';
+        homeWrapper.appendChild(cubeEl);
+        
+        let currentHost = homeWrapper;
+        
+        document.addEventListener('click', (e) => {
+            if (!document.body.classList.contains('theme-griefer')) return;
+            const clickedCard = e.target.closest('.PeoplePics');
+            if (!clickedCard) return;
+            
+            const targetWrapper = clickedCard.closest('.PersonWrapper') || clickedCard;
+            if (targetWrapper === currentHost) return;
+            
+            if (getComputedStyle(targetWrapper).position === 'static') {
+                targetWrapper.style.position = 'relative';
+            }
+            
+            currentHost = targetWrapper;
+            targetWrapper.appendChild(cubeEl);
+            
+            cubeEl.classList.remove('is-jumping');
+            void cubeEl.offsetWidth;
+            cubeEl.classList.add('is-jumping');
+            
+            const rect = targetWrapper.getBoundingClientRect();
+            if (typeof spawnBurst === 'function') {
+                spawnBurst(rect.left + rect.width / 2, rect.top, ['#ff00dd', '#fff04d', '#ffae42', '#ffffff'], 16);
+            }
+            if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+            if (typeof playBeep === 'function') {
+                playBeep(330, 0.05, 'square', 0.04);
+                setTimeout(() => playBeep(523.25, 0.08, 'triangle', 0.04), 45);
+            }
+        }, true);
+    }
+    function startDoggieSpiderToggle() {
+        if (document.getElementById('doggieSpiderToggle')) return;
+        
+        const track = document.createElement('button');
+        track.type = 'button';
+        track.id = 'doggieSpiderToggle';
+        track.className = 'doggie-spider-track';
+        track.title = 'Spider Teleport: Warp to flip ALL Alter-Egos!';
+        track.innerHTML = `
+        <span class="doggie-spider-pad"></span>
+        <span class="doggie-spider-track-laser"></span>
+        <span class="doggie-spider-icon"></span>
+        <span class="doggie-spider-pad"></span>
+    `;
+        document.body.appendChild(track);
+        
+        let allAltersActive = false;
+        
+        const alterRoster = [
+            { match: 'sevilla',      altClass: 'is-vox-pfp',      altSrc: 'otherPics/Vox.jpg' },
+            { match: 'angeles',      altClass: 'is-zerotwo-pfp',  altSrc: 'otherPics/ZeroTwo.jpg' },
+            { match: 'del rosario',  altClass: 'is-carl-pfp',     altSrc: 'otherPics/CarlGrimes.jfif' },
+            { match: 'suzon',        altClass: 'is-cortis-pfp',   altSrc: 'otherPics/CortisGroup.jpg' },
+            { match: 'dela cruz',    altClass: 'is-kobe-pfp',     altSrc: 'otherPics/Kobe.jpg' },
+            { match: 'mantal',       altClass: 'is-crowbar-pfp',  altSrc: 'otherPics/Crowbar.jpg' },
+            { match: 'abrena',       altCardClass: 'quirk-cyn-solver', altSrc: 'otherPics/Cyn.jpg' },
+            { match: 'lebron',       altCardClass: 'is-kawhi-mode',  altSrc: 'otherPics/Kawhi.jpg',   origName: 'LeBron James',      altName: 'Kawhi Leonard' },
+            { match: 'euler',        altCardClass: 'is-newton-mode', altSrc: 'otherPics/Newton.jpg',  origName: 'Leonhard Euler',    altName: 'Sir Isaac Newton' },
+            { match: 'curry',        altCardClass: 'is-jordan-mode', altSrc: 'otherPics/Jordan.jpg',  origName: 'Stephen Curry',     altName: 'Michael Jordan' },
+            { match: 'einstein',     altCardClass: 'is-galileo-mode', altSrc: 'otherPics/Galileo.jpg', origName: 'Albert Einstein',   altName: 'Galileo Galilei' },
+            { match: 'doggie',       altCardClass: 'is-zoink-mode',  altSrc: 'otherPics/Zoink.jpg',   origName: 'Doggie',            altName: 'Zoink' },
+            { match: 'tesla',        altCardClass: 'is-gauss-mode',  altSrc: 'otherPics/Gauss.jpg',   origName: 'Nikola Tesla',      altName: 'Carl Friedrich Gauss' }
+        ];
+        
+        track.addEventListener('click', (e) => {
+            e.stopPropagation();
+            allAltersActive = !allAltersActive;
+            
+            track.classList.toggle('is-active', allAltersActive);
+            track.classList.remove('is-warping');
+            void track.offsetWidth;
+            track.classList.add('is-warping');
+            
+            const cards = Array.from(document.querySelectorAll('.PeoplePics'));
+            cards.forEach((card, idx) => {
+                const nameEl = card.querySelector('.overlay-text');
+                if (!nameEl) return;
+                const raw = nameEl.textContent.toLowerCase();
+                
+                const entry = alterRoster.find(item =>
+                    raw.includes(item.match) ||
+                    (item.origName && raw === item.origName.toLowerCase()) ||
+                    (item.altName && raw === item.altName.toLowerCase())
+                );
+                if (!entry) return;
+                
+                const img = card.querySelector('img');
+                const mono = card.querySelector('.monogram-avatar');
+                
+                if (allAltersActive) {
+                    if (img) {
+                        if (!img.dataset.spiderOrigSrc) img.dataset.spiderOrigSrc = img.getAttribute('src') || '';
+                        img.style.display = 'block';
+                        img.src = entry.altSrc;
+                        if (entry.altClass) img.classList.add(entry.altClass);
+                    }
+                    if (mono) mono.style.display = 'none';
+                    if (entry.altCardClass) card.classList.add(entry.altCardClass);
+                    if (entry.altName) nameEl.textContent = entry.altName;
+                } else {
+                    if (img) {
+                        if (entry.altClass) img.classList.remove(entry.altClass);
+                        if (mono) {
+                            img.style.display = 'none';
+                            mono.style.display = 'flex';
+                        } else if (img.dataset.spiderOrigSrc) {
+                            img.src = img.dataset.spiderOrigSrc;
+                        }
+                    }
+                    if (entry.altCardClass) card.classList.remove(entry.altCardClass);
+                    if (entry.origName) nameEl.textContent = entry.origName;
+                }
+                
+                if (idx % 3 === 0) {
+                    const r = card.getBoundingClientRect();
+                    if (r.top >= 0 && r.bottom <= window.innerHeight) {
+                        const beam = document.createElement('div');
+                        beam.className = 'doggie-spider-beam';
+                        beam.style.left = `${r.left + r.width / 2}px`;
+                        document.body.appendChild(beam);
+                        setTimeout(() => beam.remove(), 450);
+                    }
+                }
+            });
+            
+            const tRect = track.getBoundingClientRect();
+            const burstY = allAltersActive ? tRect.top + 26 : tRect.bottom - 26;
+            if (typeof spawnBurst === 'function') {
+                spawnBurst(tRect.left + tRect.width / 2, burstY, ['#ff00dd', '#fff04d', '#ffae42', '#ffffff'], 24);
+            }
+            if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+            if (typeof triggerScreenGlitch === 'function') triggerScreenGlitch(120);
+            if (typeof playBeep === 'function') {
+                playBeep(allAltersActive ? 220 : 660, 0.05, 'sawtooth', 0.05);
+                setTimeout(() => playBeep(allAltersActive ? 880 : 293.66, 0.1, 'square', 0.05), 35);
+            }
+        });
+    }   
+    function startDoggieShipScrollRider() {
+        if (document.getElementById('doggieShipScrollRider')) return;
+        
+        const shipEl = document.createElement('div');
+        shipEl.id = 'doggieShipScrollRider';
+        shipEl.className = 'doggie-ship-scroll-rider';
+        document.body.appendChild(shipEl);
+        
+        let lastScrollY = window.scrollY;
+        let tiltTimer = null;
+        
+        function syncShipPosition() {
+            const maxScroll = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+            const pct = Math.max(0, Math.min(1, window.scrollY / maxScroll));
+            const x = Math.max(4, Math.min(window.innerWidth - 58, pct * window.innerWidth - 27));
+            
+            
+            const dy = window.scrollY - lastScrollY;
+            lastScrollY = window.scrollY;
+            const pitch = dy > 1 ? -16 : (dy < -1 ? 16 : 0);
+            
+            shipEl.style.left = `${x.toFixed(1)}px`;
+            shipEl.style.transform = `rotate(${pitch}deg)`;
+            
+            clearTimeout(tiltTimer);
+            tiltTimer = setTimeout(() => {
+                shipEl.style.transform = 'rotate(0deg)';
+            }, 140);
+        }
+        
+        window.addEventListener('scroll', syncShipPosition, { passive: true });
+        window.addEventListener('resize', syncShipPosition, { passive: true });
+        syncShipPosition();
+    }
+    function startDoggieRobotSpotlight() {
+        if (document.getElementById('doggieRobotLauncher')) return;
+        
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'doggieRobotLauncher';
+        btn.className = 'doggie-robot-launcher';
+        btn.title = 'Hold to charge Robot jetpack, release to land on a random student!';
+        btn.innerHTML = `
+        <span class="doggie-robot-icon"></span>
+        <span class="doggie-robot-label">Hold Robot to Launch</span>
+    `;
+        document.body.appendChild(btn);
+        
+        const labelEl = btn.querySelector('.doggie-robot-label');
+        let charging = false;
+        let chargeVal = 0;
+        let chargeRaf = null;
+        let launchLock = false;
+        
+        function updateChargeLoop() {
+            if (!charging) return;
+            chargeVal = Math.min(1, chargeVal + 0.022);
+            btn.style.setProperty('--robot-charge', chargeVal.toFixed(3));
+            const pct = Math.round(chargeVal * 100);
+            labelEl.textContent = pct >= 100 ? 'MAX BOOST! Release!' : `Boosting... ${pct}%`;
+            
+            if (Math.random() < 0.35 && typeof spawnBurst === 'function') {
+                const r = btn.getBoundingClientRect();
+                spawnBurst(r.left + 24, r.top + 28 - chargeVal * 26, ['#ff00dd', '#fff04d', '#ffffff'], 4);
+                if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+            }
+            
+            chargeRaf = requestAnimationFrame(updateChargeLoop);
+        }
+        
+        function releaseAndLaunch() {
+            if (!charging) return;
+            charging = false;
+            cancelAnimationFrame(chargeRaf);
+            btn.classList.remove('is-charging');
+            
+            const startRect = btn.getBoundingClientRect();
+            const startX = startRect.left + 8;
+            const startY = startRect.top - chargeVal * 28;
+            const power = Math.max(0.25, chargeVal);
+            
+            chargeVal = 0;
+            btn.style.setProperty('--robot-charge', '0');
+            labelEl.textContent = 'Hold Robot to Launch';
+            
+            if (launchLock) return;
+            
+            const visibleCards = Array.from(document.querySelectorAll('.PeoplePics')).filter(c => {
+                const w = c.closest('.PersonWrapper');
+                return !c.classList.contains('is-filtered-out') && (!w || w.style.display !== 'none');
+            });
+            if (!visibleCards.length) return;
+            
+            launchLock = true;
+            const targetCard = visibleCards[Math.floor(Math.random() * visibleCards.length)];
+            targetCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            
+            if (typeof playBeep === 'function') {
+                playBeep(261.63, 0.08, 'sawtooth', 0.05);
+                setTimeout(() => playBeep(523.25 + power * 260, 0.14, 'square', 0.05), 60);
+            }
+            
+            setTimeout(() => {
+                const endRect = targetCard.getBoundingClientRect();
+                const endX = endRect.left + endRect.width / 2 - 23;
+                const endY = endRect.top + endRect.height / 2 - 23;
+                
+                const flyer = document.createElement('div');
+                flyer.className = 'doggie-robot-flyer';
+                flyer.style.left = `${startX}px`;
+                flyer.style.top = `${startY}px`;
+                document.body.appendChild(flyer);
+                
+                const arcHeight = 140 + power * 180;
+                const duration = 680;
+                const t0 = performance.now();
+                
+                function animateFlight(now) {
+                    const p = Math.min(1, (now - t0) / duration);
+                    const ease = 1 - Math.pow(1 - p, 2.2);
+                    const curX = startX + (endX - startX) * ease;
+                    const linearY = startY + (endY - startY) * ease;
+                    const arcOffset = Math.sin(p * Math.PI) * arcHeight;
+                    const curY = linearY - arcOffset;
+                    const rot = p * 720;
+                    
+                    flyer.style.left = `${curX.toFixed(1)}px`;
+                    flyer.style.top = `${curY.toFixed(1)}px`;
+                    flyer.style.transform = `rotate(${rot.toFixed(1)}deg) scale(${(1 + Math.sin(p * Math.PI) * 0.35).toFixed(2)})`;
+                    
+                    if (Math.random() < 0.45 && typeof spawnBurst === 'function') {
+                        spawnBurst(curX + 23, curY + 23, ['#ff00dd', '#fff04d', '#ffae42'], 4);
+                        if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                    }
+                    
+                    if (p < 1) {
+                        requestAnimationFrame(animateFlight);
+                    } else {
+                        flyer.remove();
+                        if (typeof spawnBurst === 'function') {
+                            spawnBurst(endX + 23, endY + 23, ['#ff00dd', '#fff04d', '#ffffff', '#cc0000'], 36);
+                            if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+                        }
+                        if (typeof playBeep === 'function') {
+                            playBeep(196, 0.08, 'sawtooth', 0.06);
+                            setTimeout(() => playBeep(659.25, 0.16, 'triangle', 0.06), 60);
+                        }
+                        targetCard.classList.add('spotlight-winner');
+                        setTimeout(() => targetCard.classList.remove('spotlight-winner'), 2200);
+                        if (typeof openCard === 'function') openCard(targetCard);
+                        launchLock = false;
+                    }
+                }
+                
+                requestAnimationFrame(animateFlight);
+            }, 320);
+        }
+        
+        btn.addEventListener('pointerdown', (e) => {
+            e.stopPropagation();
+            if (launchLock) return;
+            charging = true;
+            chargeVal = 0.08;
+            btn.classList.add('is-charging');
+            if (typeof playBeep === 'function') playBeep(220, 0.07, 'sawtooth', 0.04);
+            chargeRaf = requestAnimationFrame(updateChargeLoop);
+        });
+        
+        window.addEventListener('pointerup', releaseAndLaunch);
+        window.addEventListener('pointercancel', releaseAndLaunch);
+    }
+    function startDoggieSwingViewToggle() {
+        if (document.getElementById('doggieSwingToggle')) return;
+        
+        const track = document.createElement('button');
+        track.type = 'button';
+        track.id = 'doggieSwingToggle';
+        track.className = 'doggie-swing-track';
+        track.title = 'Swing Gravity Flip: Fly up to toggle Grid View vs Compact View!';
+        track.innerHTML = `
+        <span class="doggie-swing-pad"></span>
+        <span class="doggie-swing-track-trail"></span>
+        <span class="doggie-swing-icon"></span>
+        <span class="doggie-swing-pad"></span>
+    `;
+        document.body.appendChild(track);
+        
+        function syncCompactState(isCompact) {
+            document.body.classList.toggle('is-compact-view', isCompact);
+            track.classList.toggle('is-compact', isCompact);
+            localStorage.setItem('afcs_compact_view', isCompact ? 'true' : 'false');
+        }
+        
+        if (localStorage.getItem('afcs_compact_view') === 'true') {
+            syncCompactState(true);
+        }
+        
+        track.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const nextCompact = !document.body.classList.contains('is-compact-view');
+            syncCompactState(nextCompact);
+            
+            track.classList.remove('is-flying');
+            void track.offsetWidth;
+            track.classList.add('is-flying');
+            
+            const rect = track.getBoundingClientRect();
+            const burstY = nextCompact ? rect.top + 26 : rect.bottom - 26;
+            if (typeof spawnBurst === 'function') {
+                spawnBurst(rect.left + rect.width / 2, burstY, ['#ff00dd', '#fff04d', '#ffae42', '#ffffff'], 20);
+            }
+            if (typeof window.wakeParticleCanvas === 'function') window.wakeParticleCanvas();
+            if (typeof playBeep === 'function') {
+                playBeep(nextCompact ? 392 : 587.33, 0.08, 'triangle', 0.045);
+                setTimeout(() => playBeep(nextCompact ? 659.25 : 392, 0.12, 'sine', 0.045), 65);
+            }
+        });
+    }
     
     let cynHistoryTrapped = false;
-    
     function lockCynHistory() {
         if (cynHistoryTrapped) return;
         cynHistoryTrapped = true;
