@@ -1354,7 +1354,7 @@ function startDoggieGuest() {
     
     const doggieProfile = {
         name: 'Doggie',
-        imgSrc: 'otherPics/Doggie.jpg',
+        imgSrc: 'otherPics/doggie.jpg',
         role: 'Guest Legend',
         character: 'Verifier of Grief • Wave Legend',
         bio: 'Legendary Geometry Dash top player, streamer, and the relentless verifier of the Top 1 Extreme Demon "Grief" (reaching 80%+ progress).',
@@ -1458,7 +1458,7 @@ function startTeslaGuest() {
     
     const teslaProfile = {
         name: 'Nikola Tesla',
-        imgSrc: 'otherPics/Tesla.jpg',
+        imgSrc: 'otherPics/tesla.jpg',
         role: 'Guest Legend',
         character: 'Master of Alternating Current • Inventor',
         bio: 'Serbian-American inventor and electrical engineer who pioneered alternating-current (AC) electricity, the Tesla coil, and wireless power transmission.',
@@ -1474,7 +1474,7 @@ function startTeslaGuest() {
     
     const gaussProfile = {
         name: 'Carl Friedrich Gauss',
-        imgSrc: 'otherPics/Gauss.jpg',
+        imgSrc: 'otherPics/gauss.jpg',
         role: 'Guest Legend',
         character: 'Prince of Mathematicians • Number Theorist',
         bio: 'German mathematician and physicist who made foundational breakthroughs in number theory, statistics, modular arithmetic, magnetism, and astronomy.',
