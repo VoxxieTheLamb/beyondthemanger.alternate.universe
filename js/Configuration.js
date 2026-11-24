@@ -884,7 +884,7 @@ function startCynDesktopPet() {
         petEl.className = 'cyn-desktop-pet';
         petEl.style.pointerEvents = 'auto';
         petEl.innerHTML = '<div class="cyn-pet-bubble" id="cynPetBubble"></div>' +
-        '<img class="cyn-pet-sprite" src="otherPics/CynPet.jpg" alt="Cyn Pet" draggable="false">' +
+        '<img class="cyn-pet-sprite" src="otherpics/CynPet.jpg" alt="Cyn Pet" draggable="false">' +
         '<button type="button" class="cyn-pet-dismiss" title="Dismiss Cyn">&times;</button>' +
         '<div class="cyn-pet-solver-form" aria-hidden="true">' +
         '<svg viewBox="0 0 140 140" width="140" height="140">' +

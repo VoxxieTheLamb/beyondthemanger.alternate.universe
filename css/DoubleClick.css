@@ -1,0 +1,225 @@
+@keyframes virelleLockdownWire {
+    0%   { transform: scale(1); filter: brightness(1); }
+    20%  { transform: scale(1.07); filter: brightness(2.1) contrast(1.2); box-shadow: 0 0 36px #ffffff, 0 0 54px #fde047; }
+    45%  { transform: scale(1.03) rotate(-2deg); filter: brightness(1.3) hue-rotate(-35deg); box-shadow: 0 0 32px #ef4444, 0 0 48px #dc2626; }
+    65%  { transform: scale(1.06) rotate(2deg); box-shadow: 0 0 38px #ef4444, 0 0 56px #facc15; }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes ellaCurtainCall {
+    0%   { transform: perspective(600px) scale(1) rotateX(0deg); filter: brightness(1); }
+    28%  { transform: perspective(600px) scale(1.08) rotateX(14deg); filter: brightness(1.45); box-shadow: 0 0 36px #fde047, 0 0 54px #fb7185; }
+    62%  { transform: perspective(600px) scale(1.04) rotateX(-6deg); filter: brightness(1.25); box-shadow: 0 0 30px #facc15, 0 0 46px #ffffff; }
+    100% { transform: perspective(600px) scale(1) rotateX(0deg); filter: brightness(1); }
+}
+@keyframes tridanioScriptFlip {
+    0%   { transform: perspective(650px) rotateY(0deg) scale(1); filter: brightness(1); }
+    25%  { transform: perspective(650px) rotateY(-22deg) scale(1.07); filter: brightness(1.45); box-shadow: 0 0 34px #fde047, 0 0 50px #38bdf8; }
+    55%  { transform: perspective(650px) rotateY(18deg) scale(1.05); filter: brightness(1.35); box-shadow: 0 0 32px #facc15, 0 0 48px #ffffff; }
+    80%  { transform: perspective(650px) rotateY(-6deg) scale(1.02); }
+    100% { transform: perspective(650px) rotateY(0deg) scale(1); filter: brightness(1); }
+}
+@keyframes tesoroLiveMicPop {
+    0%   { transform: scale(1); filter: brightness(1); }
+    22%  { transform: scale(1.09) rotate(-3deg); filter: brightness(1.5); box-shadow: 0 0 38px #fde047, 0 0 56px #38bdf8; }
+    50%  { transform: scale(1.04) rotate(3deg); filter: brightness(1.3); box-shadow: 0 0 32px #f472b6, 0 0 48px #fde047; }
+    78%  { transform: scale(1.06) rotate(-1deg); }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes tanCornerstoneGlow {
+    0%   { transform: scale(1); filter: brightness(1); }
+    30%  { transform: scale(1.07) translateY(-4px); filter: brightness(1.55); box-shadow: 0 0 38px #fde047, 0 0 58px #ffffff; }
+    65%  { transform: scale(1.04) translateY(-2px); filter: brightness(1.3); box-shadow: 0 0 32px #facc15, 0 0 48px #38bdf8; }
+    100% { transform: scale(1) translateY(0); filter: brightness(1); }
+}
+@keyframes suzonPropCraft {
+    0%   { transform: scale(1) rotate(0deg); }
+    20%  { transform: scale(1.08) rotate(-6deg); filter: brightness(1.4); box-shadow: 0 0 34px #f59e0b, 0 0 50px #fde047; }
+    45%  { transform: scale(0.97) rotate(5deg); }
+    72%  { transform: scale(1.06) rotate(-3deg); box-shadow: 0 0 32px #38bdf8, 0 0 48px #fde047; }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes sevillaDoorLockdown {
+    0%   { transform: scale(1) translateX(0); filter: brightness(1); }
+    18%  { transform: scale(1.07) translateX(-5px); filter: brightness(1.35); box-shadow: 0 0 34px #ef4444, 0 0 52px #3b82f6; }
+    36%  { transform: scale(1.07) translateX(5px); box-shadow: 0 0 34px #3b82f6, 0 0 52px #ef4444; }
+    54%  { transform: scale(1.04) translateX(-3px); }
+    72%  { transform: scale(1.02) translateX(3px); }
+    100% { transform: scale(1) translateX(0); filter: brightness(1); }
+}
+@keyframes sanAgustinClapper {
+    0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    18%  { transform: scale(1.09) rotate(-7deg); filter: brightness(1.8); box-shadow: 0 0 38px #ffffff, 0 0 56px #fde047; }
+    38%  { transform: scale(0.96) rotate(4deg); filter: brightness(1.2); }
+    65%  { transform: scale(1.05) rotate(-2deg); box-shadow: 0 0 32px #fde047, 0 0 48px #38bdf8; }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes sanAndresPoliceSiren {
+    0%   { transform: scale(1); filter: brightness(1); }
+    20%  { transform: scale(1.07) rotate(-3deg); filter: brightness(1.4); box-shadow: -12px 0 32px #ef4444, 12px 0 32px #3b82f6; }
+    45%  { transform: scale(1.07) rotate(3deg); filter: brightness(1.4); box-shadow: 12px 0 32px #ef4444, -12px 0 32px #3b82f6; }
+    70%  { transform: scale(1.04) rotate(-2deg); box-shadow: -10px 0 28px #ef4444, 10px 0 28px #3b82f6; }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes pinpinMicSqueal {
+    0%   { transform: scale(1); filter: brightness(1); }
+    16%  { transform: scale(1.11) rotate(5deg); filter: brightness(1.65); box-shadow: 0 0 38px #f472b6, 0 0 56px #fde047; }
+    38%  { transform: scale(0.95) rotate(-5deg); filter: brightness(1.3); box-shadow: 0 0 32px #38bdf8, 0 0 48px #f472b6; }
+    64%  { transform: scale(1.06) rotate(3deg); }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes pagariganVlogZoom {
+    0%   { transform: scale(1); filter: brightness(1); }
+    22%  { transform: scale(1.12); filter: brightness(1.85); box-shadow: 0 0 38px #38bdf8, 0 0 56px #ffffff; }
+    48%  { transform: scale(0.98); filter: brightness(1.15); box-shadow: 0 0 30px #fde047, 0 0 46px #38bdf8; }
+    74%  { transform: scale(1.06); filter: brightness(1.4); }
+    100% { transform: scale(1); filter: brightness(1); }
+}
+@keyframes operanaSecurityAlert {
+    0%   { transform: scale(1) translateY(0); filter: brightness(1); }
+    20%  { transform: scale(1.07) translateY(-5px) rotate(-2deg); filter: brightness(1.45); box-shadow: 0 0 36px #f59e0b, 0 0 54px #ef4444; }
+    45%  { transform: scale(1.04) translateY(2px) rotate(2deg); box-shadow: 0 0 32px #ef4444, 0 0 48px #38bdf8; }
+    72%  { transform: scale(1.06) translateY(-2px); }
+    100% { transform: scale(1) translateY(0); filter: brightness(1); }
+}
+@keyframes oloresLanternSparkle {
+    0%   { transform: scale(1); filter: brightness(1); }
+    28%  { transform: scale(1.08) translateY(-4px); filter: brightness(1.55); box-shadow: 0 0 38px #f59e0b, 0 0 56px #fde047; }
+    64%  { transform: scale(1.05) translateY(-2px); filter: brightness(1.4); box-shadow: 0 0 36px #22d3ee, 0 0 54px #38bdf8; }
+    100% { transform: scale(1) translateY(0); filter: brightness(1); }
+}
+@keyframes mantalVipFanScream {
+    0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    18%  { transform: scale(1.1) rotate(-4deg); filter: brightness(1.85); box-shadow: 0 0 38px #f472b6, 0 0 56px #ffffff; }
+    38%  { transform: scale(1.03) rotate(4deg); filter: brightness(1.2); }
+    60%  { transform: scale(1.09) rotate(-3deg); filter: brightness(1.75); box-shadow: 0 0 38px #fde047, 0 0 56px #f472b6; }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes mallariCurtainSpin {
+    0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    45%  { transform: scale(1.09) rotate(195deg); filter: brightness(1.5); box-shadow: 0 0 38px #f472b6, 0 0 56px #fde047; }
+    80%  { transform: scale(1.03) rotate(368deg); filter: brightness(1.25); box-shadow: 0 0 30px #38bdf8, 0 0 46px #f472b6; }
+    100% { transform: scale(1) rotate(360deg); filter: brightness(1); }
+}
+@keyframes ibarraRubiksSolve {
+    0%   { transform: perspective(600px) rotateX(0deg) rotateY(0deg) scale(1); filter: brightness(1); }
+    25%  { transform: perspective(600px) rotateX(22deg) rotateY(-24deg) scale(1.08); filter: brightness(1.4); box-shadow: 0 0 34px #ef4444, 0 0 50px #3b82f6; }
+    55%  { transform: perspective(600px) rotateX(-18deg) rotateY(22deg) scale(1.07); filter: brightness(1.45); box-shadow: 0 0 34px #facc15, 0 0 50px #f97316; }
+    80%  { transform: perspective(600px) rotateX(0deg) rotateY(0deg) scale(1.06); filter: brightness(1.6); box-shadow: 0 0 38px #22c55e, 0 0 56px #ffffff; }
+    100% { transform: perspective(600px) rotateX(0deg) rotateY(0deg) scale(1); filter: brightness(1); }
+}
+@keyframes gapasinHandcuffArrest {
+    0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    20%  { transform: scale(1.08) rotate(-5deg); filter: brightness(1.45); box-shadow: 0 0 36px #ef4444, 0 0 54px #3b82f6; }
+    42%  { transform: scale(0.96) rotate(5deg); filter: brightness(1.25); box-shadow: 0 0 36px #3b82f6, 0 0 54px #e2e8f0; }
+    68%  { transform: scale(1.06) rotate(-2deg); box-shadow: 0 0 34px #fde047, 0 0 50px #3b82f6; }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes delacruzRookSlam {
+    0%   { transform: scale(1) translateY(0); filter: brightness(1); }
+    22%  { transform: scale(1.1) translateY(-10px) rotate(-3deg); filter: brightness(1.55); box-shadow: 0 0 38px #fde047, 0 0 56px #34d399; }
+    46%  { transform: scale(0.95) translateY(4px) rotate(2deg); filter: brightness(1.3); box-shadow: 0 0 34px #ffffff, 0 0 50px #facc15; }
+    74%  { transform: scale(1.05) translateY(-2px); }
+    100% { transform: scale(1) translateY(0) rotate(0deg); filter: brightness(1); }
+}
+@keyframes delrosarioMukbangWobble {
+    0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    18%  { transform: scale(1.11, 0.94) rotate(-4deg); filter: brightness(1.45); box-shadow: 0 0 36px #fb923c, 0 0 54px #fde047; }
+    40%  { transform: scale(0.95, 1.09) rotate(4deg); filter: brightness(1.3); box-shadow: 0 0 34px #f472b6, 0 0 50px #fb923c; }
+    66%  { transform: scale(1.06, 0.98) rotate(-2deg); }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes deguzmanCostumeSwirl {
+    0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    28%  { transform: scale(1.08) rotate(-5deg); filter: brightness(1.5); box-shadow: 0 0 36px #c084fc, 0 0 54px #fde047; }
+    62%  { transform: scale(1.05) rotate(4deg); filter: brightness(1.35); box-shadow: 0 0 34px #f472b6, 0 0 50px #c084fc; }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes clarizaTypewriterCue {
+    0%   { transform: scale(1) translateY(0); filter: brightness(1); }
+    20%  { transform: scale(1.08) translateY(-6px); filter: brightness(1.45); box-shadow: 0 0 36px #fde047, 0 0 54px #38bdf8; }
+    42%  { transform: scale(1.02) translateY(2px); }
+    65%  { transform: scale(1.07) translateY(-4px); filter: brightness(1.35); box-shadow: 0 0 34px #facc15, 0 0 50px #ffffff; }
+    100% { transform: scale(1) translateY(0); filter: brightness(1); }
+}
+@keyframes barcenasPhoneRing {
+    0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    16%  { transform: scale(1.08) rotate(-5deg); filter: brightness(1.5); box-shadow: 0 0 36px #38bdf8, 0 0 54px #fde047; }
+    32%  { transform: scale(1.08) rotate(5deg); }
+    48%  { transform: scale(1.08) rotate(-4deg); box-shadow: 0 0 38px #22d3ee, 0 0 56px #ffffff; }
+    64%  { transform: scale(1.06) rotate(4deg); }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes angelesMangaSlash {
+    0%   { transform: scale(1) skewX(0deg); filter: brightness(1); }
+    20%  { transform: scale(1.1) skewX(-8deg); filter: brightness(2) contrast(1.35); box-shadow: 0 0 38px #f472b6, 0 0 56px #38bdf8; }
+    48%  { transform: scale(1.04) skewX(6deg); filter: brightness(1.4); box-shadow: 0 0 34px #ffffff, 0 0 50px #f472b6; }
+    75%  { transform: scale(1.06) skewX(-2deg); }
+    100% { transform: scale(1) skewX(0deg); filter: brightness(1); }
+}
+@keyframes amadoraGuidingStar {
+    0%   { transform: scale(1) translateY(0); filter: brightness(1); }
+    30%  { transform: scale(1.08) translateY(-5px); filter: brightness(1.55); box-shadow: 0 0 38px #38bdf8, 0 0 56px #fde047; }
+    65%  { transform: scale(1.04) translateY(-2px); filter: brightness(1.3); box-shadow: 0 0 34px #fde047, 0 0 50px #ffffff; }
+    100% { transform: scale(1) translateY(0); filter: brightness(1); }
+}
+@keyframes uziNativityClue {
+    0%   { transform: scale(1) rotate(0deg); filter: brightness(1); }
+    22%  { transform: scale(1.1) rotate(-3deg); filter: brightness(1.65); box-shadow: 0 0 38px #22d3ee, 0 0 56px #fde047; }
+    50%  { transform: scale(1.04) rotate(3deg); filter: brightness(1.35); box-shadow: 0 0 34px #c084fc, 0 0 50px #22d3ee; }
+    78%  { transform: scale(1.07) rotate(-1deg); }
+    100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+}
+@keyframes arlesLanternDefuse {
+    0%   { transform: scale(1); filter: brightness(1); }
+    18%  { transform: scale(1.06) rotate(-3deg); filter: brightness(1.35); box-shadow: 0 0 36px #ef4444, 0 0 54px #dc2626; }
+    38%  { transform: scale(1.06) rotate(3deg); filter: brightness(1.4); box-shadow: 0 0 38px #ef4444, 0 0 56px #f97316; }
+    62%  { transform: scale(1.13) translateY(-6px) rotate(0deg); filter: brightness(2.1); box-shadow: 0 0 46px #fde047, 0 0 72px #ffffff, 0 0 90px #38bdf8; }
+    84%  { transform: scale(1.05) translateY(-2px); filter: brightness(1.45); box-shadow: 0 0 38px #fde047, 0 0 58px #facc15; }
+    100% { transform: scale(1) translateY(0); filter: brightness(1); }
+}
+@keyframes dblPrettyRing {
+    0%   { transform: scale(0.94); opacity: 1; }
+    65%  { transform: scale(1.08); opacity: 0.9; }
+    100% { transform: scale(1.16); opacity: 0; }
+}
+@keyframes dblPropPopArc {
+    0%   { transform: translateY(24px) scale(0.25) rotate(-25deg); opacity: 0; }
+    28%  { transform: translateY(-18px) scale(1.22) rotate(12deg); opacity: 1; }
+    62%  { transform: translateY(-28px) scale(1.08) rotate(-6deg); opacity: 1; }
+    100% { transform: translateY(-54px) scale(0.7) rotate(10deg); opacity: 0; }
+}
+
+@keyframes dblPropOrbit {
+    0%   { transform: translate(0, 10px) scale(0.2) rotate(0deg); opacity: 0; }
+    35%  { transform: translate(var(--ox, 38px), var(--oy, -26px)) scale(1.1) rotate(180deg); opacity: 1; }
+    100% { transform: translate(calc(var(--ox, 38px) * 1.4), calc(var(--oy, -26px) - 24px)) scale(0.5) rotate(360deg); opacity: 0; }
+}
+
+@keyframes dblGateLeft {
+    0%   { transform: translateX(-110%); opacity: 0; }
+    28%  { transform: translateX(0%); opacity: 0.95; }
+    72%  { transform: translateX(0%); opacity: 0.95; }
+    100% { transform: translateX(-110%); opacity: 0; }
+}
+
+@keyframes dblGateRight {
+    0%   { transform: translateX(110%); opacity: 0; }
+    28%  { transform: translateX(0%); opacity: 0.95; }
+    72%  { transform: translateX(0%); opacity: 0.95; }
+    100% { transform: translateX(110%); opacity: 0; }
+}
+
+@keyframes dblSirenFlash {
+    0%, 50%, 100% { filter: brightness(1.5); transform: scaleX(1.04); }
+    25%, 75%      { filter: brightness(0.65); transform: scaleX(0.96); }
+}
+
+@keyframes tcgFadeSlide {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+
+
+
+

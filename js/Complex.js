@@ -161,6 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
     startSurviveSolverUI();
     startDoggieGuest();
     startTeslaGuest();
+    handleDoubleClick();
   }
   startAll();
   //#endregion

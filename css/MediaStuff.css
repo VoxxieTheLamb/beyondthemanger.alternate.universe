@@ -594,11 +594,12 @@
     0%   { opacity: 0.95; transform: scaleX(1.3); }
     100% { opacity: 0; transform: scaleX(0.3); }
 }
-
-
-
-
-
+@keyframes battleHitShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-8px); }
+    50% { transform: translateX(8px); }
+    75% { transform: translateX(-5px); }
+}
 @media print {
     html, body {
         background: #ffffff !important;
