@@ -883,7 +883,7 @@ function startCynDesktopPet() {
         petEl = document.createElement('div');
         petEl.className = 'cyn-desktop-pet';
         petEl.style.pointerEvents = 'auto';
-        petEl.innerHTML = '<div class="cyn-pet-bubble" id="cynPetBubble"></div>' +
+         petEl.innerHTML = '<div class="cyn-pet-bubble" id="cynPetBubble"></div>' +
         '<img class="cyn-pet-sprite" src="otherpics/CynPet.jpg" alt="Cyn Pet" draggable="false">' +
         '<button type="button" class="cyn-pet-dismiss" title="Dismiss Cyn">&times;</button>' +
         '<div class="cyn-pet-solver-form" aria-hidden="true">' +
@@ -900,8 +900,7 @@ function startCynDesktopPet() {
         '</g>' +
         '<circle cx="70" cy="70" r="5" fill="#ffffff"/>' +
         '</svg>' +
-        '' +
-        '×';
+        '</div>';
         document.body.appendChild(petEl);
         bubbleEl = petEl.querySelector('#cynPetBubble');
         const solverOverlay = petEl.querySelector('.cyn-pet-solver-form');
