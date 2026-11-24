@@ -2262,7 +2262,7 @@ function startCharacterInteractions() {
         I'LL REMOVE IT
         */
     }
-    let caught = false;
+    /*let caught = false;
     
     function checkDevTools() {
     if (caught) return;
@@ -2346,6 +2346,6 @@ function startCharacterInteractions() {
     document.documentElement.innerHTML = "";
     window.location.replace("about:blank");
     }
-    
+    */
     
     
