@@ -455,7 +455,7 @@ function navBarThing() {
     nav.className = 'site-navbar';
     nav.innerHTML = [
         '<div class="nav-brand-wrap">',
-        '<img class="nav-logo" src="mainPics/AFCS.jpg" alt="AFCS Logo" onerror="this.style.display=\'none\'">',
+        '<img class="nav-logo" src="mainpics/AFCS.jpg" alt="AFCS Logo" onerror="this.style.display=\'none\'">',
         '<div class="nav-brand">',
         '<span class="nav-school-title">Antipolo Faith Christian School</span>',
         '<span class="nav-school-motto">CALLED FOR A PURPOSE • GRADE 7 PSALMS</span>',

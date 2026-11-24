@@ -1402,7 +1402,7 @@ function startCharacterInteractions() {
     if (arlesAltCard) {
         const arlesImg = arlesAltCard.querySelector('img');
         const arlesNameEl = arlesAltCard.querySelector('.overlay-text');
-        const origArlesSrc = arlesImg ? (arlesImg.getAttribute('src') || 'mainPics/Arles.jpg') : 'mainPics/Arles.jpg';
+        const origArlesSrc = arlesImg ? (arlesImg.getAttribute('src') || 'mainpics/Arles.jpg') : 'mainpics/Arles.jpg';
         const origArlesName = arlesNameEl ? arlesNameEl.textContent : 'Arles, Avinash Gabriel M.';
         let isNikiMode = false;
         let nikiSlideIdx = 0;
