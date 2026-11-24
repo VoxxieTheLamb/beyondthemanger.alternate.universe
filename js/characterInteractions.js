@@ -97,8 +97,8 @@ function startCharacterInteractions() {
     
     if (vollowSecCard) {
         const ethanImg = vollowSecCard.querySelector('img');
-        const voxSrc = 'otherpics/Vox.jpg';
-        const alastorSrc = 'otherpics/Alastor.jpg';
+        const voxSrc = 'otherpicss/Vox.jpg';
+        const alastorSrc = 'otherpicss/Alastor.jpg';
         
         const voxLines = [
             ' VoxTek: Trust US with your security!',
@@ -457,7 +457,7 @@ function startCharacterInteractions() {
     const nakanoCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('angeles'));
     if (nakanoCard) {
         const princeImg = nakanoCard.querySelector('img');
-        const zeroTwoSrc = 'otherpics/ZeroTwo.jpg';
+        const zeroTwoSrc = 'otherpicss/ZeroTwo.jpg';
         const zeroTwoLines = [
             'Darling~ ',
             'You came back for me, Darling? ',
@@ -642,7 +642,7 @@ function startCharacterInteractions() {
     const hazelCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('del rosario'));
     if (hazelCard) {
         const veronicaImg = hazelCard.querySelector('img');
-        const carlSrc = 'otherpics/CarlGrimes.jfif';
+        const carlSrc = 'otherpicss/CarlGrimes.jfif';
         const carlLines = [
             'Coral!',
             'Stay back, I got this!',
@@ -798,7 +798,7 @@ function startCharacterInteractions() {
     const sophieCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('suzon'));
     if (sophieCard) {
         const sophieImg = sophieCard.querySelector('img');
-        const cortisGroupSrc = 'otherpics/CortisGroup.jpg';
+        const cortisGroupSrc = 'otherpicss/CortisGroup.jpg';
         const cortisMembers = [
             {
                 name: 'Martin (Leader • Main Rapper)',
@@ -811,7 +811,7 @@ function startCharacterInteractions() {
                 themeColor: '#FF4B4B',
                 weight: 14,
                 rarityTag: 'Member',
-                src: 'otherpics/CortisMartin.jpg',
+                src: 'otherpicss/CortisMartin.jpg',
                 songRec: 'What You Want',
                 fanTitle: 'Lead Producer of Grade 7 – Psalms',
                 line: 'Hello! We are CORTIS! Ready to Color Outside The Lines with you, Sophie!',
@@ -835,7 +835,7 @@ function startCharacterInteractions() {
                 themeColor: '#2ECC71',
                 weight: 14,
                 rarityTag: 'Member',
-                src: 'otherpics/CortisJames.jpg',
+                src: 'otherpicss/CortisJames.jpg',
                 songRec: 'GO!',
                 fanTitle: 'Main Choreographer for Beyond The Manger',
                 line: 'Let’s bring full energy to the stage on December 17, Sophie!',
@@ -859,7 +859,7 @@ function startCharacterInteractions() {
                 themeColor: '#3498DB',
                 weight: 44,
                 rarityTag: 'Favorite',
-                src: 'otherpics/CortisJuhoon.jpg',
+                src: 'otherpicss/CortisJuhoon.jpg',
                 songRec: 'FaSHioN',
                 fanTitle: 'Visual Director of COER',
                 line: 'Stay chill and shine bright at Beyond The Manger, Sophie!',
@@ -893,7 +893,7 @@ function startCharacterInteractions() {
                 themeColor: '#2C3E50',
                 weight: 14,
                 rarityTag: 'Member',
-                src: 'otherpics/CortisSeonghyeon.jpg',
+                src: 'otherpicss/CortisSeonghyeon.jpg',
                 songRec: 'REDRED',
                 fanTitle: 'Chief Melody Maker for Sophie',
                 line: 'Writing a brand-new track just for Grade 7 – Psalms!',
@@ -917,7 +917,7 @@ function startCharacterInteractions() {
                 themeColor: '#F1C40F',
                 weight: 14,
                 rarityTag: 'Member',
-                src: 'otherpics/CortisKeonho.jpg',
+                src: 'otherpicss/CortisKeonho.jpg',
                 songRec: 'JoyRide',
                 fanTitle: 'Official Maknae Bestie',
                 line: 'COER forever! Thanks for supporting all 5 of us, Sophie!',
@@ -1108,7 +1108,7 @@ function startCharacterInteractions() {
     const kiefCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('dela cruz'));
     if (kiefCard) {
         const kiefImg = kiefCard.querySelector('img');
-        const kobeSrc = 'otherpics/Kobe.jpg';
+        const kobeSrc = 'otherpicss/Kobe.jpg';
         const kobeLines = [
             'Mamba Mentality!',
             'Job’s not finished. Job finished? I don’t think so.',
@@ -1257,7 +1257,7 @@ function startCharacterInteractions() {
     const jennahCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('mantal'));
     if (jennahCard) {
         const jennahImg = jennahCard.querySelector('img');
-        const crowbarSrc = 'otherpics/crowbar.jpg';
+        const crowbarSrc = 'otherpicss/crowbar.jpg';
         const crowbarLines = [
             'I can open anything with this!'
         ];
@@ -1386,16 +1386,16 @@ function startCharacterInteractions() {
     }
     
     const NIKI_GALLERY = [
-        { src: 'otherPics/niki1.jpg',  line: '"ENGENE! Let’s own the stage tonight!"' },
-        { src: 'otherPics/niki2.jpg',  line: '"Dance is how I speak without saying a single word."' },
-        { src: 'otherPics/niki3.jpg',  line: '"Bite Me — synchronized down to every heartbeat."' },
-        { src: 'otherPics/niki4.jpg',  line: '"From Okayama to the world stage — never stop practicing."' },
-        { src: 'otherPics/niki5.jpg',  line: '"Dark Blood vibes locked in. Watch the footwork!"' },
-        { src: 'otherPics/niki6.jpg',  line: '"Maknae on top! Who’s ready for the encore?"' },
-        { src: 'otherPics/niki7.jpg',  line: '"Every choreo detail matters when the spotlight hits."' },
-        { src: 'otherPics/niki8.jpg',  line: '"Even when things get tough, ENGENE gives me strength."' },
-        { src: 'otherPics/niki9.jpg',  line: '"Sweet Venom — smooth, sharp, and unstoppable."' },
-        { src: 'otherPics/niki10.jpg', line: '"Nishimura Riki mode: 100% locked in!"' }
+        { src: 'otherpicss/niki1.jpg',  line: '"ENGENE! Let’s own the stage tonight!"' },
+        { src: 'otherpicss/niki2.jpg',  line: '"Dance is how I speak without saying a single word."' },
+        { src: 'otherpicss/niki3.jpg',  line: '"Bite Me — synchronized down to every heartbeat."' },
+        { src: 'otherpicss/niki4.jpg',  line: '"From Okayama to the world stage — never stop practicing."' },
+        { src: 'otherpicss/niki5.jpg',  line: '"Dark Blood vibes locked in. Watch the footwork!"' },
+        { src: 'otherpicss/niki6.jpg',  line: '"Maknae on top! Who’s ready for the encore?"' },
+        { src: 'otherpicss/niki7.jpg',  line: '"Every choreo detail matters when the spotlight hits."' },
+        { src: 'otherpicss/niki8.jpg',  line: '"Even when things get tough, ENGENE gives me strength."' },
+        { src: 'otherpicss/niki9.jpg',  line: '"Sweet Venom — smooth, sharp, and unstoppable."' },
+        { src: 'otherpicss/niki10.jpg', line: '"Nishimura Riki mode: 100% locked in!"' }
     ];
     
     const arlesAltCard = cards.find(c => c.querySelector('.overlay-text')?.textContent.toLowerCase().includes('arles'));
@@ -1517,7 +1517,7 @@ function startCharacterInteractions() {
     }
     const cacebCard = cards.find(c => c.querySelector('.overlay-text').textContent.toLowerCase().includes('abrena'));
     if (cacebCard) {
-        const cynImageSrc = 'otherpics/Cyn.jpg';
+        const cynImageSrc = 'otherpicss/Cyn.jpg';
         const solverSvg = `data:image/svg+xml;utf8,${encodeURIComponent(`
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
                 <rect width="200" height="200" fill="#090702"/>

@@ -142,7 +142,7 @@ function startNewtonAlterEgo() {
                     card.dataset.birthday = 'January 4, 1643';
                     card.dataset.bio = 'English mathematician, physicist, and astronomer who discovered Universal Gravitation and Calculus, dropping into Paskong AFCS 2026!';
                     if (img) {
-                        img.src = 'otherpics/Newton.jpg';
+                        img.src = 'otherpicss/Newton.jpg';
                         img.alt = 'Newton, Isaac';
                         img.classList.add('is-newton-pfp');
                     }
@@ -166,7 +166,7 @@ function startNewtonAlterEgo() {
                     card.dataset.birthday = 'April 15, 1707';
                     card.dataset.bio = '18th-century Swiss mathematician, physicist, and creator of e^(iπ) + 1 = 0, stopping by the Burj Khalifa Christmas Meet & Greet for Paskong AFCS 2026!';
                     if (img) {
-                        img.src = 'otherpics/euler.jpg';
+                        img.src = 'otherpicss/euler.jpg';
                         img.alt = 'Euler, Leonhard';
                         img.classList.remove('is-newton-pfp');
                     }
@@ -307,7 +307,7 @@ function startJordanAlterEgo() {
                     card.dataset.birthday = 'February 17, 1963';
                     card.dataset.bio = '6× NBA Champion, 6× Finals MVP, and the undisputed Air Jordan taking flight at Paskong AFCS 2026!';
                     if (img) {
-                        img.src = 'otherpics/Jordan.jpg';
+                        img.src = 'otherpicss/Jordan.jpg';
                         img.alt = 'Jordan, Michael';
                     }
                     if (label) label.textContent = 'Jordan, Michael';
@@ -324,7 +324,7 @@ function startJordanAlterEgo() {
                     card.dataset.birthday = 'March 14, 1988';
                     card.dataset.bio = '4× NBA Champion and all-time 3-point king raining deep shots from the Burj Khalifa observation deck!';
                     if (img) {
-                        img.src = 'otherpics/Curry.jpg';
+                        img.src = 'otherpicss/Curry.jpg';
                         img.alt = 'Curry, Stephen';
                     }
                     if (label) label.textContent = 'Curry, Stephen';
@@ -470,7 +470,7 @@ function startBurrAlterEgo() {
                     card.dataset.birthday = 'February 6, 1756';
                     card.dataset.bio = 'Patient strategist waiting in the wings of the Burj Khalifa for the Room Where It Happens!';
                     if (img) {
-                        img.src = 'otherpics/Burr.jpg';
+                        img.src = 'otherpicss/Burr.jpg';
                         img.alt = 'Burr, Aaron';
                     }
                     if (label) label.textContent = 'Burr, Aaron';
@@ -487,7 +487,7 @@ function startBurrAlterEgo() {
                     card.dataset.birthday = 'January 11, 1757';
                     card.dataset.bio = 'Non-stop writer and Founding Father bringing Broadway energy to the Burj Khalifa stage!';
                     if (img) {
-                        img.src = 'otherpics/Hamilton.jpg';
+                        img.src = 'otherpicss/Hamilton.jpg';
                         img.alt = 'Hamilton, Alexander';
                     }
                     if (label) label.textContent = 'Hamilton, Alexander';
@@ -651,7 +651,7 @@ function startUziAlterEgo() {
                     card.dataset.birthday = 'October 31, 3071';
                     card.dataset.bio = 'Edgy, rebellious Worker Drone wielding a sick-as-hell railgun and Absolute Solver powers!';
                     if (img) {
-                        img.src = 'otherpics/uziDrone.jpg';
+                        img.src = 'otherpicss/uziDrone.jpg';
                         img.alt = 'Doorman, Uzi';
                     }
                     if (label) label.textContent = 'Doorman, Uzi';
@@ -668,7 +668,7 @@ function startUziAlterEgo() {
                     card.dataset.birthday = 'November 18, 3071';
                     card.dataset.bio = 'Cheerful, loyal Disassembly Drone from Copper-9 visiting Dubai with maximum Golden Retriever energy!';
                     if (img) {
-                        img.src = 'otherpics/NDrone.jpg';
+                        img.src = 'otherpicss/NDrone.jpg';
                         img.alt = 'Designation N, Serial';
                     }
                     if (label) label.textContent = 'Designation N, Serial';
@@ -821,7 +821,7 @@ function startGalileoAlterEgo() {
                     card.dataset.birthday = 'February 15, 1564';
                     card.dataset.bio = 'Italian astronomer and physicist peering through his telescope from the top of the Burj Khalifa!';
                     if (img) {
-                        img.src = 'otherpics/Galilei.jpg';
+                        img.src = 'otherpicss/Galilei.jpg';
                         img.alt = 'Galilei, Galileo';
                     }
                     if (label) label.textContent = 'Galilei, Galileo';
@@ -838,7 +838,7 @@ function startGalileoAlterEgo() {
                     card.dataset.birthday = 'March 14, 1879';
                     card.dataset.bio = 'Theoretical physicist who unlocked E = mc² and space-time relativity, visiting Dubai for Paskong AFCS 2026!';
                     if (img) {
-                        img.src = 'otherpics/Einstein.jpg';
+                        img.src = 'otherpicss/Einstein.jpg';
                         img.alt = 'Einstein, Albert';
                     }
                     if (label) label.textContent = 'Einstein, Albert';
