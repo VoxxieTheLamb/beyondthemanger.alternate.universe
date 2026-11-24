@@ -253,46 +253,46 @@ function startWhackACyn() {
 }
 function startTradingCardData() {
     const CARD_CATALOG = [
-        { id: 'c01', num: '001', name: 'Jenn V. Batumbakal', rarity: 'Mythic', role: 'Lead • Costume Head', img: 'mainPics/Arles.jpg', quote: 'We rise because Jesus Christ is our Cornerstone.' },
-        { id: 'c02', num: '002', name: 'Sir Mark Christian Eulogio', rarity: 'Mythic', role: 'Class Adviser • Co-Director', img: 'mainPics/Eulogio.jpg', quote: 'Grade 7 – Psalms, shine bright on stage!' },
-        { id: 'c03', num: '003', name: 'Cosmos Baterbonia (Caceb)', rarity: 'Epic', role: 'Vlogger 3 • Research Head', img: 'mainPics/Uzi.jfif', quote: 'Live from Floor 163 of the Burj Khalifa!' },
-        { id: 'c04', num: '004', name: 'Mics Batumbakal (Recca)', rarity: 'Rare', role: 'Father of Jenn • Asst. Tech', img: 'mainPics/Amadora.jpg', quote: 'Steady and calm through every lockdown.' },
-        { id: 'c05', num: '005', name: 'Nakano Hazumake (Prince)', rarity: 'Epic', role: 'Artist 4 • Manga Artist', img: 'mainPics/Angeles.jpg', quote: 'Sketching the whole skyline from Japan!' },
-        { id: 'c06', num: '006', name: 'Kei Boberx (Kief)', rarity: 'Epic', role: 'Artist 5 • 2823 Grandmaster', img: 'mainPics/DelaCruz.jpg', quote: 'Checkmate in four moves.' },
-        { id: 'c07', num: '007', name: 'Zach Xander (Xander)', rarity: 'Rare', role: 'Artist 1 • Speedcuber', img: 'mainPics/Ibarra.jpg', quote: 'Solved under 8 seconds!' },
-        { id: 'c08', num: '008', name: 'Ella Brooks (Janaya)', rarity: 'Rare', role: 'Artist 2 • Stage Director', img: 'mainPics/Tulaylay.jpg', quote: 'Places everyone, curtain up!' },
-        { id: 'c09', num: '009', name: 'Virelle Valdez (Rosh)', rarity: 'Rare', role: 'Artist 3 • Head Lighting', img: 'mainPics/Uba.jpg', quote: 'Spotlights locked and loaded.' },
-        { id: 'c10', num: '010', name: 'Jolianne Batumbakal (Giechelle)', rarity: 'Epic', role: 'Class President • Floor Dir.', img: 'mainPics/Tan.jpg', quote: 'Leading Grade 7 – Psalms with heart.' },
-        { id: 'c11', num: '011', name: 'Scarlet Hernandez (Jennah)', rarity: 'Epic', role: 'Research Head • VIP Cast', img: 'mainPics/Mantal.jpg', quote: 'Only the best for the Burj Khalifa VIP lounge!' },
-        { id: 'c12', num: '012', name: 'Hazel Sallow (Veronica)', rarity: 'Common', role: 'Vlogger 1 • Prop Head', img: 'mainPics/DelRosario.jpg', quote: 'Welcome back to another Dubai mukbang!' },
-        { id: 'c13', num: '013', name: 'Lloyd Barell (Jordan)', rarity: 'Common', role: 'Vlogger 2 • Shadow Head', img: 'mainPics/Barcenas.jpg', quote: 'Rolling camera on Floor 148!' },
-        { id: 'c14', num: '014', name: 'Kyle Tucker (Aleb)', rarity: 'Common', role: 'Vlogger 4 • Shadow Head', img: 'mainPics/Pagarigan.jpg', quote: 'Exploring every corner of the tower.' },
-        { id: 'c15', num: '015', name: 'Lydia Phileo (Charlyn)', rarity: 'Common', role: 'Host 1 • Prop Head', img: 'mainPics/Tesoro.jpg', quote: 'Welcome to the Christmas Meet & Greet!' },
-        { id: 'c16', num: '016', name: 'Ace Rosehearts (Alyana)', rarity: 'Common', role: 'Host 2 • Research Head', img: 'mainPics/Pinpin.jpg', quote: 'Give it up for our celebrity guests!' },
-        { id: 'c17', num: '017', name: 'Bobby Dridger (Eldrige)', rarity: 'Common', role: 'Security Guard 1 • Tech Head', img: 'mainPics/Operana.jpg', quote: 'Perimeter secure, all clear.' },
-        { id: 'c18', num: '018', name: 'Vollow (Ethan)', rarity: 'Common', role: 'Security Guard 2 • Shadow', img: 'mainPics/Sevilla.jpg', quote: 'Watching every exit.' },
-        { id: 'c19', num: '019', name: 'Officer Ryo (Ezekiel)', rarity: 'Common', role: 'Police Officer 1 • Shadow', img: 'mainPics/SanAndres.jpg', quote: 'Lockdown protocol initiated.' },
-        { id: 'c20', num: '020', name: 'Officer Theo (Roberto)', rarity: 'Common', role: 'Police Officer 2 • Choreo', img: 'mainPics/Gapasin.jpg', quote: 'Keep the crowd moving safely!' },
-        { id: 'c21', num: '021', name: 'Absolute Solver: Cyn', rarity: 'Mythic', role: 'Secret Anomaly • [NULL]', img: 'otherPics/Cyn.jpg', quote: 'Giggle. Did you think you could collect me?' },
-        { id: 'c22', num: '022', name: 'Leonhard Euler', rarity: 'Mythic', role: 'VIP Math Legend • e^(iπ)+1=0', img: 'otherPics/euler.jpg', quote: 'Mathematics is the queen of the sciences.' },
-        { id: 'c23', num: '023', name: 'Johanna Mitchel De Guzman', rarity: 'Rare', role: 'Grade 7 – Psalms • Cast & Crew', img: 'mainPics/DeGuzman.jpg', quote: 'Standing strong together in faith!' },
-        { id: 'c24', num: '024', name: 'Carlaine Missha Kaera Mallari', rarity: 'Rare', role: 'Grade 7 – Psalms • Choreo & Cast', img: 'mainPics/Mallari.jpg', quote: 'Every step synchronized for December 17!' },
-        { id: 'c25', num: '025', name: 'Shekinah Chloe San Agustin', rarity: 'Rare', role: 'Grade 7 – Psalms • Choir & Cast', img: 'mainPics/SanAgustin.jpg', quote: 'Lifting our voices above the skyline!' },
-        { id: 'c26', num: '026', name: 'Precious Jade Tridanio', rarity: 'Rare', role: 'Grade 7 – Psalms • Stage Crew', img: 'mainPics/Tridanio.jpg', quote: 'Behind every scene is a prayer and a plan.' },
-        { id: 'c27', num: '027', name: 'Psalmist Shadow & Tech Unit', rarity: 'Common', role: 'Backstage • Sound & Rigging', img: 'mainPics/AFCS.jpg', quote: 'Cues primed, mics hot, lights ready!' },
-        { id: 'c28', num: '028', name: 'Psalmist Ensemble Chorus', rarity: 'Common', role: 'Grade 7 – Psalms • Full Cast', img: 'mainPics/AFCS.jpg', quote: 'Twenty-six voices, one Cornerstone!' },
-        { id: 'c29', num: '029', name: 'LeBron James', rarity: 'Mythic', role: 'VIP Guest • 4× NBA Champion', img: 'otherPics/Lebron.jpg', quote: 'Strive for greatness, Grade 7 – Psalms!' },
-        { id: 'c30', num: '030', name: 'Kawhi Leonard', rarity: 'Epic', role: 'VIP Alter-Ego • The Klaw', img: 'otherPics/Kawhi.jpg', quote: 'Board man gets paid. Lockdown defense!' },
-        { id: 'c31', num: '031', name: 'Stephen Curry', rarity: 'Mythic', role: 'VIP Guest • All-Time 3PT King', img: 'otherPics/Curry.jpg', quote: 'From the Burj Khalifa logo... BANG!' },
-        { id: 'c32', num: '032', name: 'Michael Jordan', rarity: 'Mythic', role: 'VIP Alter-Ego • His Airness (6×)', img: 'otherPics/Jordan.jpg', quote: 'Limits, like fears, are often just an illusion.' },
-        { id: 'c33', num: '033', name: 'Albert Einstein', rarity: 'Mythic', role: 'VIP Guest • E = mc²', img: 'otherPics/Einstein.jpg', quote: 'Imagination is more important than knowledge.' },
-        { id: 'c34', num: '034', name: 'Alexander Hamilton', rarity: 'Epic', role: 'VIP Guest • Founding Father', img: 'otherPics/Hamilton.jpg', quote: 'I am not throwing away my shot!' },
-        { id: 'c35', num: '035', name: 'Serial Designation N', rarity: 'Epic', role: 'VIP Guest • Disassembly Drone', img: 'otherPics/N.jpg', quote: 'I love doing anything—especially biscuits!' },
-        { id: 'c36', num: '036', name: 'Doggie & Zoink', rarity: 'Mythic', role: 'VIP Legends • Grief & Tidal Wave', img: 'otherPics/Doggie.jpg', quote: '4× wave speed locked in—GG!' },
-        { id: 'c37', num: '037', name: 'Nikola Tesla & Gauss', rarity: 'Mythic', role: 'VIP Legends • 3-6-9 & Symmetry', img: 'otherPics/Tesla.jpg', quote: 'Energy, frequency, and vibration!' },
-        { id: 'c38', num: '038', name: 'Sir Isaac Newton', rarity: 'Epic', role: 'VIP Alter-Ego • Gravity Apple', img: 'otherPics/Newton.jpg', quote: 'Every action has an equal and opposite reaction.' },
-        { id: 'c39', num: '039', name: 'Jennah’s Steel Crowbar', rarity: 'Epic', role: 'Secret Relic • HEV Mark IV', img: 'otherPics/Crowbar.jpg', quote: '*CLANG!* Zero words, 100% problem solving.' },
-        { id: 'c40', num: '040', name: 'The Cornerstone Key', rarity: 'Mythic', role: 'Psalms 118:22 • Floor 163 Relic', img: 'mainPics/AFCS.jpg', quote: 'The stone the builders rejected has become the cornerstone.' }
+        { id: 'c01', num: '001', name: 'Jenn V. Batumbakal', rarity: 'Mythic', role: 'Lead • Costume Head', img: 'mainpics/Arles.jpg', quote: 'We rise because Jesus Christ is our Cornerstone.' },
+        { id: 'c02', num: '002', name: 'Sir Mark Christian Eulogio', rarity: 'Mythic', role: 'Class Adviser • Co-Director', img: 'mainpics/Eulogio.jpg', quote: 'Grade 7 – Psalms, shine bright on stage!' },
+        { id: 'c03', num: '003', name: 'Cosmos Baterbonia (Caceb)', rarity: 'Epic', role: 'Vlogger 3 • Research Head', img: 'mainpics/Uzi.jfif', quote: 'Live from Floor 163 of the Burj Khalifa!' },
+        { id: 'c04', num: '004', name: 'Mics Batumbakal (Recca)', rarity: 'Rare', role: 'Father of Jenn • Asst. Tech', img: 'mainpics/Amadora.jpg', quote: 'Steady and calm through every lockdown.' },
+        { id: 'c05', num: '005', name: 'Nakano Hazumake (Prince)', rarity: 'Epic', role: 'Artist 4 • Manga Artist', img: 'mainpics/Angeles.jpg', quote: 'Sketching the whole skyline from Japan!' },
+        { id: 'c06', num: '006', name: 'Kei Boberx (Kief)', rarity: 'Epic', role: 'Artist 5 • 2823 Grandmaster', img: 'mainpics/DelaCruz.jpg', quote: 'Checkmate in four moves.' },
+        { id: 'c07', num: '007', name: 'Zach Xander (Xander)', rarity: 'Rare', role: 'Artist 1 • Speedcuber', img: 'mainpics/Ibarra.jpg', quote: 'Solved under 8 seconds!' },
+        { id: 'c08', num: '008', name: 'Ella Brooks (Janaya)', rarity: 'Rare', role: 'Artist 2 • Stage Director', img: 'mainpics/Tulaylay.jpg', quote: 'Places everyone, curtain up!' },
+        { id: 'c09', num: '009', name: 'Virelle Valdez (Rosh)', rarity: 'Rare', role: 'Artist 3 • Head Lighting', img: 'mainpics/Uba.jpg', quote: 'Spotlights locked and loaded.' },
+        { id: 'c10', num: '010', name: 'Jolianne Batumbakal (Giechelle)', rarity: 'Epic', role: 'Class President • Floor Dir.', img: 'mainpics/Tan.jpg', quote: 'Leading Grade 7 – Psalms with heart.' },
+        { id: 'c11', num: '011', name: 'Scarlet Hernandez (Jennah)', rarity: 'Epic', role: 'Research Head • VIP Cast', img: 'mainpics/Mantal.jpg', quote: 'Only the best for the Burj Khalifa VIP lounge!' },
+        { id: 'c12', num: '012', name: 'Hazel Sallow (Veronica)', rarity: 'Common', role: 'Vlogger 1 • Prop Head', img: 'mainpics/DelRosario.jpg', quote: 'Welcome back to another Dubai mukbang!' },
+        { id: 'c13', num: '013', name: 'Lloyd Barell (Jordan)', rarity: 'Common', role: 'Vlogger 2 • Shadow Head', img: 'mainpics/Barcenas.jpg', quote: 'Rolling camera on Floor 148!' },
+        { id: 'c14', num: '014', name: 'Kyle Tucker (Aleb)', rarity: 'Common', role: 'Vlogger 4 • Shadow Head', img: 'mainpics/Pagarigan.jpg', quote: 'Exploring every corner of the tower.' },
+        { id: 'c15', num: '015', name: 'Lydia Phileo (Charlyn)', rarity: 'Common', role: 'Host 1 • Prop Head', img: 'mainpics/Tesoro.jpg', quote: 'Welcome to the Christmas Meet & Greet!' },
+        { id: 'c16', num: '016', name: 'Ace Rosehearts (Alyana)', rarity: 'Common', role: 'Host 2 • Research Head', img: 'mainpics/Pinpin.jpg', quote: 'Give it up for our celebrity guests!' },
+        { id: 'c17', num: '017', name: 'Bobby Dridger (Eldrige)', rarity: 'Common', role: 'Security Guard 1 • Tech Head', img: 'mainpics/Operana.jpg', quote: 'Perimeter secure, all clear.' },
+        { id: 'c18', num: '018', name: 'Vollow (Ethan)', rarity: 'Common', role: 'Security Guard 2 • Shadow', img: 'mainpics/Sevilla.jpg', quote: 'Watching every exit.' },
+        { id: 'c19', num: '019', name: 'Officer Ryo (Ezekiel)', rarity: 'Common', role: 'Police Officer 1 • Shadow', img: 'mainpics/SanAndres.jpg', quote: 'Lockdown protocol initiated.' },
+        { id: 'c20', num: '020', name: 'Officer Theo (Roberto)', rarity: 'Common', role: 'Police Officer 2 • Choreo', img: 'mainpics/Gapasin.jpg', quote: 'Keep the crowd moving safely!' },
+        { id: 'c21', num: '021', name: 'Absolute Solver: Cyn', rarity: 'Mythic', role: 'Secret Anomaly • [NULL]', img: 'otherpics/Cyn.jpg', quote: 'Giggle. Did you think you could collect me?' },
+        { id: 'c22', num: '022', name: 'Leonhard Euler', rarity: 'Mythic', role: 'VIP Math Legend • e^(iπ)+1=0', img: 'otherpics/euler.jpg', quote: 'Mathematics is the queen of the sciences.' },
+        { id: 'c23', num: '023', name: 'Johanna Mitchel De Guzman', rarity: 'Rare', role: 'Grade 7 – Psalms • Cast & Crew', img: 'mainpics/DeGuzman.jpg', quote: 'Standing strong together in faith!' },
+        { id: 'c24', num: '024', name: 'Carlaine Missha Kaera Mallari', rarity: 'Rare', role: 'Grade 7 – Psalms • Choreo & Cast', img: 'mainpics/Mallari.jpg', quote: 'Every step synchronized for December 17!' },
+        { id: 'c25', num: '025', name: 'Shekinah Chloe San Agustin', rarity: 'Rare', role: 'Grade 7 – Psalms • Choir & Cast', img: 'mainpics/SanAgustin.jpg', quote: 'Lifting our voices above the skyline!' },
+        { id: 'c26', num: '026', name: 'Precious Jade Tridanio', rarity: 'Rare', role: 'Grade 7 – Psalms • Stage Crew', img: 'mainpics/Tridanio.jpg', quote: 'Behind every scene is a prayer and a plan.' },
+        { id: 'c27', num: '027', name: 'Psalmist Shadow & Tech Unit', rarity: 'Common', role: 'Backstage • Sound & Rigging', img: 'mainpics/AFCS.jpg', quote: 'Cues primed, mics hot, lights ready!' },
+        { id: 'c28', num: '028', name: 'Psalmist Ensemble Chorus', rarity: 'Common', role: 'Grade 7 – Psalms • Full Cast', img: 'mainpics/AFCS.jpg', quote: 'Twenty-six voices, one Cornerstone!' },
+        { id: 'c29', num: '029', name: 'LeBron James', rarity: 'Mythic', role: 'VIP Guest • 4× NBA Champion', img: 'otherpics/Lebron.jpg', quote: 'Strive for greatness, Grade 7 – Psalms!' },
+        { id: 'c30', num: '030', name: 'Kawhi Leonard', rarity: 'Epic', role: 'VIP Alter-Ego • The Klaw', img: 'otherpics/Kawhi.jpg', quote: 'Board man gets paid. Lockdown defense!' },
+        { id: 'c31', num: '031', name: 'Stephen Curry', rarity: 'Mythic', role: 'VIP Guest • All-Time 3PT King', img: 'otherpics/Curry.jpg', quote: 'From the Burj Khalifa logo... BANG!' },
+        { id: 'c32', num: '032', name: 'Michael Jordan', rarity: 'Mythic', role: 'VIP Alter-Ego • His Airness (6×)', img: 'otherpics/Jordan.jpg', quote: 'Limits, like fears, are often just an illusion.' },
+        { id: 'c33', num: '033', name: 'Albert Einstein', rarity: 'Mythic', role: 'VIP Guest • E = mc²', img: 'otherpics/Einstein.jpg', quote: 'Imagination is more important than knowledge.' },
+        { id: 'c34', num: '034', name: 'Alexander Hamilton', rarity: 'Epic', role: 'VIP Guest • Founding Father', img: 'otherpics/Hamilton.jpg', quote: 'I am not throwing away my shot!' },
+        { id: 'c35', num: '035', name: 'Serial Designation N', rarity: 'Epic', role: 'VIP Guest • Disassembly Drone', img: 'otherpics/N.jpg', quote: 'I love doing anything—especially biscuits!' },
+        { id: 'c36', num: '036', name: 'Doggie & Zoink', rarity: 'Mythic', role: 'VIP Legends • Grief & Tidal Wave', img: 'otherpics/Doggie.jpg', quote: '4× wave speed locked in—GG!' },
+        { id: 'c37', num: '037', name: 'Nikola Tesla & Gauss', rarity: 'Mythic', role: 'VIP Legends • 3-6-9 & Symmetry', img: 'otherpics/Tesla.jpg', quote: 'Energy, frequency, and vibration!' },
+        { id: 'c38', num: '038', name: 'Sir Isaac Newton', rarity: 'Epic', role: 'VIP Alter-Ego • Gravity Apple', img: 'otherpics/Newton.jpg', quote: 'Every action has an equal and opposite reaction.' },
+        { id: 'c39', num: '039', name: 'Jennah’s Steel Crowbar', rarity: 'Epic', role: 'Secret Relic • HEV Mark IV', img: 'otherpics/Crowbar.jpg', quote: '*CLANG!* Zero words, 100% problem solving.' },
+        { id: 'c40', num: '040', name: 'The Cornerstone Key', rarity: 'Mythic', role: 'Psalms 118:22 • Floor 163 Relic', img: 'mainpics/AFCS.jpg', quote: 'The stone the builders rejected has become the cornerstone.' }
     ];
     
     const RARITY_CONFIG = {
@@ -357,7 +357,7 @@ function startTradingCardData() {
                 name: cleanName,
                 rarity,
                 role: entry.role || 'Grade 7 – Psalms • Special Edition',
-                img: entry.img || 'mainPics/AFCS.jpg',
+                img: entry.img || 'mainpics/AFCS.jpg',
                 quote: entry.quote || 'We rise because Jesus Christ is our Cornerstone.'
             });
         });
@@ -1067,7 +1067,7 @@ function startOnlineBattleUI() {
             shielded: false
         };
         const imgEl = card.querySelector('img');
-        const imgSrc = imgEl ? imgEl.getAttribute('src') : 'mainPics/AFCS.jpg';
+        const imgSrc = imgEl ? imgEl.getAttribute('src') : 'mainpics/AFCS.jpg';
         return { ...base, imgSrc };
     }
     
@@ -1081,7 +1081,7 @@ function startOnlineBattleUI() {
             <div class="online-lobby-wrap">
                 <div class="online-lobby-header">🌐 ONLINE 1v1 MULTIPLAYER</div>
                 <div class="online-selected-fighter">
-                    <img src="${myFighter.imgSrc}" alt="${myFighter.shortName}" onerror="this.src='mainPics/AFCS.jpg'">
+                    <img src="${myFighter.imgSrc}" alt="${myFighter.shortName}" onerror="this.src='mainpics/AFCS.jpg'">
                     <div>
                         <div class="online-f-label">YOUR CHOSEN FIGHTER</div>
                         <div class="online-f-name">${myFighter.name}</div>
@@ -1149,7 +1149,7 @@ function startOnlineBattleUI() {
             <div class="battle-arena-wrap">
                 <div class="battle-fighters-row">
                     <div class="battle-fighter-card" id="onMeCard">
-                        <img class="battle-avatar" src="${me.imgSrc}" alt="" onerror="this.src='mainPics/AFCS.jpg'">
+                        <img class="battle-avatar" src="${me.imgSrc}" alt="" onerror="this.src='mainpics/AFCS.jpg'">
                         <div class="battle-fname">${me.shortName} (YOU)</div>
                         <div class="battle-hp-bar"><div class="battle-hp-fill" id="onMeFill" style="width:100%"></div></div>
                         <div class="battle-hp-text" id="onMeText">${me.hp} / ${me.maxHp} HP</div>
@@ -1161,7 +1161,7 @@ function startOnlineBattleUI() {
                     </div>
         
                     <div class="battle-fighter-card" id="onOppCard">
-                        <img class="battle-avatar" src="${opp.imgSrc}" alt="" onerror="this.src='mainPics/AFCS.jpg'">
+                        <img class="battle-avatar" src="${opp.imgSrc}" alt="" onerror="this.src='mainpics/AFCS.jpg'">
                         <div class="battle-fname">${opp.shortName} (RIVAL)</div>
                         <div class="battle-hp-bar"><div class="battle-hp-fill" id="onOppFill" style="width:100%"></div></div>
                         <div class="battle-hp-text" id="onOppText">${opp.hp} / ${opp.maxHp} HP</div>
