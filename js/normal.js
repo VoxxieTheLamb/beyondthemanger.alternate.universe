@@ -385,7 +385,7 @@ function lebronJames() {
         pipEmoji: '🏀',
         pipTitle: 'Basketball Legend',
         fullName: 'James, LeBron',
-        imgSrc: 'otherpicss/Lebron.jpg',
+        imgSrc: 'otherPics/Lebron.jpg',
         character: 'Artist 6 - Basketball Legend',
         birthday: 'December 30, 1984',
         side: 'home',
@@ -399,7 +399,7 @@ function lebronJames() {
         pipEmoji: '🏀',
         pipTitle: 'The Klaw',
         fullName: 'Leonard, Kawhi',
-        imgSrc: 'otherpicss/kawhi.jpg',
+        imgSrc: 'otherPics/kawhi.jpg',
         character: 'Artist 7 - Two-Way Superstar',
         birthday: 'June 29, 1991',
         bio: 'One of the most dominant two-way superstars in basketball history, Kawhi "The Klaw" Leonard is a 2× NBA Champion, 2× Finals MVP, and 2× Defensive Player of the Year famous for his four-bounce buzzer-beater and stoic intensity. Trading the hardwood for Dubai\'s skyline, he is stepping onto the Burj Khalifa stage to go head-to-head with LeBron James in an epic Paskong AFCS 2026 Christmas showdown for Grade 7 – Psalms and guests!',
@@ -531,7 +531,7 @@ function startLeonhardEuler() {
         card.dataset.bio = '18th-century Swiss mathematician, physicist, and creator of e^(iπ) + 1 = 0, stopping by the Burj Khalifa Christmas Meet & Greet for Paskong AFCS 2026!';
         
         const img = document.createElement('img');
-        img.src = 'otherpicss/euler.jpg';
+        img.src = 'otherPics/euler.jpg';
         img.alt = 'Euler, Leonhard';
         
         const label = document.createElement('p');
@@ -745,7 +745,7 @@ function startCurryGuest() {
         card.dataset.bio = '4× NBA Champion and all-time 3-point king raining deep shots from the Burj Khalifa observation deck!';
         
         const img = document.createElement('img');
-        img.src = 'otherpicss/Curry.jpg';
+        img.src = 'otherPics/Curry.jpg';
         img.alt = 'Curry, Stephen';
         img.className = 'is-guest-alter-pfp';
         
@@ -915,7 +915,7 @@ function startHamiltonGuest() {
         card.dataset.bio = 'Non-stop writer and Founding Father bringing Broadway energy to the Burj Khalifa stage!';
         
         const img = document.createElement('img');
-        img.src = 'otherpicss/Hamilton.jpg';
+        img.src = 'otherPics/Hamilton.jpg';
         img.alt = 'Hamilton, Alexander';
         img.className = 'is-guest-alter-pfp';
         
@@ -1085,7 +1085,7 @@ function startEinsteinGuest() {
         card.dataset.bio = 'Theoretical physicist who unlocked E = mc² and space-time relativity, visiting Dubai for Paskong AFCS 2026!';
         
         const img = document.createElement('img');
-        img.src = 'otherpicss/Einstein.jpg';
+        img.src = 'otherPics/Einstein.jpg';
         img.alt = 'Einstein, Albert';
         img.className = 'is-guest-alter-pfp';
         
@@ -1261,7 +1261,7 @@ function startNGuest() {
         card.dataset.bio = 'Cheerful, loyal Disassembly Drone from Copper-9 visiting Dubai with maximum Golden Retriever energy!';
         
         const img = document.createElement('img');
-        img.src = 'otherpicss/NDrone.jpg';
+        img.src = 'otherPics/NDrone.jpg';
         img.alt = 'Designation N, Serial';
         img.className = 'is-guest-alter-pfp';
         img.loading = 'eager';
@@ -1354,7 +1354,7 @@ function startDoggieGuest() {
     
     const doggieProfile = {
         name: 'Doggie',
-        imgSrc: 'otherpicss/doggie.jpg',
+        imgSrc: 'otherPics/doggie.jpg',
         role: 'Guest Legend',
         character: 'Verifier of Grief • Wave Legend',
         bio: 'Legendary Geometry Dash top player, streamer, and the relentless verifier of the Top 1 Extreme Demon "Grief" (reaching 80%+ progress).',
@@ -1370,7 +1370,7 @@ function startDoggieGuest() {
     
     const zoinkProfile = {
         name: 'Zoink',
-        imgSrc: 'otherpicss/zoink.jpg',
+        imgSrc: 'otherPics/zoink.jpg',
         role: 'Guest Legend',
         character: '#1 Demonlist Conqueror • Tidal Wave Verifier',
         bio: 'Widely regarded as the greatest Geometry Dash player of all time, verifier of Tidal Wave, Avernus, Nullscapes, and countless Top 1 Extreme Demons.',
@@ -1458,7 +1458,7 @@ function startTeslaGuest() {
     
     const teslaProfile = {
         name: 'Nikola Tesla',
-        imgSrc: 'otherpicss/tesla.jpg',
+        imgSrc: 'otherPics/tesla.jpg',
         role: 'Guest Legend',
         character: 'Master of Alternating Current • Inventor',
         bio: 'Serbian-American inventor and electrical engineer who pioneered alternating-current (AC) electricity, the Tesla coil, and wireless power transmission.',
@@ -1474,7 +1474,7 @@ function startTeslaGuest() {
     
     const gaussProfile = {
         name: 'Carl Friedrich Gauss',
-        imgSrc: 'otherpicss/gauss.jpg',
+        imgSrc: 'otherPics/gauss.jpg',
         role: 'Guest Legend',
         character: 'Prince of Mathematicians • Number Theorist',
         bio: 'German mathematician and physicist who made foundational breakthroughs in number theory, statistics, modular arithmetic, magnetism, and astronomy.',

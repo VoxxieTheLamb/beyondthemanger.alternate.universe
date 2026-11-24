@@ -3196,18 +3196,19 @@
         let allAltersActive = false;
         
         const alterRoster = [
-            { match: 'sevilla',      altClass: 'is-vox-pfp',      altSrc: 'otherpicss/Vox.jpg' },
-            { match: 'angeles',      altClass: 'is-zerotwo-pfp',  altSrc: 'otherpicss/ZeroTwo.jpg' },
-            { match: 'del rosario',  altClass: 'is-carl-pfp',     altSrc: 'otherpicss/CarlGrimes.jfif' },
-            { match: 'suzon',        altClass: 'is-cortis-pfp',   altSrc: 'otherpicss/CortisGroup.jpg' },
-            { match: 'dela cruz',    altClass: 'is-kobe-pfp',     altSrc: 'otherpicss/Kobe.jpg' },
-            { match: 'mantal',       altClass: 'is-crowbar-pfp',  altSrc: 'otherpicss/crowbar.jpg' },
-            { match: 'abrena',       altCardClass: 'quirk-cyn-solver', altSrc: 'otherpicss/Cyn.jpg' },
-            { match: 'euler',        altCardClass: 'is-newton-mode', altSrc: 'otherpicss/Newton.jpg',  origName: 'Leonhard Euler',    altName: 'Sir Isaac Newton' },
-            { match: 'curry',        altCardClass: 'is-jordan-mode', altSrc: 'otherpicss/Jordan.jpg',  origName: 'Stephen Curry',     altName: 'Michael Jordan' },
-            { match: 'einstein',     altCardClass: 'is-galileo-mode', altSrc: 'otherpicss/Galileo.jpg', origName: 'Albert Einstein',   altName: 'Galileo Galilei' },
-            { match: 'doggie',       altCardClass: 'is-zoink-mode',  altSrc: 'otherpicss/zoink.jpg',   origName: 'Doggie',            altName: 'Zoink' },
-            { match: 'tesla',        altCardClass: 'is-gauss-mode',  altSrc: 'otherpicss/gauss.jpg',   origName: 'Nikola Tesla',      altName: 'Carl Friedrich Gauss' }
+            { match: 'sevilla',      altClass: 'is-vox-pfp',      altSrc: 'otherpics/Vox.jpg' },
+            { match: 'angeles',      altClass: 'is-zerotwo-pfp',  altSrc: 'otherpics/ZeroTwo.jpg' },
+            { match: 'del rosario',  altClass: 'is-carl-pfp',     altSrc: 'otherpics/CarlGrimes.jfif' },
+            { match: 'suzon',        altClass: 'is-cortis-pfp',   altSrc: 'otherpics/CortisGroup.jpg' },
+            { match: 'dela cruz',    altClass: 'is-kobe-pfp',     altSrc: 'otherpics/Kobe.jpg' },
+            { match: 'mantal',       altClass: 'is-crowbar-pfp',  altSrc: 'otherpics/crowbar.jpg' },
+            { match: 'abrena',       altCardClass: 'quirk-cyn-solver', altSrc: 'otherpics/Cyn.jpg' },
+
+            { match: 'euler',        altCardClass: 'is-newton-mode', altSrc: 'otherpics/Newton.jpg',  origName: 'Leonhard Euler',    altName: 'Sir Isaac Newton' },
+            { match: 'curry',        altCardClass: 'is-jordan-mode', altSrc: 'otherpics/Jordan.jpg',  origName: 'Stephen Curry',     altName: 'Michael Jordan' },
+            { match: 'einstein',     altCardClass: 'is-galileo-mode', altSrc: 'otherpics/Galileo.jpg', origName: 'Albert Einstein',   altName: 'Galileo Galilei' },
+            { match: 'doggie',       altCardClass: 'is-zoink-mode',  altSrc: 'otherpics/zoink.jpg',   origName: 'Doggie',            altName: 'Zoink' },
+            { match: 'tesla',        altCardClass: 'is-gauss-mode',  altSrc: 'otherpics/gauss.jpg',   origName: 'Nikola Tesla',      altName: 'Carl Friedrich Gauss' }
         ];
         
         track.addEventListener('click', (e) => {
