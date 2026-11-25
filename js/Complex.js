@@ -162,6 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
     startDoggieGuest();
     startTeslaGuest();
     handleDoubleClick();
+    startCrowbarShopFx();
+    startGodKeyShortcut();
   }
   startAll();
   //#endregion

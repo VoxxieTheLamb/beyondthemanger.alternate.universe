@@ -89,7 +89,23 @@ function startSupabaseBackend() {
         .limit(10);
         return Array.isArray(data) ? data : Array.of();
     };
-    
+    window.afcsGodGrantCoins = async function (amount) {
+        const total = Math.max(0, Math.floor(Number(amount) || 0));
+        if (!total) return serverBalance;
+        applyLocalMirror(serverBalance + total);
+        if (sbClient) {
+            let remaining = total;
+            while (remaining > 0) {
+                const chunk = Math.min(1000, remaining);
+                remaining -= chunk;
+                const { data, error } = await sbClient.rpc('claim_afcs_coins', { p_delta: chunk });
+                if (!error && typeof data === 'number') {
+                    applyLocalMirror(data);
+                }
+            }
+        }
+        return serverBalance;
+    };
     loadSdk(async () => {
         sbClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
         const { data: sessionData } = await sbClient.auth.getSession();
