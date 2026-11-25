@@ -45,6 +45,10 @@ document.addEventListener('DOMContentLoaded', () => {
     startWhackACyn();
     startTradingCardData();
     startTradingCardBinderUI();
+    startTcgBattleData();
+    startTcgBattleHelpers();
+    startTcgDuelArena();
+    startTcgBattleUI();
     startPortraitBadges();
     startCompareBattleData();
     startCompareBattleUI(); 
