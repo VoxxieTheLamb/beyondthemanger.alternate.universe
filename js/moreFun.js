@@ -530,16 +530,16 @@ function startTcgBattleUI() {
         if (typeof window.arcadeUnlockGame === 'function') window.arcadeUnlockGame('tcg_battle');
         const old = document.getElementById('afcs-tcg-battle-modal');
         if (old) old.remove();
-
+        
         const { cards: availableCards, rented } = window.tcgGetOwnedDeckPool();
         let selectedIds = availableCards.slice(0, 3).map(c => c.id);
         let selectedTierIdx = 0;
-
+        
         const modal = document.createElement('div');
         modal.id = 'afcs-tcg-battle-modal';
         modal.style.cssText = 'position:fixed;inset:0;z-index:99999;background:rgba(2,6,23,0.94);backdrop-filter:blur(8px);color:#f8fafc;font-family:system-ui,sans-serif;display:flex;align-items:center;justify-content:center;padding:16px;user-select:none;';
         document.body.appendChild(modal);
-
+        
         function closeModal() {
             modal.remove();
             window.removeEventListener('keydown', escHandler);
@@ -551,7 +551,7 @@ function startTcgBattleUI() {
         modal.addEventListener('click', (e) => {
             if (e.target === modal) closeModal();
         });
-
+        
         function renderDeckBuilder() {
             const tier = window.TCG_BOSS_TIERS.at(selectedTierIdx);
             modal.innerHTML = `
@@ -581,10 +581,10 @@ function startTcgBattleUI() {
 
                     <div style="padding:16px 20px;overflow-y:auto;display:grid;grid-template-columns:repeat(auto-fill,minmax(195px,1fr));gap:10px;flex:1;">
                         ${availableCards.map(c => {
-                            const stats = window.tcgGetCombatProfile(c);
-                            const isPicked = selectedIds.includes(c.id);
-                            const rarityColor = c.rarity === 'Mythic' ? '#facc15' : c.rarity === 'Epic' ? '#c084fc' : c.rarity === 'Rare' ? '#38bdf8' : '#94a3b8';
-                            return `
+            const stats = window.tcgGetCombatProfile(c);
+            const isPicked = selectedIds.includes(c.id);
+            const rarityColor = c.rarity === 'Mythic' ? '#facc15' : c.rarity === 'Epic' ? '#c084fc' : c.rarity === 'Rare' ? '#38bdf8' : '#94a3b8';
+            return `
                                 <button type="button" class="tcg-pick-card" data-id="${c.id}" style="text-align:left;background:${isPicked ? '#1e3a5f' : '#1e293b'};border:2px solid ${isPicked ? '#4ade80' : '#334155'};border-radius:10px;padding:10px;cursor:pointer;color:#f8fafc;display:flex;flex-direction:column;gap:4px;">
                                     <div style="display:flex;justify-content:space-between;font-size:0.72rem;font-weight:800;">
                                         <span style="color:${rarityColor};">${c.rarity.toUpperCase()}</span>
@@ -595,7 +595,7 @@ function startTcgBattleUI() {
                                     <div style="font-size:0.7rem;color:#94a3b8;">✨ ${stats.skillName}</div>
                                 </button>
                             `;
-                        }).join('')}
+        }).join('')}
                     </div>
 
                     <div style="padding:14px 20px;background:#090d16;border-top:1px solid #1e293b;display:flex;justify-content:space-between;align-items:center;">
@@ -606,76 +606,76 @@ function startTcgBattleUI() {
                     </div>
                 </div>
             `;
-
-            modal.querySelector('#tcgBtlClose').onclick = closeModal;
-            modal.querySelectorAll('.tcg-tier-btn').forEach(btn => {
-                btn.onclick = () => {
-                    selectedTierIdx = Number(btn.dataset.idx);
-                    renderDeckBuilder();
-                };
-            });
-            modal.querySelectorAll('.tcg-pick-card').forEach(btn => {
-                btn.onclick = () => {
-                    const id = btn.dataset.id;
-                    if (selectedIds.includes(id)) {
-                        selectedIds = selectedIds.filter(x => x !== id);
-                    } else if (selectedIds.length < 3) {
-                        selectedIds.push(id);
-                    }
-                    renderDeckBuilder();
-                };
-            });
-            modal.querySelector('#tcgStartDuelBtn').onclick = () => {
-                if (selectedIds.length !== 3) return;
-                const catalog = window.tcgGetPlayableCatalog();
-                const playerTeam = selectedIds.map(id => window.tcgGetCombatProfile(catalog.find(c => c.id === id) || availableCards.at(0)));
-                const enemyTeam = tier.deckIds.map((id, i) => {
-                    const found = catalog.find(c => c.id === id) || catalog.at(i % catalog.length);
-                    return window.tcgGetCombatProfile(found);
-                });
-                window.runTcgDuelArena(modal, playerTeam, enemyTeam, tier, renderDeckBuilder, closeModal);
+        
+        modal.querySelector('#tcgBtlClose').onclick = closeModal;
+        modal.querySelectorAll('.tcg-tier-btn').forEach(btn => {
+            btn.onclick = () => {
+                selectedTierIdx = Number(btn.dataset.idx);
+                renderDeckBuilder();
             };
-        }
-
-        renderDeckBuilder();
-    };
-
-    const packBar = document.querySelector('.tcg-pack-bar');
-    if (packBar && !document.getElementById('tcgLaunchBattleBtn')) {
-        const btlBtn = document.createElement('button');
-        btlBtn.type = 'button';
-        btlBtn.id = 'tcgLaunchBattleBtn';
-        btlBtn.className = 'tcg-open-pack-btn';
-        btlBtn.style.marginLeft = '8px';
-        btlBtn.textContent = '⚔️ 3v3 Deck Battle';
-        btlBtn.onclick = window.openTcgCardBattle;
-        packBar.appendChild(btlBtn);
-    }
-
-    if (typeof window.arcadeRegisterGame === 'function') {
-        window.arcadeRegisterGame({
-            id: 'tcg_battle',
-            title: '3v3 Psalms TCG Duel',
-            icon: '⚔️',
-            reward: '+80–300 🪙',
-            hint: 'Battle with your collected TCG Binder cards...',
-            triggers: Array.of('tcg battle', 'deck', 'duel', 'card battle'),
-            launch: () => window.openTcgCardBattle()
         });
-    }
-
-    if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
-        STATE.onSearchInput.push((val) => {
-            if (Array.of('tcg battle', 'deck', 'duel', 'card battle').includes(val)) {
-                if (DOM.searchInput) {
-                    DOM.searchInput.value = '';
-                    filterCards();
+        modal.querySelectorAll('.tcg-pick-card').forEach(btn => {
+            btn.onclick = () => {
+                const id = btn.dataset.id;
+                if (selectedIds.includes(id)) {
+                    selectedIds = selectedIds.filter(x => x !== id);
+                } else if (selectedIds.length < 3) {
+                    selectedIds.push(id);
                 }
-                window.openTcgCardBattle();
-                return true;
-            }
-            return false;
+                renderDeckBuilder();
+            };
         });
+        modal.querySelector('#tcgStartDuelBtn').onclick = () => {
+            if (selectedIds.length !== 3) return;
+            const catalog = window.tcgGetPlayableCatalog();
+            const playerTeam = selectedIds.map(id => window.tcgGetCombatProfile(catalog.find(c => c.id === id) || availableCards.at(0)));
+            const enemyTeam = tier.deckIds.map((id, i) => {
+                const found = catalog.find(c => c.id === id) || catalog.at(i % catalog.length);
+                return window.tcgGetCombatProfile(found);
+            });
+            window.runTcgDuelArena(modal, playerTeam, enemyTeam, tier, renderDeckBuilder, closeModal);
+        };
     }
+    
+    renderDeckBuilder();
+};
+
+const packBar = document.querySelector('.tcg-pack-bar');
+if (packBar && !document.getElementById('tcgLaunchBattleBtn')) {
+    const btlBtn = document.createElement('button');
+    btlBtn.type = 'button';
+    btlBtn.id = 'tcgLaunchBattleBtn';
+    btlBtn.className = 'tcg-open-pack-btn';
+    btlBtn.style.marginLeft = '8px';
+    btlBtn.textContent = '⚔️ 3v3 Deck Battle';
+    btlBtn.onclick = window.openTcgCardBattle;
+    packBar.appendChild(btlBtn);
+}
+
+if (typeof window.arcadeRegisterGame === 'function') {
+    window.arcadeRegisterGame({
+        id: 'tcg_battle',
+        title: '3v3 Psalms TCG Duel',
+        icon: '⚔️',
+        reward: '+80–300 🪙',
+        hint: 'Battle with your collected TCG Binder cards...',
+        triggers: Array.of('tcg battle', 'deck', 'duel', 'card battle'),
+        launch: () => window.openTcgCardBattle()
+    });
+}
+
+if (typeof STATE !== 'undefined' && Array.isArray(STATE.onSearchInput)) {
+    STATE.onSearchInput.push((val) => {
+        if (Array.of('tcg battle', 'deck', 'duel', 'card battle').includes(val)) {
+            if (DOM.searchInput) {
+                DOM.searchInput.value = '';
+                filterCards();
+            }
+            window.openTcgCardBattle();
+            return true;
+        }
+        return false;
+    });
+}
 }
 
