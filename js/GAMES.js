@@ -407,11 +407,9 @@ function startTradingCardBinderUI() {
             c25: 'san agustin',
             c26: 'tridanio'
         };
-        
         const clean = card.name.replace(/\(.*?\)/g, '').trim().split(/\s+/);
         const initials = ((clean.at(0)?.charAt(0) || '') + (clean.at(-1)?.charAt(0) || '')).toUpperCase();
         const fallbackHtml = `<div class="monogram-avatar" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-size:28px;font-weight:900;">${initials}</div>`;
-        
         const key = rosterMatchKeys[card.id];
         if (key) {
             const match = Array.from(document.querySelectorAll('.PeoplePics')).find(el => {
